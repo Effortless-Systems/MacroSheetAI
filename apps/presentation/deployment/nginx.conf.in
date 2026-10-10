@@ -1,0 +1,34 @@
+# Include in the http context. Replace placeholders after checking host capacity.
+# Deliberately bound total renderer traffic across clients behind a proxy.
+limit_req_zone $server_name zone=macrosheet_requests:1m rate=@REQUEST_RATE@;
+limit_conn_zone $server_name zone=macrosheet_connections:1m;
+server {
+    listen 443 ssl;
+    server_name @HOSTNAME@;
+    ssl_certificate @CERTIFICATE_FILE@;
+    ssl_certificate_key @CERTIFICATE_KEY_FILE@;
+    client_max_body_size 32k;
+    client_body_buffer_size 32k;
+    client_body_timeout 10s;
+    access_log off;
+    # Error logging must not capture request bodies; configure bounded rotation.
+    error_log @ERROR_LOG_FILE@ warn;
+    location = /mcp {
+        limit_req zone=macrosheet_requests burst=@REQUEST_BURST@ nodelay;
+        limit_req_status 429;
+        limit_conn macrosheet_connections @CONNECTION_LIMIT@;
+        proxy_pass http://127.0.0.1:@PORT@;
+        proxy_set_header Host $host;
+        proxy_http_version 1.1;
+        proxy_buffering off;
+        proxy_request_buffering off;
+        proxy_connect_timeout 5s;
+        proxy_read_timeout 20s;
+        proxy_send_timeout 20s;
+    }
+    location = /healthz {
+        proxy_pass http://127.0.0.1:@PORT@;
+        proxy_set_header Host $host;
+    }
+    location / { return 404; }
+}

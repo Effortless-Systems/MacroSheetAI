@@ -1,0 +1,17 @@
+/dist/
+__pycache__/
+.DS_Store
+node_modules/
+apps/presentation/dist/
+apps/presentation/test-results/
+apps/presentation/playwright-report/
+.env
+.wrangler/
+.dev.vars*
+apps/presentation/wrangler.deploy.jsonc
+
+# Private workspace content never belongs in this source checkout.
+/spec/
+/current_task/
+/website/
+/assets/

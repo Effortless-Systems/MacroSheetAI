@@ -1,0 +1,10 @@
+# Choose an unused unprivileged loopback port; set the dedicated public hostname.
+PORT=8787
+ALLOWED_HOSTS=127.0.0.1,localhost,widgets.example.com
+
+# Unique per plugin; HTTPS origin only, with no trailing slash or path.
+WIDGET_DOMAIN=https://widgets.example.com
+
+# Optional: copy the portal's exact domain-verification token into private
+# deployment configuration. Leave unset until a challenge is issued.
+# OPENAI_APPS_CHALLENGE=

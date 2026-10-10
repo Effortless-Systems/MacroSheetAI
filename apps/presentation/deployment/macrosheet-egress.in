@@ -1,0 +1,11 @@
+#!/bin/bash
+set -eu
+for command in /usr/sbin/iptables /usr/sbin/ip6tables; do
+  rule=(-m owner --uid-owner @SERVICE_USER@ -m conntrack ! --ctstate ESTABLISHED,RELATED -m comment --comment macrosheet-egress -j REJECT)
+  case "${1:-}" in
+    start) "$command" -w 5 -C OUTPUT "${rule[@]}" 2>/dev/null || "$command" -w 5 -I OUTPUT 1 "${rule[@]}" ;;
+    stop) if "$command" -w 5 -C OUTPUT "${rule[@]}" 2>/dev/null; then "$command" -w 5 -D OUTPUT "${rule[@]}"; fi ;;
+    check) "$command" -w 5 -C OUTPUT "${rule[@]}" ;;
+    *) exit 2 ;;
+  esac
+done

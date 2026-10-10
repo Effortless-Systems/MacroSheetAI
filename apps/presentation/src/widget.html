@@ -1,0 +1,28 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+<title>MacroSheet</title><style>/* WIDGET_CSS */</style></head><body>
+<main>
+<header><p class="brand">MacroSheet</p><p id="tracker">Your intake, in view</p></header>
+<p id="status" role="status" aria-live="polite">Connecting to your conversation…</p>
+<div id="dashboard" hidden>
+<section id="today-view" aria-labelledby="day-title" hidden>
+<h1 id="day-title">Day So Far</h1><p id="day-date" class="muted"></p>
+<p id="day-note" class="note"></p>
+<table class="nutrients"><thead><tr><th scope="col">Nutrient</th><th scope="col">Logged</th><th scope="col">Daily target</th></tr></thead><tbody id="nutrients"></tbody></table>
+<button id="target-help" class="help">Need help setting targets?</button>
+<div class="actions"><button id="meals">Show today's meals</button><button id="show-weekly">View weekly dashboard</button></div>
+</section>
+<section id="weekly-view" aria-labelledby="week-title" hidden><h1 id="week-title">Weekly dashboard</h1>
+<div class="navigation"><button id="previous" aria-label="Previous week">← Previous</button><button id="next" aria-label="Next week">Next →</button></div>
+<p id="week-range" class="week-range"></p><p id="week-total" class="week-total"></p><p id="week-average" class="note"></p><p id="coverage" class="note"></p>
+<h2 class="chart-title">Logged intake</h2><p class="legend"><span class="protein">● Protein</span><span class="carbs">● Carbohydrates</span><span class="fat">● Fat</span></p>
+<div id="chart" class="chart" role="img" aria-label="Daily calories from protein, carbohydrates, and fat. Exact values follow."></div>
+<p class="note chart-note">Calories from macros: protein and carbohydrates ×4, fat ×9. Recorded calories may differ.</p>
+<details><summary>Daily values</summary><div id="daily-values"></div></details>
+<div class="actions"><button id="current">Current week</button><button id="show-today">View Day So Far</button></div>
+</section>
+<div class="actions refresh"><button id="refresh">Refresh from Sheet</button></div>
+<footer><p id="source"></p><p>Targets are current settings, not historical targets.</p></footer>
+</div>
+<div id="followup" hidden><p id="followup-status" role="status"></p><p id="fallback" hidden></p></div>
+</main><script>/* WIDGET_JS */</script></body></html>

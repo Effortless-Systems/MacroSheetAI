@@ -1,0 +1,2510 @@
+{
+  "product": "macrosheet",
+  "schemaVersion": 2,
+  "templateVersion": "2.0.0",
+  "publicTemplateUrl": "https://docs.google.com/spreadsheets/d/1FU0QHGFBaQdBdt0a81OkBqW68z7L-r8XH4s2etZqpp8/edit",
+  "description": "Data-free native Google Sheets template. Prefer whole-workbook copy; use requests only on a new empty workbook. Initialize timezone/settings and register the current month after copying.",
+  "sheetIds": {
+    "settings": 101,
+    "dashboard": 102,
+    "index": 103,
+    "summary": 104,
+    "blank": 105
+  },
+  "baseRequests": [
+    {
+      "updateSpreadsheetProperties": {
+        "properties": {
+          "locale": "en_US",
+          "timeZone": "Etc/UTC",
+          "autoRecalc": "MINUTE"
+        },
+        "fields": "locale,timeZone,autoRecalc"
+      }
+    },
+    {
+      "addSheet": {
+        "properties": {
+          "sheetId": 102,
+          "title": "Dashboard",
+          "gridProperties": {
+            "rowCount": 40,
+            "columnCount": 10,
+            "frozenRowCount": 1
+          }
+        }
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 102
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 10
+            },
+            "verticalAlignment": "MIDDLE"
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 102,
+          "startRowIndex": 0,
+          "endRowIndex": 1
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.93,
+              "green": 0.94,
+              "blue": 0.93
+            },
+            "textFormat": {
+              "bold": true,
+              "fontSize": 10
+            }
+          }
+        },
+        "fields": "userEnteredFormat(backgroundColor,textFormat)"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 102,
+          "dimension": "COLUMNS",
+          "startIndex": 0,
+          "endIndex": 10
+        },
+        "properties": {
+          "pixelSize": 145
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 102,
+          "dimension": "ROWS",
+          "startIndex": 0,
+          "endIndex": 1
+        },
+        "properties": {
+          "pixelSize": 38
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 102,
+          "startRowIndex": 0,
+          "endRowIndex": 1
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "wrapStrategy": "WRAP"
+          }
+        },
+        "fields": "userEnteredFormat.wrapStrategy"
+      }
+    },
+    {
+      "addSheet": {
+        "properties": {
+          "sheetId": 101,
+          "title": "Settings",
+          "gridProperties": {
+            "rowCount": 20,
+            "columnCount": 2,
+            "frozenRowCount": 1
+          }
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 101,
+          "rowIndex": 0,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "key"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "value"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 101
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 10
+            },
+            "verticalAlignment": "MIDDLE"
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 101,
+          "startRowIndex": 0,
+          "endRowIndex": 1
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.93,
+              "green": 0.94,
+              "blue": 0.93
+            },
+            "textFormat": {
+              "bold": true,
+              "fontSize": 10
+            }
+          }
+        },
+        "fields": "userEnteredFormat(backgroundColor,textFormat)"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 101,
+          "dimension": "COLUMNS",
+          "startIndex": 0,
+          "endIndex": 2
+        },
+        "properties": {
+          "pixelSize": 145
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 101,
+          "dimension": "ROWS",
+          "startIndex": 0,
+          "endIndex": 1
+        },
+        "properties": {
+          "pixelSize": 38
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 101,
+          "startRowIndex": 0,
+          "endRowIndex": 1
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "wrapStrategy": "WRAP"
+          }
+        },
+        "fields": "userEnteredFormat.wrapStrategy"
+      }
+    },
+    {
+      "addSheet": {
+        "properties": {
+          "sheetId": 103,
+          "title": "Month_Index",
+          "gridProperties": {
+            "rowCount": 13,
+            "columnCount": 10,
+            "frozenRowCount": 1
+          }
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 103,
+          "rowIndex": 0,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "month"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "meal_tab"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "summary_start_row"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "source_rows"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "source_columns"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "status"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "meal_count"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "formula_cells"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "invalid_rows"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "duplicate_ids"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 103
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 10
+            },
+            "verticalAlignment": "MIDDLE"
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 103,
+          "startRowIndex": 0,
+          "endRowIndex": 1
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.93,
+              "green": 0.94,
+              "blue": 0.93
+            },
+            "textFormat": {
+              "bold": true,
+              "fontSize": 10
+            }
+          }
+        },
+        "fields": "userEnteredFormat(backgroundColor,textFormat)"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 103,
+          "dimension": "COLUMNS",
+          "startIndex": 0,
+          "endIndex": 10
+        },
+        "properties": {
+          "pixelSize": 145
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 103,
+          "dimension": "ROWS",
+          "startIndex": 0,
+          "endIndex": 1
+        },
+        "properties": {
+          "pixelSize": 38
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 103,
+          "startRowIndex": 0,
+          "endRowIndex": 1
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "wrapStrategy": "WRAP"
+          }
+        },
+        "fields": "userEnteredFormat.wrapStrategy"
+      }
+    },
+    {
+      "addSheet": {
+        "properties": {
+          "sheetId": 104,
+          "title": "Daily_Summary",
+          "gridProperties": {
+            "rowCount": 373,
+            "columnCount": 10,
+            "frozenRowCount": 1
+          }
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 104,
+          "rowIndex": 0,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "local_date"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "meal_count"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "calories_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "protein_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "carbs_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "fat_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "protein_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "carbs_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "fat_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "status"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 104
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 10
+            },
+            "verticalAlignment": "MIDDLE"
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 104,
+          "startRowIndex": 0,
+          "endRowIndex": 1
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.93,
+              "green": 0.94,
+              "blue": 0.93
+            },
+            "textFormat": {
+              "bold": true,
+              "fontSize": 10
+            }
+          }
+        },
+        "fields": "userEnteredFormat(backgroundColor,textFormat)"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 104,
+          "dimension": "COLUMNS",
+          "startIndex": 0,
+          "endIndex": 10
+        },
+        "properties": {
+          "pixelSize": 145
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 104,
+          "dimension": "ROWS",
+          "startIndex": 0,
+          "endIndex": 1
+        },
+        "properties": {
+          "pixelSize": 38
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 104,
+          "startRowIndex": 0,
+          "endRowIndex": 1
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "wrapStrategy": "WRAP"
+          }
+        },
+        "fields": "userEnteredFormat.wrapStrategy"
+      }
+    },
+    {
+      "addSheet": {
+        "properties": {
+          "sheetId": 105,
+          "title": "_Month_Template",
+          "gridProperties": {
+            "rowCount": 201,
+            "columnCount": 9,
+            "frozenRowCount": 1
+          }
+        }
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 105,
+          "rowIndex": 0,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "entry_id"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "local_date"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "description"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "calories_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "protein_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "carbs_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "fat_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "estimated"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "notes"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 105
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "fontFamily": "Arial",
+              "fontSize": 10
+            },
+            "verticalAlignment": "MIDDLE"
+          }
+        },
+        "fields": "userEnteredFormat"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 105,
+          "startRowIndex": 0,
+          "endRowIndex": 1
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.93,
+              "green": 0.94,
+              "blue": 0.93
+            },
+            "textFormat": {
+              "bold": true,
+              "fontSize": 10
+            }
+          }
+        },
+        "fields": "userEnteredFormat(backgroundColor,textFormat)"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 105,
+          "dimension": "COLUMNS",
+          "startIndex": 0,
+          "endIndex": 9
+        },
+        "properties": {
+          "pixelSize": 145
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 105,
+          "dimension": "ROWS",
+          "startIndex": 0,
+          "endIndex": 1
+        },
+        "properties": {
+          "pixelSize": 38
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 105,
+          "startRowIndex": 0,
+          "endRowIndex": 1
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "wrapStrategy": "WRAP"
+          }
+        },
+        "fields": "userEnteredFormat.wrapStrategy"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 101,
+          "rowIndex": 1,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "product"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "macrosheet"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "schema_version"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "numberValue": 2
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "timezone"
+                }
+              },
+              {}
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "calorie_target_kcal"
+                }
+              },
+              {}
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "protein_target_g"
+                }
+              },
+              {}
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "carbs_target_g"
+                }
+              },
+              {}
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "fat_target_g"
+                }
+              },
+              {}
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "person_name"
+                }
+              },
+              {}
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "created_local_date"
+                }
+              },
+              {}
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "week_starts_on"
+                }
+              },
+              {}
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "last_weekly_review_offer"
+                }
+              },
+              {}
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "template_version"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "2.0.0"
+                }
+              }
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "updateCells": {
+        "start": {
+          "sheetId": 102,
+          "rowIndex": 0,
+          "columnIndex": 0
+        },
+        "rows": [
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "MacroSheet · Your intake, in view"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Setup"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF(AND(INDEX(Settings!$B$2:$B$13,MATCH(\"timezone\",Settings!$A$2:$A$13,0))<>\"\",ISNUMBER(INDEX(Settings!$B$2:$B$13,MATCH(\"week_starts_on\",Settings!$A$2:$A$13,0))),INDEX(Settings!$B$2:$B$13,MATCH(\"created_local_date\",Settings!$A$2:$A$13,0))<>\"\"),\"Ready\",\"Finish setup in chat\")"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Timezone"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=INDEX(Settings!$B$2:$B$13,MATCH(\"timezone\",Settings!$A$2:$A$13,0))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Today"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($B$2<>\"Ready\",\"\",TEXT(TODAY(),\"yyyy-mm-dd\"))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Week starts on"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=INDEX(Settings!$B$2:$B$13,MATCH(\"week_starts_on\",Settings!$A$2:$A$13,0))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Current week begins"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($B$2<>\"Ready\",\"\",TEXT(TODAY()-MOD(WEEKDAY(TODAY(),1)-1-$B$5,7),\"yyyy-mm-dd\"))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {}
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "No log means unknown intake. Targets are current; historical target comparisons are not available."
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {}
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Day So Far"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "local_date"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "meal_count"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "calories_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "protein_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "carbs_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "fat_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "protein_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "carbs_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "fat_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "status"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=$B$4"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A12=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A12)=0,0,INDEX(Daily_Summary!$B$2:$I$373,MATCH($A12,Daily_Summary!$A$2:$A$373,0),1)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A12=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A12)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A12,Daily_Summary!$A$2:$A$373,0),2)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A12=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A12)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A12,Daily_Summary!$A$2:$A$373,0),3)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A12=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A12)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A12,Daily_Summary!$A$2:$A$373,0),4)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A12=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A12)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A12,Daily_Summary!$A$2:$A$373,0),5)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A12=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A12)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A12,Daily_Summary!$A$2:$A$373,0),6)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A12=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A12)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A12,Daily_Summary!$A$2:$A$373,0),7)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A12=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A12)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A12,Daily_Summary!$A$2:$A$373,0),8)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A12=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A12)=0,\"unregistered\",INDEX(Daily_Summary!$J$2:$J$373,MATCH($A12,Daily_Summary!$A$2:$A$373,0))))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {}
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Current targets"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "calories_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "protein_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "carbs_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "fat_g"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {},
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF(INDEX(Settings!$B$2:$B$13,MATCH(\"calorie_target_kcal\",Settings!$A$2:$A$13,0))=\"\",\"\",INDEX(Settings!$B$2:$B$13,MATCH(\"calorie_target_kcal\",Settings!$A$2:$A$13,0)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF(INDEX(Settings!$B$2:$B$13,MATCH(\"protein_target_g\",Settings!$A$2:$A$13,0))=\"\",\"\",INDEX(Settings!$B$2:$B$13,MATCH(\"protein_target_g\",Settings!$A$2:$A$13,0)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF(INDEX(Settings!$B$2:$B$13,MATCH(\"carbs_target_g\",Settings!$A$2:$A$13,0))=\"\",\"\",INDEX(Settings!$B$2:$B$13,MATCH(\"carbs_target_g\",Settings!$A$2:$A$13,0)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF(INDEX(Settings!$B$2:$B$13,MATCH(\"fat_target_g\",Settings!$A$2:$A$13,0))=\"\",\"\",INDEX(Settings!$B$2:$B$13,MATCH(\"fat_target_g\",Settings!$A$2:$A$13,0)))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {}
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Current week"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "local_date"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "meal_count"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "calories_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "protein_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "carbs_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "fat_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "protein_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "carbs_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "fat_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "status"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($B$6=\"\",\"\",TEXT(DATEVALUE($B$6)+0,\"yyyy-mm-dd\"))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A19=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A19)=0,0,INDEX(Daily_Summary!$B$2:$I$373,MATCH($A19,Daily_Summary!$A$2:$A$373,0),1)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A19=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A19)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A19,Daily_Summary!$A$2:$A$373,0),2)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A19=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A19)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A19,Daily_Summary!$A$2:$A$373,0),3)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A19=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A19)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A19,Daily_Summary!$A$2:$A$373,0),4)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A19=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A19)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A19,Daily_Summary!$A$2:$A$373,0),5)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A19=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A19)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A19,Daily_Summary!$A$2:$A$373,0),6)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A19=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A19)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A19,Daily_Summary!$A$2:$A$373,0),7)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A19=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A19)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A19,Daily_Summary!$A$2:$A$373,0),8)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A19=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A19)=0,\"unregistered\",INDEX(Daily_Summary!$J$2:$J$373,MATCH($A19,Daily_Summary!$A$2:$A$373,0))))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($B$6=\"\",\"\",TEXT(DATEVALUE($B$6)+1,\"yyyy-mm-dd\"))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A20=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A20)=0,0,INDEX(Daily_Summary!$B$2:$I$373,MATCH($A20,Daily_Summary!$A$2:$A$373,0),1)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A20=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A20)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A20,Daily_Summary!$A$2:$A$373,0),2)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A20=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A20)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A20,Daily_Summary!$A$2:$A$373,0),3)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A20=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A20)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A20,Daily_Summary!$A$2:$A$373,0),4)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A20=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A20)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A20,Daily_Summary!$A$2:$A$373,0),5)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A20=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A20)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A20,Daily_Summary!$A$2:$A$373,0),6)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A20=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A20)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A20,Daily_Summary!$A$2:$A$373,0),7)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A20=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A20)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A20,Daily_Summary!$A$2:$A$373,0),8)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A20=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A20)=0,\"unregistered\",INDEX(Daily_Summary!$J$2:$J$373,MATCH($A20,Daily_Summary!$A$2:$A$373,0))))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($B$6=\"\",\"\",TEXT(DATEVALUE($B$6)+2,\"yyyy-mm-dd\"))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A21=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A21)=0,0,INDEX(Daily_Summary!$B$2:$I$373,MATCH($A21,Daily_Summary!$A$2:$A$373,0),1)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A21=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A21)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A21,Daily_Summary!$A$2:$A$373,0),2)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A21=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A21)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A21,Daily_Summary!$A$2:$A$373,0),3)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A21=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A21)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A21,Daily_Summary!$A$2:$A$373,0),4)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A21=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A21)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A21,Daily_Summary!$A$2:$A$373,0),5)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A21=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A21)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A21,Daily_Summary!$A$2:$A$373,0),6)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A21=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A21)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A21,Daily_Summary!$A$2:$A$373,0),7)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A21=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A21)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A21,Daily_Summary!$A$2:$A$373,0),8)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A21=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A21)=0,\"unregistered\",INDEX(Daily_Summary!$J$2:$J$373,MATCH($A21,Daily_Summary!$A$2:$A$373,0))))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($B$6=\"\",\"\",TEXT(DATEVALUE($B$6)+3,\"yyyy-mm-dd\"))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A22=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A22)=0,0,INDEX(Daily_Summary!$B$2:$I$373,MATCH($A22,Daily_Summary!$A$2:$A$373,0),1)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A22=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A22)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A22,Daily_Summary!$A$2:$A$373,0),2)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A22=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A22)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A22,Daily_Summary!$A$2:$A$373,0),3)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A22=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A22)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A22,Daily_Summary!$A$2:$A$373,0),4)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A22=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A22)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A22,Daily_Summary!$A$2:$A$373,0),5)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A22=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A22)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A22,Daily_Summary!$A$2:$A$373,0),6)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A22=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A22)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A22,Daily_Summary!$A$2:$A$373,0),7)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A22=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A22)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A22,Daily_Summary!$A$2:$A$373,0),8)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A22=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A22)=0,\"unregistered\",INDEX(Daily_Summary!$J$2:$J$373,MATCH($A22,Daily_Summary!$A$2:$A$373,0))))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($B$6=\"\",\"\",TEXT(DATEVALUE($B$6)+4,\"yyyy-mm-dd\"))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A23=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A23)=0,0,INDEX(Daily_Summary!$B$2:$I$373,MATCH($A23,Daily_Summary!$A$2:$A$373,0),1)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A23=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A23)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A23,Daily_Summary!$A$2:$A$373,0),2)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A23=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A23)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A23,Daily_Summary!$A$2:$A$373,0),3)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A23=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A23)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A23,Daily_Summary!$A$2:$A$373,0),4)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A23=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A23)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A23,Daily_Summary!$A$2:$A$373,0),5)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A23=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A23)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A23,Daily_Summary!$A$2:$A$373,0),6)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A23=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A23)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A23,Daily_Summary!$A$2:$A$373,0),7)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A23=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A23)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A23,Daily_Summary!$A$2:$A$373,0),8)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A23=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A23)=0,\"unregistered\",INDEX(Daily_Summary!$J$2:$J$373,MATCH($A23,Daily_Summary!$A$2:$A$373,0))))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($B$6=\"\",\"\",TEXT(DATEVALUE($B$6)+5,\"yyyy-mm-dd\"))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A24=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A24)=0,0,INDEX(Daily_Summary!$B$2:$I$373,MATCH($A24,Daily_Summary!$A$2:$A$373,0),1)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A24=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A24)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A24,Daily_Summary!$A$2:$A$373,0),2)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A24=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A24)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A24,Daily_Summary!$A$2:$A$373,0),3)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A24=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A24)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A24,Daily_Summary!$A$2:$A$373,0),4)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A24=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A24)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A24,Daily_Summary!$A$2:$A$373,0),5)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A24=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A24)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A24,Daily_Summary!$A$2:$A$373,0),6)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A24=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A24)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A24,Daily_Summary!$A$2:$A$373,0),7)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A24=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A24)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A24,Daily_Summary!$A$2:$A$373,0),8)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A24=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A24)=0,\"unregistered\",INDEX(Daily_Summary!$J$2:$J$373,MATCH($A24,Daily_Summary!$A$2:$A$373,0))))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($B$6=\"\",\"\",TEXT(DATEVALUE($B$6)+6,\"yyyy-mm-dd\"))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A25=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A25)=0,0,INDEX(Daily_Summary!$B$2:$I$373,MATCH($A25,Daily_Summary!$A$2:$A$373,0),1)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A25=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A25)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A25,Daily_Summary!$A$2:$A$373,0),2)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A25=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A25)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A25,Daily_Summary!$A$2:$A$373,0),3)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A25=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A25)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A25,Daily_Summary!$A$2:$A$373,0),4)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A25=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A25)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A25,Daily_Summary!$A$2:$A$373,0),5)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A25=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A25)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A25,Daily_Summary!$A$2:$A$373,0),6)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A25=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A25)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A25,Daily_Summary!$A$2:$A$373,0),7)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A25=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A25)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A25,Daily_Summary!$A$2:$A$373,0),8)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A25=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A25)=0,\"unregistered\",INDEX(Daily_Summary!$J$2:$J$373,MATCH($A25,Daily_Summary!$A$2:$A$373,0))))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {}
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Logged days"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF(COUNTIF(J19:J25,\"invalid\")>0,\"\",COUNTIF(B19:B25,\">0\"))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "Recorded kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF(OR(B27=\"\",B27=0),\"\",SUM(C19:C25))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "Kcal per logged day"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF(OR(B27=\"\",B27=0),\"\",D27/B27)"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {}
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Last week"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "local_date"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "meal_count"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "calories_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "protein_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "carbs_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "fat_g"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "protein_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "carbs_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "fat_kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "status"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($B$6=\"\",\"\",TEXT(DATEVALUE($B$6)+-7,\"yyyy-mm-dd\"))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A31=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A31)=0,0,INDEX(Daily_Summary!$B$2:$I$373,MATCH($A31,Daily_Summary!$A$2:$A$373,0),1)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A31=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A31)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A31,Daily_Summary!$A$2:$A$373,0),2)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A31=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A31)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A31,Daily_Summary!$A$2:$A$373,0),3)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A31=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A31)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A31,Daily_Summary!$A$2:$A$373,0),4)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A31=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A31)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A31,Daily_Summary!$A$2:$A$373,0),5)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A31=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A31)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A31,Daily_Summary!$A$2:$A$373,0),6)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A31=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A31)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A31,Daily_Summary!$A$2:$A$373,0),7)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A31=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A31)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A31,Daily_Summary!$A$2:$A$373,0),8)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A31=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A31)=0,\"unregistered\",INDEX(Daily_Summary!$J$2:$J$373,MATCH($A31,Daily_Summary!$A$2:$A$373,0))))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($B$6=\"\",\"\",TEXT(DATEVALUE($B$6)+-6,\"yyyy-mm-dd\"))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A32=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A32)=0,0,INDEX(Daily_Summary!$B$2:$I$373,MATCH($A32,Daily_Summary!$A$2:$A$373,0),1)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A32=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A32)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A32,Daily_Summary!$A$2:$A$373,0),2)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A32=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A32)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A32,Daily_Summary!$A$2:$A$373,0),3)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A32=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A32)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A32,Daily_Summary!$A$2:$A$373,0),4)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A32=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A32)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A32,Daily_Summary!$A$2:$A$373,0),5)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A32=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A32)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A32,Daily_Summary!$A$2:$A$373,0),6)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A32=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A32)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A32,Daily_Summary!$A$2:$A$373,0),7)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A32=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A32)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A32,Daily_Summary!$A$2:$A$373,0),8)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A32=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A32)=0,\"unregistered\",INDEX(Daily_Summary!$J$2:$J$373,MATCH($A32,Daily_Summary!$A$2:$A$373,0))))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($B$6=\"\",\"\",TEXT(DATEVALUE($B$6)+-5,\"yyyy-mm-dd\"))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A33=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A33)=0,0,INDEX(Daily_Summary!$B$2:$I$373,MATCH($A33,Daily_Summary!$A$2:$A$373,0),1)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A33=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A33)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A33,Daily_Summary!$A$2:$A$373,0),2)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A33=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A33)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A33,Daily_Summary!$A$2:$A$373,0),3)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A33=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A33)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A33,Daily_Summary!$A$2:$A$373,0),4)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A33=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A33)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A33,Daily_Summary!$A$2:$A$373,0),5)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A33=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A33)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A33,Daily_Summary!$A$2:$A$373,0),6)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A33=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A33)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A33,Daily_Summary!$A$2:$A$373,0),7)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A33=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A33)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A33,Daily_Summary!$A$2:$A$373,0),8)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A33=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A33)=0,\"unregistered\",INDEX(Daily_Summary!$J$2:$J$373,MATCH($A33,Daily_Summary!$A$2:$A$373,0))))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($B$6=\"\",\"\",TEXT(DATEVALUE($B$6)+-4,\"yyyy-mm-dd\"))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A34=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A34)=0,0,INDEX(Daily_Summary!$B$2:$I$373,MATCH($A34,Daily_Summary!$A$2:$A$373,0),1)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A34=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A34)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A34,Daily_Summary!$A$2:$A$373,0),2)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A34=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A34)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A34,Daily_Summary!$A$2:$A$373,0),3)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A34=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A34)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A34,Daily_Summary!$A$2:$A$373,0),4)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A34=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A34)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A34,Daily_Summary!$A$2:$A$373,0),5)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A34=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A34)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A34,Daily_Summary!$A$2:$A$373,0),6)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A34=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A34)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A34,Daily_Summary!$A$2:$A$373,0),7)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A34=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A34)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A34,Daily_Summary!$A$2:$A$373,0),8)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A34=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A34)=0,\"unregistered\",INDEX(Daily_Summary!$J$2:$J$373,MATCH($A34,Daily_Summary!$A$2:$A$373,0))))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($B$6=\"\",\"\",TEXT(DATEVALUE($B$6)+-3,\"yyyy-mm-dd\"))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A35=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A35)=0,0,INDEX(Daily_Summary!$B$2:$I$373,MATCH($A35,Daily_Summary!$A$2:$A$373,0),1)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A35=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A35)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A35,Daily_Summary!$A$2:$A$373,0),2)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A35=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A35)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A35,Daily_Summary!$A$2:$A$373,0),3)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A35=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A35)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A35,Daily_Summary!$A$2:$A$373,0),4)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A35=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A35)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A35,Daily_Summary!$A$2:$A$373,0),5)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A35=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A35)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A35,Daily_Summary!$A$2:$A$373,0),6)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A35=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A35)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A35,Daily_Summary!$A$2:$A$373,0),7)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A35=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A35)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A35,Daily_Summary!$A$2:$A$373,0),8)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A35=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A35)=0,\"unregistered\",INDEX(Daily_Summary!$J$2:$J$373,MATCH($A35,Daily_Summary!$A$2:$A$373,0))))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($B$6=\"\",\"\",TEXT(DATEVALUE($B$6)+-2,\"yyyy-mm-dd\"))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A36=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A36)=0,0,INDEX(Daily_Summary!$B$2:$I$373,MATCH($A36,Daily_Summary!$A$2:$A$373,0),1)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A36=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A36)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A36,Daily_Summary!$A$2:$A$373,0),2)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A36=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A36)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A36,Daily_Summary!$A$2:$A$373,0),3)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A36=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A36)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A36,Daily_Summary!$A$2:$A$373,0),4)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A36=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A36)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A36,Daily_Summary!$A$2:$A$373,0),5)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A36=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A36)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A36,Daily_Summary!$A$2:$A$373,0),6)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A36=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A36)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A36,Daily_Summary!$A$2:$A$373,0),7)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A36=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A36)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A36,Daily_Summary!$A$2:$A$373,0),8)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A36=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A36)=0,\"unregistered\",INDEX(Daily_Summary!$J$2:$J$373,MATCH($A36,Daily_Summary!$A$2:$A$373,0))))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($B$6=\"\",\"\",TEXT(DATEVALUE($B$6)+-1,\"yyyy-mm-dd\"))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A37=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A37)=0,0,INDEX(Daily_Summary!$B$2:$I$373,MATCH($A37,Daily_Summary!$A$2:$A$373,0),1)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A37=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A37)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A37,Daily_Summary!$A$2:$A$373,0),2)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A37=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A37)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A37,Daily_Summary!$A$2:$A$373,0),3)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A37=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A37)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A37,Daily_Summary!$A$2:$A$373,0),4)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A37=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A37)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A37,Daily_Summary!$A$2:$A$373,0),5)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A37=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A37)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A37,Daily_Summary!$A$2:$A$373,0),6)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A37=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A37)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A37,Daily_Summary!$A$2:$A$373,0),7)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A37=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A37)=0,\"\",INDEX(Daily_Summary!$B$2:$I$373,MATCH($A37,Daily_Summary!$A$2:$A$373,0),8)))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF($A37=\"\",\"\",IF(COUNTIF(Daily_Summary!$A$2:$A$373,$A37)=0,\"unregistered\",INDEX(Daily_Summary!$J$2:$J$373,MATCH($A37,Daily_Summary!$A$2:$A$373,0))))"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {}
+            ]
+          },
+          {
+            "values": [
+              {
+                "userEnteredValue": {
+                  "stringValue": "Logged days"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF(COUNTIF(J31:J37,\"invalid\")>0,\"\",COUNTIF(B31:B37,\">0\"))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "Recorded kcal"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF(OR(B39=\"\",B39=0),\"\",SUM(C31:C37))"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "stringValue": "Kcal per logged day"
+                }
+              },
+              {
+                "userEnteredValue": {
+                  "formulaValue": "=IF(OR(B39=\"\",B39=0),\"\",D39/B39)"
+                }
+              }
+            ]
+          },
+          {
+            "values": [
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {},
+              {}
+            ]
+          }
+        ],
+        "fields": "userEnteredValue"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 102,
+          "startRowIndex": 9,
+          "endRowIndex": 10
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.88,
+              "green": 0.93,
+              "blue": 0.88
+            },
+            "textFormat": {
+              "bold": true,
+              "fontSize": 12
+            }
+          }
+        },
+        "fields": "userEnteredFormat(backgroundColor,textFormat)"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 102,
+          "startRowIndex": 16,
+          "endRowIndex": 17
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.88,
+              "green": 0.93,
+              "blue": 0.88
+            },
+            "textFormat": {
+              "bold": true,
+              "fontSize": 12
+            }
+          }
+        },
+        "fields": "userEnteredFormat(backgroundColor,textFormat)"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 102,
+          "startRowIndex": 28,
+          "endRowIndex": 29
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "backgroundColor": {
+              "red": 0.88,
+              "green": 0.93,
+              "blue": 0.88
+            },
+            "textFormat": {
+              "bold": true,
+              "fontSize": 12
+            }
+          }
+        },
+        "fields": "userEnteredFormat(backgroundColor,textFormat)"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 102,
+          "startRowIndex": 10,
+          "endRowIndex": 11
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "bold": true
+            },
+            "wrapStrategy": "WRAP"
+          }
+        },
+        "fields": "userEnteredFormat(textFormat,wrapStrategy)"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 102,
+          "startRowIndex": 17,
+          "endRowIndex": 18
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "bold": true
+            },
+            "wrapStrategy": "WRAP"
+          }
+        },
+        "fields": "userEnteredFormat(textFormat,wrapStrategy)"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 102,
+          "startRowIndex": 29,
+          "endRowIndex": 30
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "textFormat": {
+              "bold": true
+            },
+            "wrapStrategy": "WRAP"
+          }
+        },
+        "fields": "userEnteredFormat(textFormat,wrapStrategy)"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 101,
+          "dimension": "COLUMNS",
+          "startIndex": 0,
+          "endIndex": 1
+        },
+        "properties": {
+          "pixelSize": 235
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 105,
+          "dimension": "COLUMNS",
+          "startIndex": 2,
+          "endIndex": 3
+        },
+        "properties": {
+          "pixelSize": 310
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "updateDimensionProperties": {
+        "range": {
+          "sheetId": 105,
+          "dimension": "COLUMNS",
+          "startIndex": 8,
+          "endIndex": 9
+        },
+        "properties": {
+          "pixelSize": 310
+        },
+        "fields": "pixelSize"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 102,
+          "startRowIndex": 0,
+          "endRowIndex": 1,
+          "startColumnIndex": 0,
+          "endColumnIndex": 10
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 102,
+          "startRowIndex": 7,
+          "endRowIndex": 8,
+          "startColumnIndex": 0,
+          "endColumnIndex": 10
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 102,
+          "startRowIndex": 9,
+          "endRowIndex": 10,
+          "startColumnIndex": 0,
+          "endColumnIndex": 10
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 102,
+          "startRowIndex": 16,
+          "endRowIndex": 17,
+          "startColumnIndex": 0,
+          "endColumnIndex": 10
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "mergeCells": {
+        "range": {
+          "sheetId": 102,
+          "startRowIndex": 28,
+          "endRowIndex": 29,
+          "startColumnIndex": 0,
+          "endColumnIndex": 10
+        },
+        "mergeType": "MERGE_ALL"
+      }
+    },
+    {
+      "repeatCell": {
+        "range": {
+          "sheetId": 102,
+          "startRowIndex": 7,
+          "endRowIndex": 8
+        },
+        "cell": {
+          "userEnteredFormat": {
+            "wrapStrategy": "WRAP"
+          }
+        },
+        "fields": "userEnteredFormat.wrapStrategy"
+      }
+    },
+    {
+      "addProtectedRange": {
+        "protectedRange": {
+          "range": {
+            "sheetId": 104
+          },
+          "description": "Derived MacroSheet formulas. Editing may disable summary reads.",
+          "warningOnly": true
+        }
+      }
+    },
+    {
+      "addProtectedRange": {
+        "protectedRange": {
+          "range": {
+            "sheetId": 103
+          },
+          "description": "Derived MacroSheet formulas. Editing may disable summary reads.",
+          "warningOnly": true
+        }
+      }
+    },
+    {
+      "addProtectedRange": {
+        "protectedRange": {
+          "range": {
+            "sheetId": 102
+          },
+          "description": "Derived MacroSheet formulas. Editing may disable summary reads.",
+          "warningOnly": true
+        }
+      }
+    },
+    {
+      "updateSheetProperties": {
+        "properties": {
+          "sheetId": 105,
+          "hidden": true
+        },
+        "fields": "hidden"
+      }
+    }
+  ],
+  "monthRecipe": {
+    "month": "YYYY-MM",
+    "slot": "zero-based unused index slot",
+    "initialCapacity": 12,
+    "defaultRows": 201,
+    "instructions": "Duplicate _Month_Template; write one Month_Index row and 31 Daily_Summary rows using the formula patterns below. Substitute __INDEX_ROW__, __SUMMARY_START__ and __SUMMARY_END__ with the selected numeric rows. Beyond capacity, append one registry row and 31 summary rows per additional slot, and change ALL Dashboard Daily_Summary lookup end rows from the verified old bound to 31*newCapacity+1 in the SAME batch. Never scan or rewrite historical meal rows.",
+    "indexFormulaPatterns": [
+      "=IFERROR(IF(AND(COUNTIF(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),\"entry_id\")=1,COUNTIF(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),\"local_date\")=1,COUNTIF(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),\"description\")=1,COUNTIF(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),\"calories_kcal\")=1,COUNTIF(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),\"protein_g\")=1,COUNTIF(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),\"carbs_g\")=1,COUNTIF(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),\"fat_g\")=1,COUNTIF(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),\"estimated\")=1,COUNTIF(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),\"notes\")=1,$H__INDEX_ROW__=0,$I__INDEX_ROW__=0,$J__INDEX_ROW__=0),\"ok\",\"invalid\"),\"invalid\")",
+      "=COUNTIF(INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!\"&ADDRESS(2,MATCH(\"entry_id\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)&\":\"&ADDRESS(Month_Index!$D$__INDEX_ROW__,MATCH(\"entry_id\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)),\"<>\")",
+      "=SUM(MAP(SEQUENCE($D__INDEX_ROW__-1),LAMBDA(row_number,N(ISFORMULA(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!\"&ADDRESS(row_number+1,MATCH(\"entry_id\",INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),0),4)))))))+SUM(MAP(SEQUENCE($D__INDEX_ROW__-1),LAMBDA(row_number,N(ISFORMULA(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!\"&ADDRESS(row_number+1,MATCH(\"local_date\",INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),0),4)))))))+SUM(MAP(SEQUENCE($D__INDEX_ROW__-1),LAMBDA(row_number,N(ISFORMULA(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!\"&ADDRESS(row_number+1,MATCH(\"description\",INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),0),4)))))))+SUM(MAP(SEQUENCE($D__INDEX_ROW__-1),LAMBDA(row_number,N(ISFORMULA(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!\"&ADDRESS(row_number+1,MATCH(\"calories_kcal\",INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),0),4)))))))+SUM(MAP(SEQUENCE($D__INDEX_ROW__-1),LAMBDA(row_number,N(ISFORMULA(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!\"&ADDRESS(row_number+1,MATCH(\"protein_g\",INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),0),4)))))))+SUM(MAP(SEQUENCE($D__INDEX_ROW__-1),LAMBDA(row_number,N(ISFORMULA(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!\"&ADDRESS(row_number+1,MATCH(\"carbs_g\",INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),0),4)))))))+SUM(MAP(SEQUENCE($D__INDEX_ROW__-1),LAMBDA(row_number,N(ISFORMULA(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!\"&ADDRESS(row_number+1,MATCH(\"fat_g\",INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),0),4)))))))+SUM(MAP(SEQUENCE($D__INDEX_ROW__-1),LAMBDA(row_number,N(ISFORMULA(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!\"&ADDRESS(row_number+1,MATCH(\"estimated\",INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),0),4)))))))+SUM(MAP(SEQUENCE($D__INDEX_ROW__-1),LAMBDA(row_number,N(ISFORMULA(INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!\"&ADDRESS(row_number+1,MATCH(\"notes\",INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),0),4)))))))",
+      "=LET(heads,INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,$E__INDEX_ROW__,4)),raw,INDIRECT(\"'\"&$B__INDEX_ROW__&\"'!A2:\"&ADDRESS($D__INDEX_ROW__,$E__INDEX_ROW__,4)),entries,INDEX(raw,,MATCH(\"entry_id\",heads,0)),dates,INDEX(raw,,MATCH(\"local_date\",heads,0)),descriptions,INDEX(raw,,MATCH(\"description\",heads,0)),calories,INDEX(raw,,MATCH(\"calories_kcal\",heads,0)),proteins,INDEX(raw,,MATCH(\"protein_g\",heads,0)),carbohydrates,INDEX(raw,,MATCH(\"carbs_g\",heads,0)),fats,INDEX(raw,,MATCH(\"fat_g\",heads,0)),estimates,INDEX(raw,,MATCH(\"estimated\",heads,0)),notes,INDEX(raw,,MATCH(\"notes\",heads,0)),SUM(MAP(entries,dates,descriptions,calories,proteins,carbohydrates,fats,estimates,notes,LAMBDA(entry,day,description,kcal,protein,carbs,fat,estimated,note,IF(AND(entry=\"\",day=\"\",description=\"\",kcal=\"\",protein=\"\",carbs=\"\",fat=\"\",estimated=\"\",note=\"\"),0,IF(IFERROR(AND(ISTEXT(entry),LEN(entry)>0,ISTEXT(day),IFERROR(TEXT(DATE(VALUE(LEFT(day,4)),VALUE(MID(day,6,2)),VALUE(RIGHT(day,2))),\"yyyy-mm-dd\")=day,FALSE),LEFT(day,7)=$A__INDEX_ROW__,ISTEXT(description),LEN(TRIM(description))>0,ISNUMBER(kcal),kcal>=0,kcal<=1000000000,ISNUMBER(protein),protein>=0,protein<=1000000000,ISNUMBER(carbs),carbs>=0,carbs<=1000000000,ISNUMBER(fat),fat>=0,fat<=1000000000,ISLOGICAL(estimated),OR(note=\"\",ISTEXT(note))),FALSE),0,1))))))",
+      "=IF($G__INDEX_ROW__=0,0,$G__INDEX_ROW__-COUNTUNIQUE(FILTER(INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!\"&ADDRESS(2,MATCH(\"entry_id\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)&\":\"&ADDRESS(Month_Index!$D$__INDEX_ROW__,MATCH(\"entry_id\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)),INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!\"&ADDRESS(2,MATCH(\"entry_id\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)&\":\"&ADDRESS(Month_Index!$D$__INDEX_ROW__,MATCH(\"entry_id\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4))<>\"\")))"
+    ],
+    "summaryAnchorPatterns": [
+      "=ARRAYFORMULA(IF(SEQUENCE(31)>DAY(EOMONTH(DATE(VALUE(LEFT(Month_Index!$A$__INDEX_ROW__,4)),VALUE(RIGHT(Month_Index!$A$__INDEX_ROW__,2)),1),0)),\"\",TEXT(DATE(VALUE(LEFT(Month_Index!$A$__INDEX_ROW__,4)),VALUE(RIGHT(Month_Index!$A$__INDEX_ROW__,2)),1)+SEQUENCE(31)-1,\"yyyy-mm-dd\")))",
+      "=ARRAYFORMULA(IF($A__SUMMARY_START__:$A__SUMMARY_END__=\"\",\"\",IF(Month_Index!$F$__INDEX_ROW__<>\"ok\",\"\",COUNTIF(INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!\"&ADDRESS(2,MATCH(\"local_date\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)&\":\"&ADDRESS(Month_Index!$D$__INDEX_ROW__,MATCH(\"local_date\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)),$A__SUMMARY_START__:$A__SUMMARY_END__))))",
+      "=ARRAYFORMULA(IF($A__SUMMARY_START__:$A__SUMMARY_END__=\"\",\"\",IF(Month_Index!$F$__INDEX_ROW__<>\"ok\",\"\",IF($B__SUMMARY_START__:$B__SUMMARY_END__=0,\"\",SUMIF(INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!\"&ADDRESS(2,MATCH(\"local_date\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)&\":\"&ADDRESS(Month_Index!$D$__INDEX_ROW__,MATCH(\"local_date\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)),$A__SUMMARY_START__:$A__SUMMARY_END__,INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!\"&ADDRESS(2,MATCH(\"calories_kcal\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)&\":\"&ADDRESS(Month_Index!$D$__INDEX_ROW__,MATCH(\"calories_kcal\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)))))))",
+      "=ARRAYFORMULA(IF($A__SUMMARY_START__:$A__SUMMARY_END__=\"\",\"\",IF(Month_Index!$F$__INDEX_ROW__<>\"ok\",\"\",IF($B__SUMMARY_START__:$B__SUMMARY_END__=0,\"\",SUMIF(INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!\"&ADDRESS(2,MATCH(\"local_date\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)&\":\"&ADDRESS(Month_Index!$D$__INDEX_ROW__,MATCH(\"local_date\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)),$A__SUMMARY_START__:$A__SUMMARY_END__,INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!\"&ADDRESS(2,MATCH(\"protein_g\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)&\":\"&ADDRESS(Month_Index!$D$__INDEX_ROW__,MATCH(\"protein_g\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)))))))",
+      "=ARRAYFORMULA(IF($A__SUMMARY_START__:$A__SUMMARY_END__=\"\",\"\",IF(Month_Index!$F$__INDEX_ROW__<>\"ok\",\"\",IF($B__SUMMARY_START__:$B__SUMMARY_END__=0,\"\",SUMIF(INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!\"&ADDRESS(2,MATCH(\"local_date\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)&\":\"&ADDRESS(Month_Index!$D$__INDEX_ROW__,MATCH(\"local_date\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)),$A__SUMMARY_START__:$A__SUMMARY_END__,INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!\"&ADDRESS(2,MATCH(\"carbs_g\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)&\":\"&ADDRESS(Month_Index!$D$__INDEX_ROW__,MATCH(\"carbs_g\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)))))))",
+      "=ARRAYFORMULA(IF($A__SUMMARY_START__:$A__SUMMARY_END__=\"\",\"\",IF(Month_Index!$F$__INDEX_ROW__<>\"ok\",\"\",IF($B__SUMMARY_START__:$B__SUMMARY_END__=0,\"\",SUMIF(INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!\"&ADDRESS(2,MATCH(\"local_date\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)&\":\"&ADDRESS(Month_Index!$D$__INDEX_ROW__,MATCH(\"local_date\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)),$A__SUMMARY_START__:$A__SUMMARY_END__,INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!\"&ADDRESS(2,MATCH(\"fat_g\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)&\":\"&ADDRESS(Month_Index!$D$__INDEX_ROW__,MATCH(\"fat_g\",INDIRECT(\"'\"&Month_Index!$B$__INDEX_ROW__&\"'!A1:\"&ADDRESS(1,Month_Index!$E$__INDEX_ROW__,4)),0),4)))))))",
+      "=ARRAYFORMULA(IF(D__SUMMARY_START__:D__SUMMARY_END__=\"\",\"\",D__SUMMARY_START__:D__SUMMARY_END__*4))",
+      "=ARRAYFORMULA(IF(E__SUMMARY_START__:E__SUMMARY_END__=\"\",\"\",E__SUMMARY_START__:E__SUMMARY_END__*4))",
+      "=ARRAYFORMULA(IF(F__SUMMARY_START__:F__SUMMARY_END__=\"\",\"\",F__SUMMARY_START__:F__SUMMARY_END__*9))",
+      "=ARRAYFORMULA(IF($A__SUMMARY_START__:$A__SUMMARY_END__=\"\",\"\",Month_Index!$F$__INDEX_ROW__))"
+    ]
+  }
+}

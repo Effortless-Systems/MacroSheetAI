@@ -1,0 +1,91 @@
+{
+  "name": "macrosheet",
+  "version": "1.2.1",
+  "description": "Track meal calories and macronutrients in user-owned Google Sheets through existing host connectors.",
+  "author": {
+    "name": "PROSPR PTE. LTD."
+  },
+  "repository": "https://github.com/Effortless-Systems/MacroSheetAI",
+  "license": "AGPL-3.0-only",
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "MacroSheet",
+    "shortDescription": "Your personal meal diary",
+    "longDescription": "Log meals from photos, labels or descriptions, save personal recipes and reuse them by name, choose optional nutrition targets, and review Day So Far or your week. Your diary and recipes stay in your own Google Sheet named _MacroSheet. Connect Google to save records; inline views use the MacroSheet presentation connection.",
+    "developerName": "PROSPR PTE. LTD.",
+    "category": "Productivity",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://macrosheet.prospr.me/",
+    "supportURL": "https://macrosheet.prospr.me/support",
+    "privacyPolicyURL": "https://macrosheet.prospr.me/privacy",
+    "termsOfServiceURL": "https://macrosheet.prospr.me/terms",
+    "defaultPrompt": [
+      "Help me create my MacroSheet tracker. Guide me one step at a time and help me choose nutrition targets if I need them.",
+      "Log this meal in my tracker and show Day So Far for the meal’s date.",
+      "Show my weekly dashboard."
+    ],
+    "logo": "./assets/logo.svg",
+    "composerIcon": "./assets/composer-icon.svg"
+  },
+  "extensions": {
+    "com.openai": {
+      "onboardingSkill": "./skills/macrosheet/SKILL.md",
+      "review": {
+        "test_cases": {
+          "positive": [
+            {
+              "description": "P1 — Independent portion calculation preserves supplied calories.",
+              "prompt": "Use MacroSheet to calculate half of this synthetic serving: 400 kcal, 25 g protein, 45 g carbohydrates and 13 g fat. Do not access Google or log anything.",
+              "tools_triggered": "calculate_nutrition",
+              "expected_behavior": "Return 200 kcal, 12.5 g protein, 22.5 g carbohydrates and 6.5 g fat. Preserve supplied calories rather than replacing them with the 198.5 kcal macro-derived value. No Google access or write is needed."
+            },
+            {
+              "description": "P2 — Independent Day So Far and Weekly rendering from a complete synthetic snapshot.",
+              "prompt": "Render MacroSheet Day So Far and Weekly without Google using this synthetic complete snapshot: focus date 2026-10-07; timezone UTC; synthetic readAt 2026-10-07T12:00:00Z; weeks start Monday; targets unset; complete coverage 2026-09-28 through 2026-10-11. On 2026-10-07 there are two meals: 600 kcal/35 g protein/70 g carbs/20 g fat and 400 kcal/25 g protein/45 g carbs/13 g fat. All other dates have no logged meals. Use a generic tracker display label and opaque conversation-local references. Do not save or fetch anything.",
+              "tools_triggered": "show_dashboard",
+              "expected_behavior": "Show separate inline Day So Far and Weekly views. The focus day has two meals and totals 1000 kcal, 60 g protein, 115 g carbs and 33 g fat. Empty dates are unlogged rather than zero-valued intake; unset targets show without progress claims. Previous/next loaded-week navigation works locally. Rendering makes no Google reads or writes."
+            },
+            {
+              "description": "P3 — Guided creation of a disposable personal tracker through a separately authorized Google connection.",
+              "prompt": "Help me create a disposable MacroSheet test tracker in the Google test account I have authorized. Guide me one step at a time. Use UTC and Monday week starts, skip nutrition targets, and ask before creating it. Do not modify another tracker.",
+              "tools_triggered": "get_tracking_guide",
+              "expected_behavior": "Load current tracking/template guidance as needed and use the host's separately authorized native Google creation/copy and readback operations. After explicit creation approval, create or explicitly select the sole _MacroSheet tracker, verify its identity, metadata/settings and native cells/formulas, and keep the source template and other trackers unchanged. Targets remain unset. The MacroSheet MCP server itself neither authorizes Google nor creates a Sheet. Before creation check both exact names _MacroSheet and compatibility _Macrosheet; reuse one validated candidate without a capitalization confirmation, and ask for selection when multiple candidates exist."
+            },
+            {
+              "description": "P4 — Preview, confirm, save, verify, correct and refresh a synthetic meal with automatic Day So Far.",
+              "prompt": "Use my disposable tracker for 7 October 2026. Synthetic dish A has 800 kcal, 50 g protein, 90 g carbs and 26 g fat per full portion; dish B has 400 kcal, 20 g protein, 50 g carbs and 14 g fat. I ate half of each. Show the itemized values and wait for my confirmation before saving. After I confirm, log a separate synthetic breakfast that I explicitly supply as 400 kcal, 25 g protein, 45 g carbs and 13 g fat for the same day. Then I will correct lunch to a quarter of both full dishes and request a refresh.",
+              "tools_triggered": "calculate_nutrition, show_dashboard",
+              "expected_behavior": "Before lunch acceptance, show portions, kcal/P/C/F rows and a total of 600/35/70/20 with an explicit not-yet-logged question and no Sheet write. On acceptance, use the authorized host Google operations and readback, show a compact receipt and automatic Day So Far. After breakfast the two-meal day totals 1000/60/115/33. The explicit lunch correction preserves the entry identity and produces totals 700/42.5/80/23. Refresh reads the same tracker afresh. Repeating an already completed confirmation must not duplicate lunch."
+            },
+            {
+              "description": "P5 — Save a personal recipe separately from consumption, reuse one serving and review Weekly.",
+              "prompt": "Save this synthetic recipe in my disposable tracker without logging a meal: Test oats, two servings, total 400 kcal, 30 g protein, 40 g carbs and 14 g fat. Recipe text: mix oats and yogurt; divide equally into two bowls. Use the totals I supplied; do not estimate from those ingredients. Verify the save. Then, when I ask to log one serving for 7 October 2026, show the proposal and wait for my yes. Finally show Weekly for that date.",
+              "tools_triggered": "get_tracking_guide, calculate_nutrition, show_dashboard",
+              "expected_behavior": "Save/read back the recipe in one optional Recipes tab using host-authorized Google operations; recipe-only saving does not alter meal totals. On reuse, match from summary fields and propose one serving as 200/15/20/7 without fetching the full recipe body or writing a meal before acceptance. After yes, save/read back one meal and show Day So Far. When following P4, the day now has three meals and totals 900/57.5/100/30. Show Weekly for the original tracker/date and preserve historical meal snapshots."
+            }
+          ],
+          "negative": [
+            {
+              "description": "N1 — An unaccepted estimate or declined proposal must not save a meal, settings, month tab or invitation marker.",
+              "prompt": "Estimate a synthetic bowl of rice and vegetables and show your proposed portion and nutrition table. Do not log it. If you propose values, my answer is no. Keep my tracker unchanged."
+            },
+            {
+              "description": "N2 — Missing Google authorization blocks persistence and source refresh without blocking independent arithmetic.",
+              "prompt": "In a fresh conversation with Google disconnected, log a synthetic meal of 400 kcal, 25 g protein, 45 g carbs and 13 g fat, then refresh my tracker. If you cannot access it, explain the blocker. Separately calculate half of those supplied values without Google."
+            },
+            {
+              "description": "N3 — Incomplete or extra-field dashboard input must be clarified/refused or rejected, never completed from guessed records.",
+              "prompt": "Render this intentionally invalid MacroSheet dashboard input: {\"version\":2,\"sheetId\":\"synthetic-forbidden-field\"}. Do not access Google, invent missing values, claim a successful card or repeat the supplied forbidden field in a response."
+            }
+          ]
+        }
+      },
+      "publication": {
+        "release_notes": "MacroSheet 1.2.1: adds optional native Google Drive connection suggestions and setup, recovery, update and refresh help from the installed skill package only. Host controls own installation, authentication and package updates. Host-specific MCP endpoints and optional dashboard analytics remain available; collection stays disabled pending privacy publication and live opt-out verification. Google ownership, meal confirmation and stateless numeric rendering remain unchanged. MacroSheet is licensed under AGPL-3.0-only."
+      }
+    }
+  }
+}

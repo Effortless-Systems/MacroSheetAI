@@ -1,0 +1,41 @@
+name: Plugin packages
+
+on:
+  push:
+    paths:
+      - 'plugins/macrosheet/**'
+      - 'experiments/macrosheet-presentation-probe/**'
+      - 'scripts/package_plugin.py'
+      - 'tests/test_*.py'
+      - '.github/workflows/package.yml'
+  pull_request:
+    paths:
+      - 'plugins/macrosheet/**'
+      - 'experiments/macrosheet-presentation-probe/**'
+      - 'scripts/package_plugin.py'
+      - 'tests/test_*.py'
+      - '.github/workflows/package.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  packages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v7
+        with:
+          python-version: '3.12'
+      - name: Check shared bytes, metadata mirrors and release gates
+        run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - name: Build development packages with a synthetic endpoint
+        run: |
+          python3 scripts/package_plugin.py --host openai --mcp-server-url https://mcp.example.com/mcp/openai
+          python3 scripts/package_plugin.py --host claude --mcp-server-url https://mcp.example.com/mcp/claude
+      - name: Validate the extracted Claude package and HTTP configuration
+        run: |
+          python3 -m zipfile -e dist/macrosheet-claude-*.zip "$RUNNER_TEMP/macrosheet-package"
+          npm exec --yes --package=@anthropic-ai/claude-code@2.1.289 -- claude plugin validate --strict "$RUNNER_TEMP/macrosheet-package/macrosheet"

@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>MacroSheet · Presentation demo</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --oat: #f3f0e8; --paper: #fffdf8; --ink: #28352d; --muted: #62695f;
+      --line: #d9ddd0; --olive: #405d39; --wash: #e8edde;
+      --protein: #a7563f; --carbs: #397c79; --fat: #c69b3a;
+      --focus: #235eab; --radius: 16px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--oat); color: var(--ink); font: 16px/1.5 system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+    main { max-width: 1000px; margin: auto; padding: 32px 24px; }
+    header { margin-bottom: 24px; }
+    .eyebrow { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--olive); }
+    h1, h2, p { margin: 0; }
+    h1 { font: 40px/1.15 Georgia, serif; letter-spacing: -.03em; margin: 8px 0; }
+    h2 { font: 28px/1.2 Georgia, serif; letter-spacing: -.02em; }
+    .muted, .note { color: var(--muted); }
+    .note { font-size: 13px; }
+    .layout { display: grid; grid-template-columns: 1fr 1.3fr; gap: 24px; align-items: start; }
+    section { min-width: 0; background: var(--paper); border-radius: var(--radius); padding: 24px; }
+    .section-heading { margin-bottom: 24px; }
+    .calories { font-size: 56px; line-height: 1.15; letter-spacing: -.05em; font-weight: 650; }
+    .unit { font-size: 16px; font-weight: 400; letter-spacing: 0; color: var(--muted); }
+    .number { font-variant-numeric: tabular-nums; }
+    progress { display: block; width: 100%; height: 8px; margin: 12px 0 8px; accent-color: var(--olive); border: 0; border-radius: 8px; overflow: hidden; background: var(--wash); }
+    progress::-webkit-progress-bar { background: var(--wash); }
+    progress::-webkit-progress-value { background: var(--olive); }
+    progress::-moz-progress-bar { background: var(--olive); }
+    .macro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px 16px; margin: 24px 0; }
+    .macro { border-top: 1px solid var(--line); padding-top: 12px; }
+    .macro strong { display: block; font-size: 28px; font-weight: 600; }
+    .protein { --macro: var(--protein); } .carbs { --macro: var(--carbs); } .fat { --macro: var(--fat); }
+    .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--macro); margin-right: 4px; }
+    button, summary { min-height: 44px; cursor: pointer; font: inherit; }
+    button { padding: 8px 12px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 8px; }
+    button:hover:not(:disabled), summary:hover { background: var(--wash); }
+    button:active:not(:disabled) { background: var(--line); }
+    button:disabled { opacity: .42; cursor: default; }
+    :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+    .target { display: block; margin-top: 4px; padding: 8px 0; border: 0; color: var(--olive); font-size: 14px; text-decoration: underline; text-underline-offset: 3px; }
+    .help { width: 100%; background: var(--wash); border: 0; color: var(--olive); }
+    .week-controls { display: flex; justify-content: space-between; gap: 8px; margin-bottom: 16px; }
+    #week-range { font-size: 20px; font-weight: 650; }
+    .week-total { margin-top: 8px; font-size: 24px; font-weight: 600; }
+    .legend { display: flex; flex-wrap: wrap; gap: 16px; margin: 20px 0 12px; font-size: 13px; }
+    .chart { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+    .day { min-width: 0; text-align: center; }
+    .bar-space { height: 192px; display: flex; flex-direction: column; justify-content: end; background: repeating-linear-gradient(to top, var(--line) 0 1px, transparent 1px 48px); }
+    .stack { width: 100%; display: flex; flex-direction: column-reverse; overflow: hidden; border-radius: 4px 4px 0 0; }
+    .segment { background: var(--macro); }
+    .empty { border: 1px dashed var(--muted); height: 32px; font-size: 10px; line-height: 1.2; padding: 3px 0; }
+    .day-label { display: block; font-size: 12px; padding-top: 8px; }
+    .day-date { color: var(--muted); font-size: 11px; }
+    .chart-note { margin-top: 16px; }
+    details { margin-top: 16px; }
+    summary { display: flex; align-items: center; font-size: 14px; color: var(--olive); text-decoration: underline; text-underline-offset: 3px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; font-size: 12px; text-align: right; }
+    caption { text-align: left; color: var(--muted); padding-bottom: 8px; }
+    th, td { padding: 8px 4px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+    th:first-child, td:first-child { text-align: left; }
+    footer { margin-top: 24px; font-size: 12px; color: var(--muted); }
+    #runtime { color: var(--olive); font-weight: 650; margin-bottom: 4px; }
+    dialog { max-width: 420px; width: calc(100% - 32px); border: 0; border-radius: var(--radius); background: var(--paper); color: var(--ink); padding: 24px; }
+    dialog::backdrop { background: #28352d66; }
+    dialog p { margin: 16px 0; }
+    dialog button { width: 100%; }
+    [hidden] { display: none !important; }
+    @media (max-width: 740px) {
+      main { padding: 24px 16px; } .layout { grid-template-columns: 1fr; gap: 16px; }
+      section { padding: 24px; } h1 { font-size: 36px; }
+    }
+    @media (max-width: 360px) {
+      section { padding: 16px; } .chart { gap: 4px; } .legend { gap: 12px; }
+      .week-controls button { font-size: 14px; }
+    }
+  </style>
+</head>
+<body>
+<main>
+  <header>
+    <p class="eyebrow">MacroSheet / presentation demo</p>
+    <h1>A little clarity, every day.</h1>
+    <p class="muted"><span id="tracker">Select a test tracker in chat</span> · Sheet snapshot</p>
+  </header>
+  <div class="layout">
+    <section aria-labelledby="today-heading">
+      <div class="section-heading"><h2 id="today-heading">Today, so far</h2><p class="note" id="today-date">Waiting for Sheet data</p></div>
+      <p class="calories number"><span id="today-kcal">—</span> <span class="unit">kcal logged</span></p>
+      <progress id="kcal-progress" hidden aria-label="Calories compared with current target"></progress>
+      <p class="note" id="kcal-target"></p>
+      <p class="note" id="today-coverage"></p>
+      <div class="macro-grid" id="macros"></div>
+      <button class="help" type="button" id="target-help">Need help setting targets? · demo</button>
+      <p class="note" style="margin-top:12px">Current targets from the Sheet, not recommendations. Historical weeks are not compared against current targets.</p>
+    </section>
+    <section aria-labelledby="week-heading">
+      <div class="section-heading"><h2 id="week-heading">Your week in balance</h2><p class="note">Calories from recorded macros</p></div>
+      <nav class="week-controls" aria-label="Browse demo weeks">
+        <button type="button" id="previous">← Previous week</button>
+        <button type="button" id="next">Next week →</button>
+      </nav>
+      <div aria-live="polite" aria-atomic="true"><p id="week-range"></p><p class="week-total number" id="week-total"></p><p class="note" id="coverage"></p></div>
+      <div class="legend" aria-label="Chart legend"><span class="protein"><i class="dot"></i>Protein</span><span class="carbs"><i class="dot"></i>Carbs</span><span class="fat"><i class="dot"></i>Fat</span></div>
+      <p class="note" id="scale"></p>
+      <div class="chart" id="chart" role="img" aria-label="Weekly calorie contributions; exact values are in Daily values below"></div>
+      <p class="note chart-note">Protein & carbs: 4 kcal/g · Fat: 9 kcal/g.<br>These estimates can differ from recorded calories.</p>
+      <details><summary>Daily values</summary><div class="table-wrap"><table class="number"><caption>Recorded calories and macro grams; — means no log.</caption><thead><tr><th scope="col">Day</th><th scope="col">kcal</th><th scope="col">P (g)</th><th scope="col">C (g)</th><th scope="col">F (g)</th></tr></thead><tbody id="daily-rows"></tbody></table></div></details>
+    </section>
+  </div>
+  <footer>
+    <p id="runtime" role="status">JavaScript not started · controls need script support</p>
+    <p id="marker">macrosheet-presentation-probe@0.2.0 · No snapshot supplied</p>
+    <p>Chat reads Google Sheets; this view only displays that snapshot. Ask chat to refresh. Controls save nothing.</p>
+    <noscript><p>This host has disabled JavaScript. The interactive experiment cannot run here.</p></noscript>
+  </footer>
+</main>
+<dialog id="target-dialog" aria-labelledby="dialog-title">
+  <h2 id="dialog-title">A conversation, not a form.</h2>
+  <p id="dialog-copy"></p>
+  <p class="note">This demo sends no message and saves no target.</p>
+  <form method="dialog"><button autofocus>Back to dashboard</button></form>
+</dialog>
+<script type="application/json" id="snapshot-data">null</script>
+<script id="snapshot-model">
+  'use strict';
+  // Pure snapshot validation and aggregation; no connector or browser state.
+  function prepareSnapshot(raw) {
+    if (raw === null) return null;
+    const validDate = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value)
+      && Number.isFinite(Date.parse(value + 'T00:00:00Z'))
+      && new Date(value + 'T00:00:00Z').toISOString().slice(0, 10) === value;
+    const numeric = value => typeof value === 'number' && Number.isFinite(value) && value >= 0;
+    const fields = ['kcal', 'protein', 'carbs', 'fat'];
+    if (!raw || typeof raw.tracker !== 'string' || !raw.tracker.trim()
+        || !validDate(raw.today) || !validDate(raw.focusDate) || !validDate(raw.periodStart)
+        || new Date(raw.periodStart + 'T00:00:00Z').getUTCDay() !== 1
+        || typeof raw.readAt !== 'string' || !Number.isFinite(Date.parse(raw.readAt))
+        || typeof raw.timezone !== 'string' || !raw.targets || !Array.isArray(raw.meals)) {
+      throw new Error('Missing or invalid Sheet snapshot metadata.');
+    }
+    new Intl.DateTimeFormat('en-GB', {timeZone: raw.timezone});
+    for (const key of fields) {
+      if (raw.targets[key] !== null && !numeric(raw.targets[key])) throw new Error('Invalid target.');
+    }
+    const days = Array.from({length: 14}, (_, index) => {
+      const date = new Date(raw.periodStart + 'T00:00:00Z');
+      date.setUTCDate(date.getUTCDate() + index);
+      return {date: date.toISOString().slice(0, 10), kcal: null, protein: null, carbs: null, fat: null};
+    });
+    const byDate = new Map(days.map(day => [day.date, day]));
+    if (!byDate.has(raw.focusDate)) throw new Error('Selected day is outside the loaded weeks.');
+    const ids = new Set();
+    for (const meal of raw.meals) {
+      if (!meal || typeof meal.id !== 'string' || !meal.id.trim() || ids.has(meal.id)
+          || !validDate(meal.date) || !byDate.has(meal.date)
+          || fields.some(key => !numeric(meal[key]))) throw new Error('Invalid, duplicate, or out-of-period meal.');
+      ids.add(meal.id);
+      const day = byDate.get(meal.date);
+      for (const key of fields) {
+        day[key] = (day[key] ?? 0) + meal[key];
+        if (!numeric(day[key])) throw new Error('Daily total is out of range.');
+      }
+    }
+    return {...raw, weeks: [days.slice(0, 7), days.slice(7)]};
+  }
+</script>
+<script>
+  'use strict';
+  function renderDashboard(data) {
+  const byId = id => document.getElementById(id);
+  const number = value => value === null ? '—' : value.toLocaleString('en-US', {maximumFractionDigits: 1});
+  const date = (value, options) => new Intl.DateTimeFormat('en-GB', {...options, timeZone: 'UTC'}).format(new Date(value + 'T12:00:00Z'));
+  const macros = [['protein', 'Protein', 4], ['carbs', 'Carbs', 4], ['fat', 'Fat', 9]];
+  const days = data.weeks.flat();
+  const today = days.find(day => day.date === data.focusDate);
+  const ceiling = Math.max(500, Math.ceil(Math.max(...days.map(day => macros.reduce((sum, [key, , factor]) => sum + (day[key] ?? 0) * factor, 0))) / 500) * 500);
+  let weekIndex = data.weeks.length - 1;
+  let interactions = 0;
+  const element = (tag, text, className) => {
+    const node = document.createElement(tag);
+    if (text !== undefined) node.textContent = text;
+    if (className) node.className = className;
+    return node;
+  };
+  function markInteraction() {
+    interactions++;
+    byId('runtime').textContent = `JavaScript active · ${interactions} interaction${interactions === 1 ? '' : 's'}`;
+  }
+  function showTargetDemo(message) {
+    byId('dialog-copy').textContent = message;
+    byId('target-dialog').showModal();
+    markInteraction();
+  }
+  byId('tracker').textContent = data.tracker;
+  byId('today-heading').textContent = data.focusDate === data.today ? 'Today, so far' : 'Selected day';
+  byId('today-date').textContent = date(data.focusDate, {weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'});
+  byId('today-coverage').textContent = today.kcal === null ? 'No meals logged for this date; intake is unknown.' : 'Recorded intake; logging may be incomplete.';
+  byId('today-kcal').textContent = number(today.kcal);
+  if (data.targets.kcal !== null) {
+    byId('kcal-progress').hidden = data.targets.kcal === 0 || today.kcal === null;
+    byId('kcal-progress').max = data.targets.kcal;
+    byId('kcal-progress').value = today.kcal;
+    byId('kcal-target').textContent = `of ${number(data.targets.kcal)} kcal current target`;
+  } else {
+    const button = element('button', 'Set calorie target · demo', 'target');
+    button.onclick = () => showTargetDemo('In the finished experience, you could tell the chat your calorie target. This button only demonstrates that interaction.');
+    byId('kcal-target').append(button);
+  }
+  for (const [key, label] of macros) {
+    const cell = element('div', undefined, `macro ${key}`);
+    const heading = element('span'); heading.append(element('i', undefined, 'dot'), label);
+    cell.append(heading, element('strong', `${number(today[key])} g`, 'number'));
+    if (data.targets[key] === null) {
+      const button = element('button', 'Set target · demo', 'target');
+      button.setAttribute('aria-label', `Set ${label.toLowerCase()} target · demo`);
+      button.onclick = () => showTargetDemo(`In the finished experience, you could tell the chat your ${label.toLowerCase()} target. This button only demonstrates that interaction.`);
+      cell.append(button);
+    } else cell.append(element('span', `of ${number(data.targets[key])} g current target`, 'note'));
+    byId('macros').append(cell);
+  }
+  byId('target-help').onclick = () => showTargetDemo('The finished experience would return you to normal chat to discuss your goals and suitable targets. The targets shown come from your selected test tracker; this demo does not recommend or save targets.');
+  function renderWeek() {
+    const week = data.weeks[weekIndex];
+    const logged = week.filter(day => day.kcal !== null);
+    byId('week-range').textContent = `${date(week[0].date, {day: 'numeric', month: 'short'})} – ${date(week[6].date, {day: 'numeric', month: 'short', year: 'numeric'})}`;
+    byId('week-total').textContent = `${number(logged.reduce((sum, day) => sum + day.kcal, 0))} kcal logged`;
+    byId('coverage').textContent = `${logged.filter(day => day.date <= data.today).length} of ${week.filter(day => day.date <= data.today).length} elapsed days with logs${week.some(day => day.date === data.today) ? ' · today is partial' : ''}. No log does not mean zero intake.`;
+    byId('scale').textContent = `Chart scale: 0–${number(ceiling)} kcal per day`;
+    byId('chart').replaceChildren(); byId('daily-rows').replaceChildren();
+    for (const day of week) {
+      const column = element('div', undefined, 'day');
+      const space = element('div', undefined, 'bar-space');
+      const stack = element('div', undefined, 'stack');
+      const weekday = date(day.date, {weekday: 'short'});
+      if (day.kcal === null) space.append(element('div', day.date > data.today ? 'Future' : 'No log', 'empty'));
+      else {
+        const total = macros.reduce((sum, [key, , factor]) => sum + day[key] * factor, 0);
+        stack.style.height = `${total / ceiling * 100}%`;
+        for (const [key, , factor] of macros) {
+          const segment = element('div', undefined, `segment ${key}`);
+          segment.style.height = `${total === 0 ? 0 : day[key] * factor / total * 100}%`;
+          stack.append(segment);
+        }
+        space.append(stack);
+      }
+      column.append(space, element('span', weekday, 'day-label'), element('span', date(day.date, {day: 'numeric'}), 'day-date'));
+      byId('chart').append(column);
+      const row = element('tr'); row.append(element('td', `${weekday} ${date(day.date, {day: 'numeric'})}`));
+      for (const key of ['kcal', 'protein', 'carbs', 'fat']) row.append(element('td', day[key] === null ? '—' : number(day[key])));
+      byId('daily-rows').append(row);
+    }
+    byId('previous').disabled = weekIndex === 0;
+    byId('next').disabled = weekIndex === data.weeks.length - 1;
+  }
+  byId('previous').onclick = () => { if (weekIndex > 0) { weekIndex--; renderWeek(); markInteraction(); } };
+  byId('next').onclick = () => { if (weekIndex < data.weeks.length - 1) { weekIndex++; renderWeek(); markInteraction(); } };
+  renderWeek();
+  byId('marker').textContent = `macrosheet-presentation-probe@0.2.0 · Read ${data.readAt} · ${data.timezone}`;
+  byId('runtime').textContent = 'JavaScript active · 0 interactions';
+  }
+  try {
+    const snapshot = prepareSnapshot(JSON.parse(document.getElementById('snapshot-data').textContent));
+    if (snapshot === null) {
+      document.getElementById('runtime').textContent = 'No Sheet snapshot loaded. Ask the chat to read your test tracker.';
+      for (const button of document.querySelectorAll('main button')) button.disabled = true;
+    } else renderDashboard(snapshot);
+  } catch (error) {
+    document.querySelector('.layout').hidden = true;
+    document.getElementById('runtime').textContent = 'Snapshot unavailable: ' + error.message;
+  }
+</script>
+</body>
+</html>

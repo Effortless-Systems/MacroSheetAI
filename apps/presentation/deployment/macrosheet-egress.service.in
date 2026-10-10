@@ -1,0 +1,12 @@
+# Install the helper root-owned and resolve its path before enabling this unit.
+[Unit]
+Description=MacroSheet service-account outbound isolation
+After=firewalld.service network.target
+Before=macrosheet-presentation.service
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=@EGRESS_HELPER@ start
+ExecStop=@EGRESS_HELPER@ stop
+[Install]
+WantedBy=multi-user.target
