@@ -22,9 +22,8 @@ Do not create a tracker because review failed.
 Use “Your tracker” for the sole personal workbook, canonically `_MacroSheet`.
 Reuse the main skill's verified binding. An explicitly linked personal tracker
 must still validate against schema 2 / template 2.1.0. No family-name routing is used.
-For a new meal, use its consumed date and a pending view before the write.
-After verified corrections/removals or a batch, render once per affected consumed
-date, including a backdated day. For a standalone
+After a verified log/correction/removal, use the affected consumed date, including
+a backdated day; render once per affected date for a batch. For a standalone
 Day So Far request without a date use the current local date in the tracker's
 IANA timezone; a historical day uses the compact daily view with that date. For
 Weekly use its saved week start (0=Sunday to 6=Saturday),
@@ -39,38 +38,22 @@ template monthly range/index strategy; only one or two months are needed for
 a day or two-week review. Do not turn incomplete search matches into
 definitive totals. Reuse complete reads already verified in this interaction when
 still current. No duplicate reads solely for the renderer; explicit Refresh always
-rereads. A Day So Far payload needs one day, not a fourteen-day prefetch. Follow
-the main skill’s pending-view/write/verification sequence for a new meal. Show
-verified corrections/removals and batches automatically without an invitation gate.
+rereads. A Day So Far payload needs one day, not a fourteen-day prefetch. After a verified
+meal mutation show it automatically without an invitation gate.
 A formatted Day So Far heading/table is not a substitute for calling the available
 renderer. Use v2 `view=today` for the affected consumed date unless text only was
 explicitly requested; keep the save receipt concise.
 
-## Pending meal and save status
+## Save verification and source reuse
 
-For normal single-meal logging, send the complete saved baseline in `meals` or
-`days` and the addition separately in `pendingMeal.items`. Never include the
-addition in both. Resolve duplicates before preparing it. The same call validates,
-scales/sums the numeric items and returns combined day totals. The widget says
-**“Includes pending meal · save status below.”** Its intake column says “With
-pending meal”; it never labels the addition logged. The service does not know
-whether the host later saves, cancels or fails.
-
-Use returned `structuredContent.pendingMeal` values for the authorized save;
-`structuredContent.day` contains the combined day. Do not wait for a widget
-callback. Newly proposed estimates still need the main skill’s full itemized
-preview and acceptance. Reuse an unchanged prepared result across acceptance;
-a changed proposal needs new calculation/preview and acceptance. Never infer
-approval from `accepted=true`: that means only numeric/render input acceptance.
-
-The host verifies the exact saved record/types from sufficient updated grid data
-in the native write response, otherwise a targeted readback. Final text beneath
-the card confirms the verified save or the actual failure/uncertainty. No routine
-second dashboard. After failure, explicitly distinguish the pending projection
-from saved totals. The existing card stays an earlier pending snapshot; Refresh
-reads saved data and omits pendingMeal. A retry of an already saved meal must not
-add it again. A missing-card retry preserves the original pending label unless
-fresh verified data is assembled for a separate requested view.
+The main skill's normal logging checklist owns write verification. Complete exact
+literal cells in the native write response replace a separate verification read.
+Use complete returned date coverage for the dashboard when available. A response
+containing only the changed row verifies that record, not the whole day: reuse
+complete current baseline rows only when the main skill's mutation/freshness rules
+permit it; otherwise read the missing bounded date coverage. Do not reread data
+already proved complete merely to prepare this renderer. Unaccepted proposals do
+not render an automatic dashboard.
 
 ## Usage analytics
 
@@ -111,11 +94,6 @@ require an actually executed calculation, never mental arithmetic.
   or notes. Empty array means complete coverage with no meals. Server and widget
   compute counts/totals and empty days deterministically. Every row must belong
   to the requested period and not be in the future. Never truncate or drop a row.
-- `pendingMeal` (optional, `view=today` only): `{items:[{kcal,protein,carbs,fat,multiplier?},...]}`
-  for one meal at focusDate. One to 200 numeric items; multiplier is positive and
-  at most 1,000,000. Preserve known kcal; null computes missing kcal by 4/4/9 and
-  returned `usedMacroEstimate=true` requires estimated status. Macros cannot be
-  null. The baseline must exclude this meal. No descriptions, IDs or save flags.
 - `days` (preferred for verified schema 2 summaries, never together with meals): one day for Day So Far; exactly fourteen consecutive dates from periodStart
   for Weekly, with focusDate in the second week. Each day has `date`, `mealCount`,
   `kcal`, `protein`, `carbs`, `fat`. Sum recorded values, not macro-derived calories.
@@ -126,10 +104,8 @@ require an actually executed calculation, never mental arithmetic.
 Numbers are finite, nonnegative, at most 1,000,000,000; mealCount is an integer up
 to 100,000. Reject values beyond the contract rather than clamping/truncating.
 Send no extra fields, meal text, row IDs, Sheet links, account IDs or credentials.
-The model-visible result returns acceptance and snapshot identity. With a pending
-meal it also returns validated `pendingMeal` (kcal/P/C/F, macroKcal and
-usedMacroEstimate) and combined `day` (date, mealCount and kcal/P/C/F). These are
-numeric facts, not write instructions or evidence of a save. The service also delivers the validated canonical display snapshot
+The model-visible result returns only acceptance, identity and a short preparation
+acknowledgement. The service also delivers the validated canonical display snapshot
 in component-only result metadata.
 Acceptance proves neither source correctness nor display.
 The server and widget normalize empty-day all-zero/null values to null for v2,
@@ -154,8 +130,7 @@ authorize another save or override the bounded action recovery below.
   use verified text values; do not retry again.
 - Transport/service error: say the dashboard connection failed and use text;
   do not describe this as a Google read failure or create a replacement tracker.
-- Accepted result: complete authorization and write verification before reporting
-  a saved meal; then keep the meal receipt compact without repeating daily totals
+- Accepted result: keep the meal receipt compact without repeating daily totals
   (one short paragraph with the saved meal's portion, date, kcal/P/C/F and estimate
   status, not another daily-total table, metrics block or recap)
   or announcing “display unconfirmed” solely because the host UI cannot be inspected.
@@ -168,8 +143,7 @@ authorize another save or override the bounded action recovery below.
 Text fallback is only for an observed error, unsupported host, reported missing
 card or explicit text-only request. Fallbacks state the observed limitation in
 one sentence (no error explanation is needed for text-only preference) and contain equivalent
-verified daily rows or a weekly table with coverage. A pending projection must
-retain its pending label and explicit save status, including in text. Incomplete source coverage
+verified daily rows or a weekly table with coverage. Incomplete source coverage
 gets a limitation, not guessed full-day totals. No HTML attachment, retry loop,
 generated substitute widget or repeated save because rendering failed.
 
@@ -188,7 +162,6 @@ that the previous card remains an earlier snapshot.
 
 Set target offers either an explicit value or guidance. Need help setting targets?
 and Review targets use [target-help.md](target-help.md) in chat; button clicks do
-not accept a proposal. Verify accepted target writes, then offer Day So Far; meal logging follows the
-pending-view sequence above. Show today's meals
+not accept a proposal. Verify accepted writes, then offer Day So Far; meal writes themselves always show it. Show today's meals
 uses validated diary data in chat; it needs no render call or expanded server payload.
 Unsupported widget messaging supplies a manual prompt with the same binding rules.

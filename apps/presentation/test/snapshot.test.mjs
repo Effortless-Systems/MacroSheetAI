@@ -108,26 +108,3 @@ test('dashboard arguments reject removed analytics controls',()=>{
    assert.equal(parseSnapshotRequest({...input,usageAnalytics:flag}).success,false);
  }
 });
-
-test('pending meal calculates once from complete saved baseline without changing it',()=>{
- const input=todaySnapshot();input.pendingMeal={items:[{kcal:400,protein:20,carbs:50,fat:10,multiplier:0.5},{kcal:null,protein:10,carbs:10,fat:0}]};
- const before=structuredClone(input),result=parseSnapshotRequest(input);
- assert.equal(result.success,true);assert.deepEqual(input,before);
- assert.deepEqual(result.data.pendingMeal,{kcal:280,protein:20,carbs:35,fat:5,macroKcal:265,usedMacroEstimate:true});
- assert.deepEqual(result.data.days,[{date:input.focusDate,mealCount:2,kcal:930,protein:50,carbs:85,fat:25}]);
- assert.equal(result.data.readAt,input.readAt);
- delete input.days;input.meals=[];
- const empty=parseSnapshotRequest(input).data;
- assert.equal(empty.days[0].mealCount,1);assert.equal(empty.days[0].kcal,280);
- input.pendingMeal.items[0].multiplier=1;
- assert.equal(parseSnapshotRequest(input).data.pendingMeal.kcal,480);
-});
-
-test('pending meal cannot mask invalid baseline, missing coverage or unsafe numeric inputs',()=>{
- const make=()=>({...todaySnapshot(),pendingMeal:{items:[{kcal:100,protein:10,carbs:10,fat:1}]}});
- for(const edit of [s=>s.view='weekly',s=>delete s.days,s=>s.days=[],s=>s.days[0].mealCount=0,s=>s.days[0].kcal=null,s=>s.days[0].mealCount=100000,s=>s.days[0].kcal=1e9,s=>s.pendingMeal.items[0].protein=null,s=>s.pendingMeal.items[0].kcal=-1,s=>s.pendingMeal.items[0].description='private',s=>s.pendingMeal.items[0].multiplier=1e7,s=>s.pendingMeal.items=[],s=>s.pendingMeal.saved=true]) {
-  const input=make();edit(input);assert.equal(parseSnapshotRequest(input).success,false,JSON.stringify(input));
- }
- const input=make();input.pendingMeal.items[0]={kcal:1e9,protein:1e9,carbs:1e9,fat:1e9,multiplier:1e6};
- assert.equal(parseSnapshotRequest(input).success,false);
-});

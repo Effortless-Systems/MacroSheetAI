@@ -52,12 +52,6 @@ try {
   assert.equal(calculated.structuredContent.kcal,165);
   const numeric=todaySnapshot();delete numeric.days;numeric.meals=[{date:numeric.focusDate,kcal:100,protein:10,carbs:12,fat:4}];
   assert.equal((await client.callTool({name:'show_dashboard',arguments:numeric})).structuredContent.accepted,true);
-  const pending={...numeric,pendingMeal:{items:[{kcal:200,protein:15,carbs:20,fat:5}]}};
-  const prepared=await client.callTool({name:'show_dashboard',arguments:pending});
-  assert.equal(prepared.structuredContent.pendingMeal.kcal,200);
-  assert.equal(prepared.structuredContent.day.kcal,300);
-  assert.match(prepared.content[0].text,/Includes pending meal · save status below/);
-  assert.deepEqual(prepared._meta['macrosheet/snapshot'],parseSnapshotRequest(pending).data);
   const input = snapshot();
   const result = await client.callTool({name:'show_dashboard',arguments:input});
   assert.deepEqual(result.structuredContent, {accepted:true,snapshotId:input.snapshotId});

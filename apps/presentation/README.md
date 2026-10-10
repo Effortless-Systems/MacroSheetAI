@@ -1,18 +1,10 @@
 # MacroSheet presentation service
 
-Service 0.10.0 / guide 1.4.0 exposes `calculate_nutrition`, `show_dashboard` and
+Service 0.11.0 / guide 1.5.0 exposes `calculate_nutrition`, `show_dashboard` and
 `get_tracking_guide` on `/mcp/openai`, `/mcp/claude` and legacy `/mcp`.
 It has no Google credentials, tracking database or persistent nutrition payloads.
 The host/skill owns source research, authorization, Sheet writes and readback.
-A rendered snapshot is not proof of a saved record. Normal single-meal logging
-uses `show_dashboard.pendingMeal.items` with a complete saved baseline. The same
-call calculates/validates the addition and combined day, returns compact numeric
-facts in `structuredContent`, and renders “Includes pending meal · save status
-below.” The host confirms new proposals before writing and verifies exact record
-identity, values and literal types from updated grid data or targeted readback.
-Final text reports save status; no routine second render. The normal target is
-three task calls, or two with reusable current baseline; discovery and recovery
-are additional. No widget callback or Google access is added.
+A rendered snapshot is not proof of a saved record.
 
 ## Local Development
 

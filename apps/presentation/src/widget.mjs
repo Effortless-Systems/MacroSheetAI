@@ -2,7 +2,7 @@ import { App } from '@modelcontextprotocol/ext-apps';
 import { macroCalories } from './nutrition.mjs';
 import { parseSnapshotRequest, snapshotSchema, shiftDate, weekStart, summarizeWeek, viewOf, firstDayOf } from './snapshot.mjs';
 
-const app = new App({ name: 'MacroSheet', version: '0.10.0' }, {}, { autoResize: true });
+const app = new App({ name: 'MacroSheet', version: '0.11.0' }, {}, { autoResize: true });
 const $ = id => document.getElementById(id);
 const number = value => value === null ? '—' : value.toLocaleString(undefined, { maximumFractionDigits: 1 });
 const label = (value, options = {day:'numeric',month:'short'}) => new Intl.DateTimeFormat(undefined,{...options,timeZone:'UTC'}).format(new Date(`${value}T12:00:00Z`));
@@ -37,8 +37,7 @@ function renderDay() {
   $('day-title').textContent='Day So Far';
   $('day-date').textContent=label(data.focusDate,{weekday:'long',day:'numeric',month:'long',year:'numeric'});
   const day=data.days.find(day=>day.date===data.focusDate);
-  $('day-note').textContent=data.pendingMeal?'Includes pending meal · save status below.':day.mealCount===0?'No meals logged for this date; intake is unknown.':`${day.mealCount} ${day.mealCount===1?'meal':'meals'} logged; intake may be incomplete.`;
-  $('intake-heading').textContent=data.pendingMeal?'With pending meal':'Logged';
+  $('day-note').textContent=day.mealCount===0?'No meals logged for this date; intake is unknown.':`${day.mealCount} ${day.mealCount===1?'meal':'meals'} logged; intake may be incomplete.`;
   $('nutrients').replaceChildren();
   for(const [key,title] of [['kcal','Calories'],['protein','Protein'],['carbs','Carbohydrates'],['fat','Fat']]) {
     const row=element('tr'), name=element('th',title,key), amount=element('td',`${number(day[key])} ${key==='kcal'?'kcal':'g'}`), goal=element('td');
@@ -132,7 +131,7 @@ $('show-today').onclick=()=>send('Show Day So Far for the current local date in 
 $('show-weekly').onclick=()=>send('Show the separate weekly dashboard. Reuse complete validated data from this interaction or read missing coverage.',{view:'weekly'});
 $('meals').onclick=()=>send('Show the logged meals for this date in chat. Reuse complete validated diary rows when current; no render call is needed.',{view:'today',date:data.focusDate});
 $('target-help').onclick=()=>send('Help me choose or review targets in normal chat. Explain calories, protein, carbohydrates and fat. Reuse accepted targets and ask only for missing context. Propose values before saving and wait for my acceptance.',{view:'today',date:data.focusDate});
-$('refresh').onclick=()=>send('Refresh this view from Sheets with complete reads and current settings. Show only saved meals, excluding earlier unsaved proposals. Preserve the selected consumed date for Day So Far, including a backdated meal day. Use the current date only when I explicitly request today. For Weekly preserve the requested week. Use a new read timestamp and snapshotId.');
+$('refresh').onclick=()=>send('Refresh this view from Sheets with complete reads and current settings. Preserve the selected consumed date for Day So Far, including a backdated meal day. Use the current date only when I explicitly request today. For Weekly preserve the requested week. Use a new read timestamp and snapshotId.');
 app.ontoolinputpartial=()=>{ if(!data) status('Receiving your Sheet summary…'); };
 app.ontoolinput=({arguments: args})=>{
   const parsed=parseSnapshotRequest(args);

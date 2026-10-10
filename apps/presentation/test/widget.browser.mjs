@@ -33,28 +33,6 @@ async function mount(page,{input=weeklySnapshot(),order='input-first',messages=t
  return page.frameLocator('iframe');
 }
 
-for(const width of [320,960])for(const delivery of ['both','result-only'])test(`pending meal stays unsaved at ${width}px with ${delivery} delivery`,async({page})=>{
- await page.setViewportSize({width,height:1200});
- const input=todaySnapshot();input.pendingMeal={items:[{kcal:200,protein:15,carbs:20,fat:5}]};
- const f=await mount(page,{input,delivery});
- await expect(f.locator('#day-kcal')).toHaveText('850 kcal');
- await expect(f.locator('#day-note')).toHaveText('Includes pending meal · save status below.');
- await expect(f.locator('#intake-heading')).toHaveText('With pending meal');
- await expect(f.locator('#day-note')).not.toContainText('logged');
- expect(await page.evaluate(()=>window.messages.length)).toBe(0);
- await page.evaluate(result=>window.sendToWidget('ui/notifications/tool-result',result),toolResult(input));
- await expect(f.locator('#day-kcal')).toHaveText('850 kcal');
- await expect(f.locator('#day-note')).toHaveText('Includes pending meal · save status below.');
- // No save-status event exists: success, cancellation and failure are reported by chat.
- await f.getByRole('button',{name:'Refresh from Sheet'}).click();
- expect((await page.evaluate(()=>window.messages[0].content[0].text))).toContain('Refresh this view from Sheets');
- const fresh=todaySnapshot();fresh.snapshotId='b2345678-1234-4123-8123-123456789012';
- await page.evaluate(result=>window.sendToWidget('ui/notifications/tool-result',result),toolResult(fresh));
- if(delivery==='both') await page.evaluate(arguments_=>window.sendToWidget('ui/notifications/tool-input',{arguments:arguments_}),fresh);
- await expect(f.locator('#day-kcal')).toHaveText('650 kcal');
- await expect(f.locator('#intake-heading')).toHaveText('Logged');
-});
-
 for(const order of ['input-first','result-first','result-only'])test(`canonical result hydrates backdated meals: ${order}`,async({page})=>{
  const input=todaySnapshot();input.focusDate='2025-12-29';delete input.periodStart;delete input.today;delete input.days;
  input.meals=[{date:input.focusDate,kcal:429,protein:35,carbs:39,fat:14}];

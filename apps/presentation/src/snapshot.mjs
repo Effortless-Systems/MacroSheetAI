@@ -1,12 +1,11 @@
 import { z } from 'zod';
-import { amount, nutrientShape, sumNutrients, calculationSchema, calculationResultSchema, calculateNutrition } from './nutrition.mjs';
+import { amount, nutrientShape, sumNutrients } from './nutrition.mjs';
 
 const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/).refine(value => {
   const parsed = new Date(`${value}T00:00:00Z`);
   return Number.isFinite(+parsed) && parsed.toISOString().slice(0, 10) === value;
 });
 const macros = { kcal: amount.nullable(), protein: amount.nullable(), carbs: amount.nullable(), fat: amount.nullable() };
-export const daySchema = z.object({ date, mealCount: z.number().int().min(0).max(100000), ...macros }).strict();
 export const fields = Object.keys(macros);
 export const shiftDate = (value, offset) => {
   const d = new Date(`${value}T00:00:00Z`); d.setUTCDate(d.getUTCDate() + offset);
@@ -33,15 +32,12 @@ const snapshotFields = z.object({
   periodStart: date.describe('Derived for version 2; omit it. Today uses focusDate; Weekly starts seven days before its week start.'),
   readAt: z.string().datetime({ offset: true }).describe('Actual verified source-read completion timestamp with UTC offset. Never invent a fresh read time.'),
   targets: z.object(macros).strict(),
-  days: z.array(daySchema).min(1).max(14).describe('Today: one requested day. Weekly: fourteen consecutive days, previous week then requested week. No meals: count 0 and all nutrients null. Logged meals: all nutrients numeric, including genuine zeros.'),
-  pendingMeal: calculationResultSchema.optional()
+  days: z.array(z.object({ date, mealCount: z.number().int().min(0).max(100000), ...macros }).strict()).min(1).max(14).describe('Today: one requested day. Weekly: fourteen consecutive days, previous week then requested week. No meals: count 0 and all nutrients null. Logged meals: all nutrients numeric, including genuine zeros.')
 }).strict();
 export const snapshotSchema = snapshotFields.superRefine((data, ctx) => {
   // Field refinements already report invalid dates; do not perform calendar math on them.
   if (!date.safeParse(data.periodStart).success || !date.safeParse(data.focusDate).success) return;
   const fail = (path, message) => ctx.addIssue({ code: 'custom', path, message });
-  if (data.pendingMeal && (data.view !== 'today' || data.days[0]?.mealCount < 1)) fail(['pendingMeal'], 'A pending meal requires a Today snapshot containing that meal.');
-  if (data.pendingMeal) for (const key of fields) if (data.days[0]?.[key] < data.pendingMeal[key]) fail(['days', 0, key], 'Combined day totals cannot be less than the pending meal.');
   if (data.focusDate > data.today) fail(['focusDate'], 'Requested review date must not be after the local source-read date.');
   if (viewOf(data) === 'today') {
     if (data.days.length !== 1) fail(['days'], 'Today requires exactly one aggregate for focusDate.');
@@ -63,7 +59,7 @@ export const snapshotSchema = snapshotFields.superRefine((data, ctx) => {
 });
 
 // Share normalization for server results and widget inputs.
-function normalizeBaseline(input) {
+export function normalizeSnapshot(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) return input;
   const data = { ...input };
   if (data.version !== 2) return data;
@@ -85,25 +81,16 @@ function normalizeBaseline(input) {
   });
   return data;
 }
-export function normalizeSnapshot(input) {
-  const data = normalizeBaseline(input);
-  if (!data?.pendingMeal?.items) return data;
-  const meal = calculateNutrition(data.pendingMeal), day = data.days[0];
-  return { ...data, pendingMeal: meal, days: [{ ...day, mealCount: day.mealCount + 1,
-    ...Object.fromEntries(fields.map(key => [key, (day[key] ?? 0) + meal[key]])) }] };
-}
 // Keep a Zod object at the tool boundary for SDK JSON-schema discovery. Validate
 // supplied fields first; derive redundant dates from the verified source timestamp.
 export const snapshotRequestSchema = snapshotFields.partial({ today: true, periodStart: true, days: true }).extend({
-  pendingMeal: calculationSchema.optional().describe('One pending meal for focusDate, Today only. Supply numeric items/portion multipliers; meals or days must contain the complete saved baseline EXCLUDING this addition. Calculates and displays combined totals, without saving or authorizing a write.'),
   meals: z.array(z.object({ date, ...nutrientShape }).strict()).max(200).optional().describe('Preferred v2 input: complete verified numeric meal values for the requested period, without IDs or text. JavaScript computes counts/totals and empty days. Supply meals OR days, never both. An empty array means complete coverage with no meals.')
 }).superRefine((input, ctx) => {
   if (input.meals !== undefined && (input.version !== 2 || input.days !== undefined)) {
     ctx.addIssue({ code: 'custom', path: ['meals'], message: 'Numeric meal input is v2 only and must replace days, not accompany it.' });
     return;
   }
-  const normalized = normalizeBaseline(input);
-  delete normalized.pendingMeal;
+  const normalized = normalizeSnapshot(input);
   if (input.meals && date.safeParse(normalized.periodStart).success) {
     const end = shiftDate(normalized.periodStart, input.view === 'today' ? 0 : 13);
     input.meals.forEach((meal, i) => {
@@ -112,16 +99,6 @@ export const snapshotRequestSchema = snapshotFields.partial({ today: true, perio
   }
   const parsed = snapshotSchema.safeParse(normalized);
   if (!parsed.success) for (const issue of parsed.error.issues) ctx.addIssue(issue);
-  if (input.pendingMeal) {
-    if (input.view !== 'today') ctx.addIssue({ code: 'custom', path: ['pendingMeal'], message: 'Pending meals require view=today.' });
-    if (!parsed.success || input.view !== 'today') return;
-    try {
-      const combined = snapshotSchema.safeParse(normalizeSnapshot(input));
-      if (!combined.success) for (const issue of combined.error.issues) ctx.addIssue(issue);
-    } catch {
-      ctx.addIssue({ code: 'custom', path: ['pendingMeal'], message: 'Calculation exceeds supported numeric bounds; check amounts and portion multipliers.' });
-    }
-  }
 });
 export function parseSnapshotRequest(input) {
   const parsed = snapshotRequestSchema.safeParse(input);

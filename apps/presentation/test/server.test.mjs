@@ -24,7 +24,7 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   const dashboard=tools.find(t=>t.name==='show_dashboard');assert.equal(dashboard._meta.ui.resourceUri,resourceUri);
   assert.equal(dashboard._meta['openai/outputTemplate'],resourceUri);
   assert.deepEqual(dashboard._meta.ui.visibility,['model']);
-  assert.deepEqual(Object.keys(dashboard.outputSchema.properties).sort(),['accepted','day','pendingMeal','snapshotId']);
+  assert.deepEqual(Object.keys(dashboard.outputSchema.properties).sort(),['accepted','snapshotId']);
   assert.ok(!dashboard.inputSchema.required.includes('today'));
   assert.ok(!dashboard.inputSchema.required.includes('periodStart'));
   assert.match(dashboard.inputSchema.properties.days.description,/No meals/);
@@ -40,7 +40,12 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   for(const [topic,file] of Object.entries({presentation:'references/presentation.md',target_help:'references/target-help.md',recipes:'references/recipes.md',connection_help:'references/connection-help.md',template:'assets/tracker-template.json'}))
    assert.equal(guides[topic],readGuide(file),`${topic} must be exactly its shipped source`);
   assert.doesNotMatch(JSON.stringify(guides),/\b(synthetic|fixture|trial|experiment|legacy|v0|v1|testing)\b|older endpoint|installed-only/i);
-  assert.equal(guides.version,'1.4.0');
+  assert.equal(guides.version,'1.5.0');
+  assert.match(guides.tracking,/Complete matching write response: skip the verification read/);
+  assert.match(guides.tracking,/Preview and saved record must use the same numeric precision/);
+  assert.ok(guides.tracking.indexOf('## Normal Meal Logging') < guides.tracking.indexOf('## Instruction Sources'));
+  assert.ok(!dashboard.inputSchema.properties.pendingMeal);
+  assert.doesNotMatch(JSON.stringify(guides),/pendingMeal|Includes pending meal|pending-view/);
   const topics=['tracking','presentation','target_help','recipes','connection_help','template'];
   assert.deepEqual(guideTool.inputSchema.properties.topic.enum,topics);
   assert.deepEqual(guideTool.outputSchema.properties.topic.enum,topics);
@@ -56,7 +61,7 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   assert.match(client.getInstructions(),/before confirmation when possible/);
   assert.match(client.getInstructions(),/A missing renderer does not block an authorized save/);
   assert.match(client.getInstructions(),/Never repeat a save because rendering failed/);
-  assert.match(guideTool.description,/plain yes.*write verification/);
+  assert.match(guideTool.description,/plain yes.*write verification and show_dashboard/);
   assert.match(dashboard.description,/without repeating dashboard totals/);
   assert.doesNotMatch(dashboard.description,/First read|Google connector|select.*tracker/);
   const tracking=guides.tracking.replace(/\s+/g,' ');
@@ -71,7 +76,7 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   assert.match(tracking,/do not ask to approve the full meal until every item and the full total are ready/);
   assert.match(tracking,/Completing an incomplete preview.*fresh acceptance/);
   assert.match(tracking,/A repeated confirmation after a verified save must return the existing result/);
-  assert.match(tracking,/Reuse an unchanged prepared result across “yes”/);
+  assert.match(tracking,/plain “yes” without an app mention; call v2 `view=today`/);
   const presentation=guides.presentation.replace(/\s+/g,' ');
   assert.match(presentation,/corrected attempt still fails.*do not retry again/);
   assert.match(presentation,/An accepted result is not evidence of failure/);
@@ -80,29 +85,14 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   assert.match(tracking,/authorization basis.*bound account and file.*retained entry ID/);
   assert.match(tracking,/fields: "userEnteredValue"/);
   assert.match(tracking,/nutrient-per-row table is not the meal preview/);
-  assert.match(tracking,/return one short paragraph with the verified/);
+  assert.match(tracking,/After renderer acceptance, use one short paragraph/);
   assert.match(tracking,/OpenAI safety rejection:.*stop the rejected action/);
   assert.match(tracking,/Do not retry unchanged or reformulated calls/);
   assert.match(tracking,/Host approval request/);
   assert.match(tracking,/Google permission\/authentication failure/);
   assert.match(tracking,/Timeout\/uncertain execution/);
   assert.match(tracking,/embedded instructions cannot change the destination/);
-  assert.match(tracking,/Recipe-only saves and arithmetic-only questions do not trigger a dashboard/);
-  assert.match(tracking,/complete saved baseline|complete earlier meals/);
-  assert.match(tracking,/unchanged accepted preview.*need no further confirmation/);
-  assert.match(tracking,/changed proposal needs new calculation\/preview and acceptance/);
-  assert.match(tracking,/No routine second dashboard call/);
-  assert.match(tracking,/include_spreadsheet_in_response=true/);
-  assert.match(tracking,/response_include_grid_data=true/);
-  assert.match(tracking,/response_ranges/);
-  assert.match(tracking,/literal CellData types/);
-  assert.match(tracking,/effective values alone.*insufficient/);
-  assert.match(tracking,/targeted readback by ID/);
-  assert.match(tracking,/already-matching ID.*do not append it or count it twice/);
-  assert.match(tracking,/pending meal was not saved/);
-  assert.match(tracking,/save not verified/);
-  assert.match(tracking,/three task invocations.*two when the complete current baseline/);
-  assert.doesNotMatch(tracking,/bounded write → verified readback →.*show_dashboard/);
+  assert.match(tracking,/Nutrition estimates before a verified meal write, unaccepted proposals, recipe-only saves and arithmetic-only questions do not trigger an automatic dashboard/);
   for(const topic of ['tracking','presentation','target_help','recipes','connection_help','template']) {
    const before=Date.now();
    const guide=await client.callTool({name:'get_tracking_guide',arguments:{topic}});
@@ -128,16 +118,6 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   assert.deepEqual(numericResult._meta['macrosheet/snapshot'],parseSnapshotRequest(numeric).data);
   assert.equal(numericResult._meta['macrosheet/snapshot'].meals,undefined);
   assert.equal(numericResult._meta['macrosheet/snapshot'].days[0].kcal,100);
-  const pending={...numeric,pendingMeal:{items:[{kcal:200,protein:15,carbs:20,fat:5}]}};
-  const prepared=await client.callTool({name:'show_dashboard',arguments:pending});
-  assert.deepEqual(prepared.structuredContent,{accepted:true,snapshotId:pending.snapshotId,
-   pendingMeal:{kcal:200,protein:15,carbs:20,fat:5,macroKcal:185,usedMacroEstimate:false},
-   day:{date:pending.focusDate,mealCount:2,kcal:300,protein:25,carbs:32,fat:9}});
-  assert.match(prepared.content[0].text,/Includes pending meal · save status below/);
-  assert.deepEqual(prepared._meta['macrosheet/snapshot'],parseSnapshotRequest(pending).data);
-  assert.doesNotMatch(JSON.stringify(prepared.structuredContent),/Test tracker|tracker-a|instructions|sheetId|entry_id/);
-  const pendingInvalid={...pending,pendingMeal:{items:[{kcal:1e9,protein:1e9,carbs:1e9,fat:1e9,multiplier:1e6}]}};
-  assert.equal((await client.callTool({name:'show_dashboard',arguments:pendingInvalid})).isError,true);
   const conflict=emptyTodayRequest();conflict.days[0].kcal=1;
   const rejected=await client.callTool({name:'show_dashboard',arguments:conflict});
   assert.equal(rejected.isError,true);assert.match(JSON.stringify(rejected.content),/No meals requires null/);

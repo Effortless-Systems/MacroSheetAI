@@ -24,8 +24,7 @@ Start with “Help me create my MacroSheet tracker.” Setup validates the sole
 `_MacroSheet` tracker using schema 2 and template 2.1.0. Targets are optional.
 Newly researched, label-extracted, recipe-derived or estimated meal values require
 an itemized portion/nutrition table and explicit confirmation before a write.
-Meal logging uses stable IDs, a pending Day So Far before the authorized write,
-and a compact receipt after verification from updated cells or targeted readback.
+Verified saves use stable IDs/readback, a compact receipt and automatic Day So Far.
 Recipe saves are separate from consumption; ordinary reuse reads summary fields
 and stored macros. See the [tracking skill](plugins/macrosheet/skills/macrosheet/SKILL.md)
 and [plugin instructions](plugins/macrosheet/README.md).

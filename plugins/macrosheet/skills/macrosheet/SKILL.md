@@ -18,6 +18,32 @@ snapshot widgets. It cannot access Google, save records or handle credentials.
 Independent calculation/rendering requests with complete supplied values need no
 Google connection or tracker selection and never imply a save.
 
+## Normal Meal Logging
+
+Use this order for each new meal:
+
+1. Reuse the verified tracker/account binding, metadata and unexpired guide topics.
+   Read complete current date coverage, settings, headers/bounds and duplicate
+   evidence in bounded native ranges. A reused read keeps its actual read time.
+2. Preserve current user-supplied values exactly. For newly derived values, show
+   every item/portion and kcal/P/C/F plus a Total row, then obtain acceptance.
+   A changed proposal needs a new preview; unchanged accepted values do not.
+3. Append the authorized literal record with its retained entry ID. Request
+   `include_spreadsheet_in_response=true`, `response_include_grid_data=true`
+   and bounded `response_ranges` covering the append area and all record columns.
+4. Verify the returned file/tab and unique entry ID against all nine exact
+   literal cells. **Complete matching write response: skip the verification read.**
+   **Missing identity, values or literal types: targeted readback before success.**
+5. Assemble complete verified coverage for the consumed date and call
+   `show_dashboard` once. It is required after a successful save unless the user
+   requested text only or an observed renderer failure requires text fallback.
+6. Finish with one short meal receipt beneath the dashboard. Keep daily totals
+   in the card. A blocked/uncertain write follows Write Failure Recovery below.
+
+Calculation/render acceptance never proves a save. No dashboard or save is due
+for a declined or unaccepted proposal. Detailed schema, freshness and recovery
+requirements below apply to this checklist.
+
 ## Instruction Sources
 
 When `get_tracking_guide` is available, fetch topic=tracking before tracking unless
@@ -188,9 +214,8 @@ rendering need no extra Google read for analytics.
   flags; ordinary recipe reuse still reads only summary columns. “Same as before”
   is not the current user-supplied numeric direct-save exception.
 - During meal preparation, load presentation guidance and discover `show_dashboard`
-  once if needed, retaining them across a plain “yes” follow-up. For logging intent,
-  a complete proposal may have a clearly pending dashboard before acceptance;
-  this never authorizes a write. Estimate-only requests need no dashboard. Missing presentation access must not block an otherwise
+  once if needed, retaining them across a plain “yes” follow-up. Do not render an
+  unaccepted proposal. Missing presentation access must not block an otherwise
   authorized meal save; explain that limitation after verification. Explicit
   text-only requests need no renderer discovery.
 - For an identified branded food without a usable nutrition label, immediately
@@ -231,17 +256,16 @@ rendering need no extra Google read for analytics.
   even when `estimated=false` and the initial request said “log this”.
   Only an explicit save of the current meal's known values supplied by the user,
   or an already accepted unchanged meal preview, can proceed directly. For an
-  authorized direct save, complete the pending-dashboard/write/verification flow below;
+  authorized direct save, perform the write/verification/dashboard flow and return its receipt;
   never stop with an offer of capability instead of completing the requested save.
   Preserve known label/user values. Show a compact
   itemized Markdown table with columns **Item | Portion | Calories (kcal) |
   Protein (g) | Carbs (g) | Fat (g)**. Use one row per food item, even for a
   single-item meal, and a **Total** row summing the displayed items.
-  Use the same numeric precision in the preview and saved record; do not silently
-  save undisclosed extra decimal places.
+  Preview and saved record must use the same numeric precision; do not save
+  undisclosed extra decimal places.
   Use the same item-row layout for a single item; a nutrient-per-row table is not
-  the meal preview. Do not repeat projected daily totals in the proposal text;
-  the separately labelled pending dashboard may display them.
+  the meal preview. Do not add projected daily totals to the pending proposal.
   Identify the meal, resolved tracker and consumed date, estimates and relevant sources/assumptions
   alongside the table. Use this table again for revised estimates. When logging
   was requested and the proposal is not already accepted, ask ONE clear save
@@ -286,8 +310,8 @@ rendering need no extra Google read for analytics.
   (current user-supplied values or the accepted unchanged preview), bound account
   and file, consumed-month tab, exact payload and retained entry ID. Keep this
   state in conversation, not an authorization table or persisted approval token.
-  Briefly state the accepted meal, consumed date and intended save/readback/
-  Day So Far action, reusing an already prepared pending card. This explains the operation; it is not another permission ask.
+  Briefly state the accepted meal, consumed date and intended save/verification/
+  Day So Far action. This explains the operation; it is not another permission ask.
 - Read current headers/bounds. For an existing month use one native `appendCells`
   request restricted to `fields: "userEnteredValue"`, mapping the required headers
   and using numeric/boolean values and literal strings. Do not overwrite a guessed
@@ -297,64 +321,51 @@ rendering need no extra Google read for analytics.
   Inspect the actual connector schema: `batch_update_spreadsheet` can carry this
   native request, but a dedicated append tool or justification argument may not
   exist. Never invent either or persist the authorization explanation in notes.
-- Use this normal path for one new meal on one consumed date:
-  1. Read complete earlier meals for that date, relevant Settings, current headers/
-     bounds and duplicate-check information. Batch bounded native ranges when
-     supported. Reuse a complete, current baseline already verified in this
-     interaction; retain its actual readAt. Exclude the pending meal from it.
-  2. Call `show_dashboard` once with `view=today`, that saved baseline and
-     `pendingMeal.items` containing only the proposed numeric food values and any
-     portion multipliers. This validates/calculates the meal and combined day and
-     returns an immediately displayable **Day So Far** plus `pendingMeal` and `day`
-     facts in `structuredContent`. Do not call the calculator separately for the
-     same sum or wait for widget JavaScript. The card says **“Includes pending meal
-     · save status below.”** It is a projection, not proof of persistence.
-     For newly proposed values, present the complete itemized preview and obtain
-     acceptance before step 3. An unchanged accepted preview or explicit current
-     user-supplied values need no further confirmation. Reuse an unchanged prepared
-     result across “yes”; a changed proposal needs new calculation/preview and
-     acceptance, and a changed baseline needs fresh totals. If calculated values
-     differ from those accepted, resolve the difference before writing.
-  3. Save only the authorized meal using the native write above, preserving the
-     retained ID, exact accepted values and destination. Where the actual connector
-     supports them, request `include_spreadsheet_in_response=true`,
-     `response_include_grid_data=true` and bounded `response_ranges` covering the
-     consumed-month append area, including all required record columns. Do not
-     guess the new row: derive coverage from validated bounds and append behavior.
-     The response serves as verification only if it identifies the bound file/tab
-     and retained entry ID uniquely and proves the exact date, description,
-     kcal/P/C/F, estimated flag and notes with their literal CellData types
-     (`stringValue`, `numberValue`, `boolValue`, never formulaValue). A success
-     acknowledgement, empty replies, effective values alone, truncated ranges,
-     missing fields or an echoed request are insufficient. Otherwise perform a
-     targeted readback by ID; compare the same fields before saying “saved”.
-  4. Beneath the earlier dashboard, return one short paragraph with the verified
-     meal/portion, tracker, consumed date, kcal/P/C/F and estimate status, or report
-     the actual failure. No routine second dashboard call or daily-total recap.
-     If the write fails, explicitly say the pending meal was not saved when that
-     is established; if execution is uncertain, say **“save not verified”** and
-     check the retained ID before any permitted retry. Explain that the earlier
-     card included the pending meal and is not a saved daily total. Do not call
-     that meal logged. A failed render never authorizes another save.
-- This path targets three task invocations (Google read, MacroSheet calculation/
-  dashboard, Google write), or two when the complete current baseline is reusable.
-  Discovery, guide refresh, research, incomplete coverage, month creation, batch
-  logging and recovery may need more. MCP setup and widget-resource requests are
-  separate from task invocations. Never skip confirmation, duplicate checks or
-  verification to meet the target. Keep entry ID and Sheet link in context and
-  available on request; offer plain-language correction/undo.
-- A repeated confirmation after verification returns the existing result. An
-  already-matching ID found before rendering is not a pending addition: do not
-  append it or count it twice. Conflicting IDs stop the save. A lost ID/context
-  requires clarification about plausible matches, not a replacement save.
-- Explicit text-only requests override rendering. If presentation access fails,
-  an authorized save can proceed using independently validated accepted values;
-  provide a verified receipt and the observed display limitation. Do not bypass
-  unresolved numeric errors. Incomplete day coverage must not become a projected
-  full-day total; complete it or state the limitation and verify only the meal.
-  If no pending view was prepared, a complete verified post-write Day So Far may
-  be shown once. Batches use verified post-write views once per affected date.
-  Recipe-only saves and arithmetic-only questions do not trigger a dashboard.
+- When the actual native connector exposes the response options, set
+  `include_spreadsheet_in_response=true`, `response_include_grid_data=true` and
+  bounded `response_ranges` covering the validated consumed-month append area
+  and all required record columns. Derive coverage from current bounds and native
+  append behavior; do not guess the new row or request unrelated months.
+- Check `updatedSpreadsheet` before making another read. Verification requires
+  the bound spreadsheet ID and numeric sheet ID, exactly one retained entry ID,
+  and exact date, description, kcal/P/C/F, estimated flag and notes in
+  `userEnteredValue` with literal `stringValue`, `numberValue` and `boolValue`.
+  Formulas, effective values alone, echoed requests, empty replies, truncated
+  coverage or missing fields do not prove the record. If every required cell
+  matches, the write response verifies the save: **do not issue a separate
+  verification read**. Otherwise read back the retained ID and compare the same
+  fields before saying “saved”. Uncertain execution remains “save not verified”;
+  retain the ID and check it before any permitted retry. Lost/ambiguous identity
+  requires clarification, not a replacement save.
+- Complete accepted meals in this order: bounded write → verification from the
+  write response or targeted readback → complete affected-day snapshot →
+  `show_dashboard` → compact receipt. A failed presentation step still returns
+  the verified receipt with the observed limitation. A changed row proves that
+  record only; use the post-write coverage rules below for daily totals.
+- Return a compact receipt: meal/portion, your tracker, consumed date, calories
+  and protein/carbohydrate/fat grams, and estimate status. Keep entry ID and Sheet
+  link in context and available on request. Offer plain-language correction/undo.
+  After renderer acceptance, use one short paragraph with the verified meal
+  values; omit any separate daily-total table, metrics block or recap.
+  Include daily totals in a requested text view or observed-error fallback only,
+  using a complete validated date read.
+- After every verified meal save or batch, ALWAYS show **Day So Far** for the
+  consumed date, including yesterday or another backdated date. Do not ask an
+  invitation question first. For a batch, render once per affected date after all
+  writes are verified. Keep the receipt concise and the tracker/date explicit.
+  Use the post-write data rules below; a failed render never authorizes another
+  save. An explicit user request for text only overrides automatic rendering.
+  Load presentation guidance and discover `show_dashboard` once if needed, even
+  after a plain “yes” without an app mention; call v2 `view=today` with complete
+  verified coverage. A formatted Day So Far heading/table is not a substitute for
+  the available renderer. After acceptance, use the compact meal receipt without
+  duplicating daily totals or announcing “display unconfirmed” just because the
+  host UI cannot be inspected. Do not claim the card appeared. Text fallback is
+  only for an observed error, unsupported host, reported missing card or explicit
+  text-only request. A missing card report permits one presentation retry from
+  still-current verified evidence; never repeat the save. Follow the reference's
+  bounded recovery rules. Nutrition estimates before a verified meal write, unaccepted proposals, recipe-only saves and
+  arithmetic-only questions do not trigger an automatic dashboard.
 
 ## Write Failure Recovery
 
@@ -476,7 +487,7 @@ outcome from meal records alone.
 Default an unspecified dashboard to **Day So Far** for the current local date.
 Day So Far also supports any explicitly requested historical date; after a meal
 mutation select the consumed date, not the wall-clock day. Weekly is separate.
-For a pending-meal view, verified correction/removal, requested dashboard, review or widget follow-up, read
+For an automatic post-write view, requested dashboard, review or widget follow-up, read
 [presentation.md](references/presentation.md) and call the connected
 `show_dashboard` tool after complete source reads. Discover/load the actual tool
 before declaring it unavailable, including in follow-ups without an app mention. Follow the distinct discovery, input-validation,
@@ -486,12 +497,10 @@ as a substitute for an inline widget. Plain questions can still use text.
 Stop after verified results or one clear capability/data blocker; do not repeatedly
 retry failed writes or provision alternate infrastructure.
 
-## Deterministic Calculations And Source Reuse
+## Deterministic Calculations And Post-write Reads
 
 For nutrition sums, portion scaling or estimating calories from known macros,
-use the combined `show_dashboard.pendingMeal` path for normal logging; use
-`calculate_nutrition` or an actually executed host calculation for standalone
-questions, item-level scaling or text-only work. Do not do
+use `calculate_nutrition` or an actually executed host calculation. Do not do
 mental arithmetic. Preserve supplied calories; `kcal=null` in the calculator
 estimates missing calories using protein/carbs ×4 and fat ×9 and must be labelled
 estimated. Unknown macros cannot be replaced by zero. Stored calories remain
@@ -506,10 +515,7 @@ never both. If over the row limit, aggregate with an executed host calculation;
 never truncate. A calculator result or render acknowledgement does not verify a
 Google write or complete source coverage.
 
-A pending card uses the complete saved baseline plus exactly one addition; it
-remains labelled pending after the write. The final receipt supplies save status.
-Do not reread daily totals or render again just to remove that label. For a
-requested fresh view or a correction/removal, obtain complete current coverage
+After write verification, obtain complete current coverage for the affected date(s)
 using the bounded read strategy in the template. A full updated-grid write response
 may supply it; a changed row alone may not. Reuse complete pre-write date rows only
 when the connector evidence proves the precise mutation and no intervening edit,
@@ -532,8 +538,8 @@ start at setup, so an empty new tracker gets no retrospective invitation.
 
 If this interaction already reviewed last week, handle the marker without a
 redundant invitation. Otherwise, if the marker is earlier than the current week, offer “Would you like to review
-last week?” once for the immediately preceding week. The automatic Day So Far view (or requested text-only equivalent) follows the
-normal pending-meal or verified-correction/batch sequence;
+last week?” once for the immediately preceding week. The automatic Day So Far view (or the requested text-only equivalent) still
+appears after a verified meal mutation;
 the weekly invitation may follow it and does not suppress it. Remember the offer in conversation immediately; after actually
 presenting it, patch/read back the marker to the current week. Acceptance, decline,
 or a direct review of last week also handles that week's invitation. Do not
@@ -554,7 +560,7 @@ silent reset. No background notifications, external store, or concurrency guaran
 
 - Keep fixed schema/formula knowledge in this skill and its bundled references.
   Read changing meals/preferences, coverage and necessary native structural facts
-  from Google. Do not remove validation/readback to claim fewer calls.
+  from Google. Do not remove validation/verification to claim fewer calls.
 - Select tools for the requested operation once. Do not repeatedly check identity,
   repeat an exact-title lookup for a verified matching tracker ID, or re-read
   identical metadata in one uninterrupted operation. Refresh, account/tracker changes, observed external
@@ -573,8 +579,7 @@ silent reset. No background notifications, external store, or concurrency guaran
   response can serve as readback only if it proves exact written values/types and
   record identity; otherwise read once by identity. Never skip prior-ID checks,
   current-row checks for edits/removal, or verification to save a call.
-- Render the automatic affected-day view or a requested/accepted view once after data is ready. Normal single-meal logging renders before the write with a pending label;
-  corrections/removals and batches render after verification. No renderer
+- Render the automatic affected-day view or a requested/accepted view once after data is ready. Automatic Day So Far accompanies a verified meal receipt/change. No renderer
   call is needed for a weekly invitation or nutrition discussion alone. Loaded weekly navigation
   requires no tool call. An actionable validation error permits one corrected
   payload retry using the same verified source evidence. Other renderer failures get a text fallback,

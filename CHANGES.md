@@ -1,5 +1,16 @@
 # Changes
 
+## 10 October 2026 — service 0.11.0 / plugin 1.5.0
+
+- Restore automatic Day So Far after verified saves and remove the pending-meal
+  input/result/widget extension.
+- Put the normal logging checklist at the skill entry point; verify sufficient
+  native updated-grid write responses without a redundant read, with targeted
+  readback when record evidence is incomplete.
+- Preserve accepted numeric precision, confirmation, duplicate prevention and
+  consumed-date handling. Google access remains with the host connector.
+
+
 ## 10 October 2026 — service 0.10.0 / plugin 1.4.0
 
 - Combine pending-meal calculation, validation and Day So Far in `show_dashboard`.
