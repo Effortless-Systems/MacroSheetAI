@@ -38,7 +38,7 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   assert.ok(guides.tracking.startsWith(readFileSync(new URL('../../../plugins/macrosheet/skills/macrosheet/SKILL.md',import.meta.url),'utf8')));
   assert.equal(guides.recipes,readFileSync(new URL('../../../plugins/macrosheet/skills/macrosheet/references/recipes.md',import.meta.url),'utf8'));
   assert.equal(guides.presentation,readFileSync(new URL('../../../plugins/macrosheet/skills/macrosheet/references/presentation.md',import.meta.url),'utf8'));
-  assert.equal(guides.version,'1.2.1');
+  assert.equal(guides.version,'1.3.0');
   const topics=['tracking','presentation','target_help','recipes','template'];
   assert.deepEqual(guideTool.inputSchema.properties.topic.enum,topics);
   assert.deepEqual(guideTool.outputSchema.properties.topic.enum,topics);
@@ -59,9 +59,10 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   assert.doesNotMatch(dashboard.description,/First read|Google connector|select.*tracker/);
   const tracking=guides.tracking.replace(/\s+/g,' ');
   assert.match(tracking,/title is exactly `_MacroSheet`/);
-  assert.match(tracking,/name = '_MacroSheet' or name = '_Macrosheet'/);
+  assert.match(tracking,/name = '_MacroSheet' and mimeType/);
   assert.match(tracking,/deduplicate by file ID/);
-  assert.match(tracking,/Multiple candidates across either spelling require the user's choice/);
+  assert.doesNotMatch(JSON.stringify(guides),/Synthetic Trial|_Macrosheet|person_name|usage_analytics_enabled|schema 1|only v1/);
+  assert.match(tracking,/Multiple candidates require the user's choice/);
   assert.match(tracking,/invalid sole candidate is a format blocker/);
   assert.match(tracking,/A prior meal aggregate cannot establish an individual ingredient's macros/);
   assert.match(tracking,/Every item, including historical foods, must display numeric kcal\/P\/C\/F values/);
@@ -119,9 +120,8 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   assert.doesNotMatch(JSON.stringify({content:result.content,structuredContent:result.structuredContent}),/Test tracker|650|protein|tracker-a/);
   assert.deepEqual(result.content,[{type:'text',text:'Dashboard prepared.'}]);
   assert.deepEqual(result._meta['macrosheet/snapshot'],parseSnapshotRequest(input).data);
-  const legacyResource=await client.readResource({uri:'ui://macrosheet/dashboard/v1.html'});
-  assert.equal(legacyResource.contents[0].text,resource.contents[0].text);
-  for(const item of [resource,legacyResource]) {
+  await assert.rejects(client.readResource({uri:'ui://macrosheet/dashboard/v1.html'}));
+  for(const item of [resource]) {
    assert.match(item.contents[0]._meta['openai/widgetDescription'],/totals are already in the card/);
    assert.equal(item.contents[0]._meta.ui.domain,widgetDomain);
    assert.equal(item.contents[0]._meta['openai/widgetDomain'],widgetDomain);

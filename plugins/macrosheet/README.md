@@ -2,7 +2,7 @@
 
 Publishing company: PROSPR PTE. LTD.; source remains in the Effortless Systems GitHub
 organization. This is an unpublished release candidate. Dashboards are required
-for public v1. The public ZIP must include this skill and the hosted MCP.
+for the initial public release. The public ZIP must include this skill and the hosted MCP.
 
 Licensed under [AGPLv3, version 3 only](LICENSE) (`AGPL-3.0-only`). Separate
 proprietary licensing is available from PROSPR PTE. LTD. under a written
@@ -24,32 +24,33 @@ It generates the archive's MCP configuration (explicit HTTP transport for Claude
 changing local installation or authorizing Google. Use `--check-release` to
 inspect the chosen host's artifact gaps, and `--release` to refuse an incomplete
 public package. These commands do not close live release gates.
-The two original SVG icons remain drafts for owner review. On 7 October the owner
+The directory logo and composer icon use the approved MacroSheet PNG artwork. On 7 October the owner
 reported ChatGPT live validation complete. Listing pages, review cases and release
-notes are prepared; the pages need publisher acceptance and publication, and a
-walkthrough recording URL is still missing. The owner approved AGPLv3 with
+notes are prepared; the public Support page is deployed, and
+the owner-selected public review recording URL is included. Reviewer assessment
+of the recording and cases remains separate from package validation. The owner approved AGPLv3 with
 separate proprietary licensing on 8 October. The existing
 `get_tracking_guide` fallback is unchanged. Artifact checks do not establish public
 page accessibility, final legal acceptance or policy eligibility.
 
-Version 1.2.1 retains optional dashboard usage analytics with a brief privacy
-notice and “turn off/on usage analytics” controls. The host stores the preference
-in the tracker; omitted controls produce no custom telemetry. Collection ships
-disabled pending an effective notice and actual-host verification. See
-[the shared preference guidance](skills/macrosheet/SKILL.md#usage-analytics-preference).
+Version 1.3.0 uses one current tracker/dashboard contract. Usage analytics is
+controlled by the service operator and ships disabled. There is no tracker
+preference, on/off prompt or analytics tool argument. See the
+[privacy policy](https://macrosheet.prospr.me/privacy) for collection status,
+fields, purpose and retention.
 
 A guided meal diary for one user in their own Google Sheet. Start with:
 
 > Help me create my MacroSheet tracker. Guide me one step at a time and help me
 > choose nutrition targets if I need them.
 
-After agreement, setup creates exactly `_MacroSheet`. Later operations reuse
-the verified account/file ID without reconfirming capitalization. Without that
-binding, check both exact names `_MacroSheet` and compatibility `_Macrosheet`;
-validate and reuse one candidate, or ask for a choice across multiple candidates.
-Google reads require an ID/URL. No family/additional trackers or broad
-filename searches are supported. An explicitly linked legacy personal tracker
-can remain the sole tracker without an automatic rename. Chat uses “your tracker”. Targets are optional; the skill can guide
+After agreement, setup creates exactly `_MacroSheet` using the bundled schema 2 /
+template 2.1.0 native requests. Later operations reuse the verified account/file ID.
+Without a binding, check the exact name `_MacroSheet`; validate and reuse one
+candidate, or ask for a choice across multiple candidates. Google reads require
+an ID/URL. No family/additional trackers or broad filename searches are supported.
+An explicitly linked tracker must validate against the current format. Chat uses
+“your tracker”. Targets are optional; the skill can guide
 you when you do not know what to choose. Meal receipts stay compact, with automatic
 Day So Far after verified saves, corrections and removals for each consumed date and occasional previous-week invitations during active chat.
 
@@ -87,7 +88,7 @@ Validate native cell/formula metadata, bounded reads, creation/copy, writes and
 readback before using tracking operations. No Claude installation, persistence,
 inline rendering or mobile support has been verified by local packaging tests.
 
-Installed skill 1.2.1 adds [connection help](skills/macrosheet/references/connection-help.md)
+Installed skill 1.3.0 adds [connection help](skills/macrosheet/references/connection-help.md)
 for setup and relevant user-requested/error-driven recovery. If Google access is
 missing, optional native Plugin Management discovery can suggest an eligible
 uninstalled Google Drive plugin. Already installed/pending/recently suggested

@@ -7,6 +7,7 @@ from pathlib import Path
 import re
 from urllib.parse import urlsplit
 import xml.etree.ElementTree as ET
+import zlib
 from zipfile import ZIP_DEFLATED, ZipFile, ZipInfo
 
 
@@ -130,7 +131,17 @@ def release_issues(contents, host=None):
             data = files.get(path)
             if data is None or not 0 < len(data) <= 5 * 1024 * 1024:
                 raise ValueError('Missing or oversized icon')
-            if Path(path).suffix.lower() == '.svg':
+            extension = Path(path).suffix.lower()
+            if extension == '.png':
+                # shortcut: PNG header checks only; use a full decoder for arbitrary raster uploads.
+                if (len(data) < 45 or data[:16] != b'\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR' or
+                        zlib.crc32(data[12:29]) != int.from_bytes(data[29:33], 'big') or
+                        not data.endswith(b'\x00\x00\x00\x00IEND\xaeB`\x82')):
+                    raise ValueError('PNG header or end chunk is invalid')
+                width, height = int.from_bytes(data[16:20], 'big'), int.from_bytes(data[20:24], 'big')
+                if not (width == height and 48 <= width <= 4096):
+                    raise ValueError('PNG must be square and 48–4096 pixels')
+            elif extension == '.svg':
                 if b'<!DOCTYPE' in data.upper() or b'<!ENTITY' in data.upper():
                     raise ValueError('SVG document entities are not allowed')
                 root = ET.fromstring(data)
@@ -150,9 +161,9 @@ def release_issues(contents, host=None):
                            for k, v in node.attrib.items()) for node in root.iter()):
                     raise ValueError('External references or scripts are not allowed')
             else:
-                raise ValueError('This release checker requires square SVG icons as planned')
+                raise ValueError('This release checker supports SVG and PNG branding')
         except (ValueError, TypeError, KeyError, ET.ParseError):
-            issues.append(f'interface.{key} needs a packaged square SVG icon (48–4096 units, at most 5 MiB) without external references')
+            issues.append(f'interface.{key} needs a packaged square SVG or PNG icon (48–4096 units/pixels, at most 5 MiB); SVG must have no external references')
     if not isinstance(manifest.get('license'), str) or not manifest['license'].strip() or not files.get('LICENSE'):
         issues.append('Approved license identifier and packaged LICENSE are required')
     if host == 'claude':

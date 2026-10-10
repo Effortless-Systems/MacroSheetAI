@@ -1,6 +1,6 @@
 # MacroSheet presentation service
 
-Service 0.8.0 / guide 1.2.1 exposes `calculate_nutrition`, `show_dashboard` and
+Service 0.9.0 / guide 1.3.0 exposes `calculate_nutrition`, `show_dashboard` and
 `get_tracking_guide` on `/mcp/openai`, `/mcp/claude` and legacy `/mcp`.
 It has no Google credentials, tracking database or persistent nutrition payloads.
 The host/skill owns source research, authorization, Sheet writes and readback.
@@ -29,7 +29,7 @@ widget communication uses the host bridge with an empty network CSP.
 
 POST uses stateless Streamable HTTP and JSON responses; GET/DELETE MCP requests
 return 405. `/healthz` reports readiness. Bodies are limited to 32 KiB and concurrent
-requests to eight. Resource v2 and its v1 alias serve the same bundled widget.
+requests to eight. Only snapshot version 2 and resource v2 are supported.
 Day So Far uses one day; Weekly uses fourteen aligned days for local navigation.
 Numeric output acceptance does not establish host display or source verification.
 
@@ -61,9 +61,11 @@ returns 404. Host/origin checks still apply. Synthetic checks do not prove domai
 ownership. Preserve existing routes, widget origin, rate limits and analytics state
 when deploying updates; retain the tested revision/configuration for rollback.
 
-Custom usage events require the enabled operator flag, dataset/HMAC binding and
-an explicit request preference; omitted controls produce no events. Do not enable
-collection without accurate disclosure and verified host opt-out. No request-body,
+Custom usage events require the enabled operator flag and dataset/HMAC binding.
+There is no per-user Sheet preference or request flag. All dashboard calls are
+eligible when the operator enables collection; no other tool emits events.
+Collection remains disabled pending accurate public disclosure, host metadata
+verification and separately authorized activation. No request-body,
 tracker, nutrition or raw identity fields belong in custom analytics/logs.
 
 ## Evidence Boundaries

@@ -1,8 +1,8 @@
 {
   "product": "macrosheet",
   "schemaVersion": 2,
-  "templateVersion": "2.0.0",
-  "publicTemplateUrl": "https://docs.google.com/spreadsheets/d/1Ij8_fyhe8VbVlZiASrBMXDPjQ0qcsic12TiigYNIH-o/edit",
+  "templateVersion": "2.1.0",
+  "publicTemplateUrl": null,
   "description": "Data-free native Google Sheets template. Prefer whole-workbook copy; use requests only on a new empty workbook. Initialize timezone/settings and register the current month after copying.",
   "sheetIds": {
     "settings": 101,
@@ -811,16 +811,6 @@
             "values": [
               {
                 "userEnteredValue": {
-                  "stringValue": "person_name"
-                }
-              },
-              {}
-            ]
-          },
-          {
-            "values": [
-              {
-                "userEnteredValue": {
                   "stringValue": "created_local_date"
                 }
               },
@@ -856,7 +846,7 @@
               },
               {
                 "userEnteredValue": {
-                  "stringValue": "2.0.0"
+                  "stringValue": "2.1.0"
                 }
               }
             ]
@@ -891,7 +881,7 @@
               },
               {
                 "userEnteredValue": {
-                  "formulaValue": "=IF(AND(INDEX(Settings!$B$2:$B$13,MATCH(\"timezone\",Settings!$A$2:$A$13,0))<>\"\",ISNUMBER(INDEX(Settings!$B$2:$B$13,MATCH(\"week_starts_on\",Settings!$A$2:$A$13,0))),INDEX(Settings!$B$2:$B$13,MATCH(\"created_local_date\",Settings!$A$2:$A$13,0))<>\"\"),\"Ready\",\"Finish setup in chat\")"
+                  "formulaValue": "=IF(AND(INDEX(Settings!$B$2:$B$12,MATCH(\"timezone\",Settings!$A$2:$A$12,0))<>\"\",ISNUMBER(INDEX(Settings!$B$2:$B$12,MATCH(\"week_starts_on\",Settings!$A$2:$A$12,0))),INDEX(Settings!$B$2:$B$12,MATCH(\"created_local_date\",Settings!$A$2:$A$12,0))<>\"\"),\"Ready\",\"Finish setup in chat\")"
                 }
               }
             ]
@@ -905,7 +895,7 @@
               },
               {
                 "userEnteredValue": {
-                  "formulaValue": "=INDEX(Settings!$B$2:$B$13,MATCH(\"timezone\",Settings!$A$2:$A$13,0))"
+                  "formulaValue": "=INDEX(Settings!$B$2:$B$12,MATCH(\"timezone\",Settings!$A$2:$A$12,0))"
                 }
               }
             ]
@@ -933,7 +923,7 @@
               },
               {
                 "userEnteredValue": {
-                  "formulaValue": "=INDEX(Settings!$B$2:$B$13,MATCH(\"week_starts_on\",Settings!$A$2:$A$13,0))"
+                  "formulaValue": "=INDEX(Settings!$B$2:$B$12,MATCH(\"week_starts_on\",Settings!$A$2:$A$12,0))"
                 }
               }
             ]
@@ -1154,22 +1144,22 @@
               {},
               {
                 "userEnteredValue": {
-                  "formulaValue": "=IF(INDEX(Settings!$B$2:$B$13,MATCH(\"calorie_target_kcal\",Settings!$A$2:$A$13,0))=\"\",\"\",INDEX(Settings!$B$2:$B$13,MATCH(\"calorie_target_kcal\",Settings!$A$2:$A$13,0)))"
+                  "formulaValue": "=IF(INDEX(Settings!$B$2:$B$12,MATCH(\"calorie_target_kcal\",Settings!$A$2:$A$12,0))=\"\",\"\",INDEX(Settings!$B$2:$B$12,MATCH(\"calorie_target_kcal\",Settings!$A$2:$A$12,0)))"
                 }
               },
               {
                 "userEnteredValue": {
-                  "formulaValue": "=IF(INDEX(Settings!$B$2:$B$13,MATCH(\"protein_target_g\",Settings!$A$2:$A$13,0))=\"\",\"\",INDEX(Settings!$B$2:$B$13,MATCH(\"protein_target_g\",Settings!$A$2:$A$13,0)))"
+                  "formulaValue": "=IF(INDEX(Settings!$B$2:$B$12,MATCH(\"protein_target_g\",Settings!$A$2:$A$12,0))=\"\",\"\",INDEX(Settings!$B$2:$B$12,MATCH(\"protein_target_g\",Settings!$A$2:$A$12,0)))"
                 }
               },
               {
                 "userEnteredValue": {
-                  "formulaValue": "=IF(INDEX(Settings!$B$2:$B$13,MATCH(\"carbs_target_g\",Settings!$A$2:$A$13,0))=\"\",\"\",INDEX(Settings!$B$2:$B$13,MATCH(\"carbs_target_g\",Settings!$A$2:$A$13,0)))"
+                  "formulaValue": "=IF(INDEX(Settings!$B$2:$B$12,MATCH(\"carbs_target_g\",Settings!$A$2:$A$12,0))=\"\",\"\",INDEX(Settings!$B$2:$B$12,MATCH(\"carbs_target_g\",Settings!$A$2:$A$12,0)))"
                 }
               },
               {
                 "userEnteredValue": {
-                  "formulaValue": "=IF(INDEX(Settings!$B$2:$B$13,MATCH(\"fat_target_g\",Settings!$A$2:$A$13,0))=\"\",\"\",INDEX(Settings!$B$2:$B$13,MATCH(\"fat_target_g\",Settings!$A$2:$A$13,0)))"
+                  "formulaValue": "=IF(INDEX(Settings!$B$2:$B$12,MATCH(\"fat_target_g\",Settings!$A$2:$A$12,0))=\"\",\"\",INDEX(Settings!$B$2:$B$12,MATCH(\"fat_target_g\",Settings!$A$2:$A$12,0)))"
                 }
               }
             ]

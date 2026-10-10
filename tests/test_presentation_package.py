@@ -63,7 +63,7 @@ class PresentationPackageTests(unittest.TestCase):
             expected = ["plugin.json", ".codex-plugin/plugin.json", "README.md",
                         "skills/macrosheet/SKILL.md", "skills/macrosheet/agents/openai.yaml", "skills/macrosheet/references/tracker-template.md",
                         "skills/macrosheet/references/presentation.md", "skills/macrosheet/references/target-help.md", "skills/macrosheet/references/recipes.md", "skills/macrosheet/references/connection-help.md", "skills/macrosheet/assets/tracker-template.json",
-                        "LICENSE", "LICENSING.md", "assets/composer-icon.svg", "assets/logo.svg"]
+                        "LICENSE", "LICENSING.md", "assets/macrosheet-logo.png"]
             self.assertEqual(archive.namelist(), ["macrosheet/" + name for name in expected])
             for name in expected:
                 self.assertEqual(archive.read("macrosheet/" + name),
@@ -71,7 +71,7 @@ class PresentationPackageTests(unittest.TestCase):
 
     def test_tracking_skill_upload_is_complete_and_data_free(self):
         path = PACKAGER.build_archive(self.repo, skill_only=True)
-        self.assertEqual(path.name, "macrosheet-skill-1.2.1.zip")
+        self.assertEqual(path.name, "macrosheet-skill-1.3.0.zip")
         before = path.read_bytes()
         self.assertEqual(PACKAGER.build_archive(self.repo, skill_only=True).read_bytes(), before)
         with ZipFile(path) as archive:
@@ -88,7 +88,7 @@ class PresentationPackageTests(unittest.TestCase):
             self.assertNotIn("assets/dashboard.html", " ".join(archive.namelist()))
             tracking = ' '.join(archive.read('macrosheet/SKILL.md').decode().split())
             self.assertIn('title is exactly `_MacroSheet`', tracking)
-            self.assertIn("name = '_MacroSheet' or name = '_Macrosheet'", tracking)
+            self.assertIn("name = '_MacroSheet' and mimeType", tracking)
             self.assertIn('Every item, including historical foods, must display numeric', tracking)
             self.assertIn('plain “yes” without an app mention', tracking)
         with self.assertRaises(ValueError):
@@ -112,13 +112,13 @@ class PresentationPackageTests(unittest.TestCase):
     def test_host_packages_share_source_bytes_and_have_self_contained_allowlists(self):
         shared = ['skills/macrosheet/SKILL.md', 'skills/macrosheet/references/tracker-template.md',
                   'skills/macrosheet/references/presentation.md', 'skills/macrosheet/references/target-help.md', 'skills/macrosheet/references/recipes.md', 'skills/macrosheet/references/connection-help.md',
-                  'skills/macrosheet/assets/tracker-template.json', 'README.md', 'LICENSE', 'LICENSING.md', 'assets/logo.svg']
+                  'skills/macrosheet/assets/tracker-template.json', 'README.md', 'LICENSE', 'LICENSING.md', 'assets/macrosheet-logo.png']
         archives = {}
         (self.repo/'plugins/macrosheet/private-account.json').write_text('{}')
         for host in ['openai', 'claude']:
             endpoint = f'https://mcp.example.com/mcp/{host}'
             path = PACKAGER.build_archive(self.repo, host=host, mcp_server_url=endpoint)
-            self.assertEqual(path.name, f'macrosheet-{host}-1.2.1.zip')
+            self.assertEqual(path.name, f'macrosheet-{host}-1.3.0.zip')
             before = path.read_bytes()
             self.assertEqual(PACKAGER.build_archive(self.repo, host=host, mcp_server_url=endpoint).read_bytes(), before)
             with ZipFile(path) as archive:
@@ -140,12 +140,12 @@ class PresentationPackageTests(unittest.TestCase):
                              hashlib.sha256(archives['claude'][name]).digest())
         self.assertEqual(set(archives['claude']), set(shared + ['.claude-plugin/plugin.json', '.mcp.json']))
         self.assertEqual(set(archives['openai']), set(shared + ['plugin.json', '.codex-plugin/plugin.json',
-                         'mcp.json', '.mcp.json', 'skills/macrosheet/agents/openai.yaml', 'assets/composer-icon.svg']))
+                         'mcp.json', '.mcp.json', 'skills/macrosheet/agents/openai.yaml', 'assets/macrosheet-logo.png']))
         claude = json.loads(archives['claude']['.claude-plugin/plugin.json'])
         portable = json.loads(archives['openai']['plugin.json'])
         for key in ['name', 'version', 'description', 'author', 'repository', 'license']:
             self.assertEqual(claude[key], portable[key])
-        self.assertEqual(claude['icon'], './assets/logo.svg')
+        self.assertEqual(claude['icon'], './assets/macrosheet-logo.png')
         self.assertNotIn('extensions', claude)
         self.assertEqual(json.loads(archives['claude']['.mcp.json'])['mcpServers']['macrosheet']['type'], 'http')
 

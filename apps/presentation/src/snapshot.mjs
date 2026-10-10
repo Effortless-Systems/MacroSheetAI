@@ -12,17 +12,17 @@ export const shiftDate = (value, offset) => {
   return d.toISOString().slice(0, 10);
 };
 export const weekStart = (value, firstDay = 1) => shiftDate(value, -((new Date(`${value}T00:00:00Z`).getUTCDay() - firstDay + 7) % 7));
-export const viewOf = data => data.version === 1 ? 'weekly' : data.view;
-export const firstDayOf = data => data.version === 1 ? 1 : data.weekStartsOn;
+export const viewOf = data => data.view;
+export const firstDayOf = data => data.weekStartsOn;
 const localDate = (readAt, timezone) => {
   const parts = new Intl.DateTimeFormat('en', { timeZone: timezone, year: 'numeric', month: '2-digit', day: '2-digit' }).formatToParts(new Date(readAt));
   const part = key => parts.find(p => p.type === key).value;
   return `${part('year')}-${part('month')}-${part('day')}`;
 };
 const snapshotFields = z.object({
-  version: z.union([z.literal(1), z.literal(2)]),
-  view: z.enum(['today', 'weekly']).optional(),
-  weekStartsOn: z.number().int().min(0).max(6).optional(),
+  version: z.literal(2),
+  view: z.enum(['today', 'weekly']),
+  weekStartsOn: z.number().int().min(0).max(6),
   snapshotId: z.string().uuid(),
   tracker: z.string().trim().min(1).max(100),
   trackerRef: z.string().regex(/^[a-zA-Z0-9_-]{1,64}$/),
@@ -38,9 +38,6 @@ export const snapshotSchema = snapshotFields.superRefine((data, ctx) => {
   // Field refinements already report invalid dates; do not perform calendar math on them.
   if (!date.safeParse(data.periodStart).success || !date.safeParse(data.focusDate).success) return;
   const fail = (path, message) => ctx.addIssue({ code: 'custom', path, message });
-  if (data.version === 1 && (data.view !== undefined || data.weekStartsOn !== undefined)) fail(['version'], 'Version 1 must omit view and weekStartsOn.');
-  if (data.version === 2 && data.view === undefined) fail(['view'], 'Version 2 requires today or weekly.');
-  if (data.version === 2 && data.weekStartsOn === undefined) fail(['weekStartsOn'], 'Version 2 requires the preferred week start, 0 through 6.');
   if (data.focusDate > data.today) fail(['focusDate'], 'Requested review date must not be after the local source-read date.');
   if (viewOf(data) === 'today') {
     if (data.days.length !== 1) fail(['days'], 'Today requires exactly one aggregate for focusDate.');
@@ -49,7 +46,7 @@ export const snapshotSchema = snapshotFields.superRefine((data, ctx) => {
     if (data.days.length !== 14) fail(['days'], 'Weekly requires fourteen consecutive days: the preceding week and requested week.');
     if (weekStart(data.periodStart, firstDayOf(data)) !== data.periodStart) fail(['periodStart'], 'Weekly periodStart must align with weekStartsOn.');
     if (data.focusDate < data.periodStart || data.focusDate > shiftDate(data.periodStart, 13)) fail(['focusDate'], 'Requested review date must be within the supplied coverage.');
-    if (data.version === 2 && data.periodStart !== shiftDate(weekStart(data.focusDate, firstDayOf(data)), -7)) fail(['periodStart'], 'Version 2 Weekly coverage starts seven days before the requested week.');
+    if (data.periodStart !== shiftDate(weekStart(data.focusDate, firstDayOf(data)), -7)) fail(['periodStart'], 'Version 2 Weekly coverage starts seven days before the requested week.');
   }
   try {
     if (localDate(data.readAt, data.timezone) !== data.today) fail(['today'], 'today must be the local date of readAt in timezone; keep a historical date in focusDate.');
@@ -61,10 +58,10 @@ export const snapshotSchema = snapshotFields.superRefine((data, ctx) => {
   });
 });
 
-// Share normalization for server results and legacy widget inputs.
+// Share normalization for server results and widget inputs.
 export function normalizeSnapshot(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) return input;
-  const { usageAnalytics, ...data } = input;
+  const data = { ...input };
   if (data.version !== 2) return data;
   try { data.today = localDate(data.readAt, data.timezone); } catch { /* Validation reports malformed fields. */ }
   if (date.safeParse(data.focusDate).success) {
@@ -85,9 +82,8 @@ export function normalizeSnapshot(input) {
   return data;
 }
 // Keep a Zod object at the tool boundary for SDK JSON-schema discovery. Validate
-// supplied fields first; only v2 may omit redundant, deterministically derived dates.
+// supplied fields first; derive redundant dates from the verified source timestamp.
 export const snapshotRequestSchema = snapshotFields.partial({ today: true, periodStart: true, days: true }).extend({
-  usageAnalytics: z.boolean().optional().describe('Optional usage telemetry control, separate from the snapshot. Send true only after privacy disclosure and honoring the user preference; omitted or false disables custom analytics. No identity or location values belong in arguments.'),
   meals: z.array(z.object({ date, ...nutrientShape }).strict()).max(200).optional().describe('Preferred v2 input: complete verified numeric meal values for the requested period, without IDs or text. JavaScript computes counts/totals and empty days. Supply meals OR days, never both. An empty array means complete coverage with no meals.')
 }).superRefine((input, ctx) => {
   if (input.meals !== undefined && (input.version !== 2 || input.days !== undefined)) {

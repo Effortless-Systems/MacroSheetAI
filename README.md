@@ -21,7 +21,7 @@ personal recipes and settings remain yours.
 ## Tracking
 
 Start with “Help me create my MacroSheet tracker.” Setup validates the sole
-`_MacroSheet` tracker; `_Macrosheet` remains compatible. Targets are optional.
+`_MacroSheet` tracker using schema 2 and template 2.1.0. Targets are optional.
 Newly researched, label-extracted, recipe-derived or estimated meal values require
 an itemized portion/nutrition table and explicit confirmation before a write.
 Verified saves use stable IDs/readback, a compact receipt and automatic Day So Far.
@@ -62,8 +62,8 @@ python3 scripts/package_plugin.py --host openai --check-release --mcp-server-url
 
 Host URLs must end exactly in `/mcp/openai` or `/mcp/claude`. Full packages include
 the tracking skill and MCP declaration, but Google authorization stays separate.
-Use `--release` only after genuine review artifacts are complete; the reviewer
-walkthrough URL is still required for the OpenAI candidate. `--skill-only` and
+Use `--release` only after genuine review artifacts are complete; the owner-designated reviewer walkthrough URL is included in the OpenAI candidate.
+Actual recording assessment and portal approval remain separate. `--skill-only` and
 `--presentation-probe` are development modes. Artifact checks do not prove live
 page accessibility, publisher verification, reviewer access or approval.
 

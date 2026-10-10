@@ -2,7 +2,7 @@
 
 Use the same verified personal tracker/account as meal tracking. Recipes live in
 one optional `Recipes` tab in the user's Sheet, not in the MCP service or chat
-memory. Workbook schema 1/2, monthly meal columns and template 2.0.0 stay unchanged.
+memory. Workbook schema 2, monthly meal columns and template 2.1.0 stay unchanged.
 Use the host's authorized Google connector; inspect its native request schemas.
 
 ## Format And Source Meaning

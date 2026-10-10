@@ -1,30 +1,26 @@
 # Tracker Template v2
 
-New trackers use schema 2 / template 2.0.0. Existing schema 1 monthly trackers
-continue using the raw-read path below. Single-log v0 and unknown versions remain
-unsupported. Never migrate, replace or silently repair an existing tracker.
+Trackers use schema 2 / template 2.1.0. Other versions are unsupported. Never migrate, replace or silently repair an existing tracker.
 
 ## Copy And Initialize
 
-Prefer a whole-workbook copy of the public, data-free template linked by
-`publicTemplateUrl` in [tracker-template.json](../assets/tracker-template.json).
+When `publicTemplateUrl` is non-null, prefer a whole-workbook copy of the
+public, data-free template linked by `publicTemplateUrl` in [tracker-template.json](../assets/tracker-template.json).
 For plugin-only use, fetch `get_tracking_guide(topic="template")` once to obtain
 that same static definition. Do not invent a link or use a personal tracker as a
 master. Copy using the host Google connector into the selected user's Drive;
 never change the master or share the personal copy publicly.
 
 Resolve the single personal tracker first using the main skill: reuse its verified
-account/file binding, or check both exact names `_MacroSheet` (canonical) and
-`_Macrosheet` (compatibility) before creation. A sole candidate that validates needs no
-extra ownership confirmation; multiple candidates need a choice. Other legacy
-titles require an explicit binding; never rename an existing file. For a new
+account/file binding, or check the exact name `_MacroSheet` before creation. A sole candidate that validates needs no
+extra ownership confirmation; multiple candidates need a choice. An explicit Sheet link still requires schema validation; never rename an existing file. For a new
 copy, verify the new ID differs from the source, the
 exact title and owner, private sharing, required tabs/headers, and no copied meal
 records or personal settings. Resume an identified incomplete copy after timeout;
 never create another blindly. If unexpected data is present, stop instead of
 clearing an unknown workbook. No sample meals go into a real tracker.
 
-If the public template is unavailable, create ONE new empty native spreadsheet,
+If the public template URL is null or unavailable, create ONE new empty native spreadsheet,
 then apply the bundled `baseRequests` with native batchUpdate. These requests
 are executable Google Sheets requests, not pseudocode. Fixed sheet IDs are safe
 only after confirming they are unused in this new workbook. Remove the original
@@ -52,39 +48,22 @@ use literal text or native numbers, never formulas.
 | key | value |
 | --- | --- |
 | product | macrosheet |
-| schema_version | 2 for new trackers; retain 1 for existing v1 |
+| schema_version | 2 |
 | timezone | chosen IANA timezone |
 | calorie_target_kcal | accepted number, otherwise blank |
 | protein_target_g | accepted number, otherwise blank |
 | carbs_target_g | accepted number, otherwise blank |
 | fat_target_g | accepted number, otherwise blank |
-| person_name | legacy compatibility field; blank on new personal setup, never a tracker-selection rule |
 | created_local_date | local creation date, YYYY-MM-DD |
 | week_starts_on | chosen integer: 0=Sunday through 6=Saturday |
 | last_weekly_review_offer | current local week-start date at setup |
-| template_version | 2.0.0 for v2 only |
+| template_version | 2.1.0 |
 
 Ask for intended timezone/week start; do not infer from a UTC clock or invent
 targets. Targets are optional finite nonnegative values; explicit zero is not
 blank. Week markers are valid local week-start dates, never meal dates.
 Missing/duplicate required keys, invalid required settings or unknown versions stop the affected
-operation. No default Monday or missing-preference compatibility path exists.
-
-### Optional analytics preference (v1 and v2)
-
-`usage_analytics_enabled` is optional and is not part of the required-key table.
-Its value must be a literal native boolean (`boolValue`), never a formula, string
-or number. Verified absence means enabled after disclosure. False disables;
-malformed, duplicate or unreadable values suppress analytics without blocking
-tracking. See [the skill control](../SKILL.md#usage-analytics-preference) for the
-notice and immediate conversational opt-out.
-
-Read it with bounded Settings reads. On an explicit change, resolve the unique
-key row immediately before writing only that cell with `userEnteredValue.boolValue`
-and `fields: "userEnteredValue"`; if verified absent, use an unused Settings row
-for only the literal key and boolean. Read back the key/native value; ambiguous
-rows must not be overwritten. No migration, template-version bump, notice marker,
-meal/recipe/monthly-tab or invitation-state change accompanies this preference.
+operation. Do not invent defaults for missing preferences.
 
 ## Monthly Meal Tabs
 
@@ -181,7 +160,7 @@ interaction; Refresh and writes invalidate affected data. Do not cache meals
 outside Sheets/chat or persist a second tracker.
 
 1. Read Settings and the finite Month_Index A:E registry, complete canonical tab
-   metadata, and selected monthly headers. Require schema 2/template 2.0.0,
+   metadata, and selected monthly headers. Require schema 2/template 2.1.0,
    native locale/timezone matching setup, unique valid settings and registry
    identities. Each selected canonical month must have exactly one index row
    whose source row/column bounds equal native metadata. A missing month means no
@@ -224,7 +203,7 @@ identity evidence. Formula evaluation must have completed. If pending/stale,
 retry one bounded read then use verified raw coverage. A changed-row receipt or
 MCP render acknowledgement alone proves neither totals nor Google write success.
 
-## Raw Reads For v1 Or Fallback
+## Bounded Raw Reads
 
 The Google connector supports multiple bounded native CellData ranges per call.
 Row search is substring matching within a bounded scan, not a date-interval query;
@@ -282,23 +261,9 @@ This is not a lock, compare-and-swap or cross-chat uniqueness guarantee.
 ## Deterministic Presentation
 
 For verified v2 summaries prefer aggregate `days`: Google Sheets has already
-executed the arithmetic. For v1 or raw fallback prefer numeric `meals` (up to 200)
+executed the arithmetic. For raw fallback prefer numeric `meals` (up to 200)
 and let shared JavaScript aggregate; above the limit use an actually executed
 calculation, never truncation or mental arithmetic. `calculate_nutrition` remains
 available for portion calculations. The MCP has no Google access. Always show
 Day So Far after verified save/correct/remove, once per affected consumed date,
 with equivalent text only when inline rendering is actually blocked.
-
-## Synthetic Trial
-
-Use only an explicitly identified test tracker with chosen `Asia/Singapore`
-timezone. Save two entries on `2026-09-19` in `Meals_2026_09`: (400 kcal, 20 g
-protein, 50 g carbs, 13 g fat) and (600, 40, 65, 20). Total: (1000, 60, 115, 33).
-Correct the second to (500, 35, 55, 17): total (900, 55, 105, 30). Retry the first
-save with its original ID: still two entries. Move the second to `2026-08-31`:
-retain its ID in `Meals_2026_08`, absent in September, and render both days.
-Remove the first: September 19 has no log, not confirmed zero intake. Review two
-weeks across August/September with unsorted rows and gaps; no other month is read.
-A month allocated more than 200 data rows exercises the ID/date index path.
-Keep trial operations serial. Record lost-write uncertainty and actual connector
-call counts separately from local renderer tests.

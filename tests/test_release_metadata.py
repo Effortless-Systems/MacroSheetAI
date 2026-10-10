@@ -6,6 +6,7 @@ import json
 from pathlib import Path
 import shutil
 import tempfile
+import zlib
 import unittest
 from zipfile import ZipFile
 
@@ -58,9 +59,9 @@ class ReleaseMetadataTests(unittest.TestCase):
     def payload(self, url=None):
         return PACKAGER.prepare_payload(self.repo, mcp_server_url=url)[3]
 
-    def test_current_candidate_leaves_only_recording_gap_with_explicit_endpoint(self):
+    def test_current_candidate_has_complete_artifacts_with_explicit_endpoint(self):
         self.assertEqual(PACKAGER.release_issues(self.payload(SYNTHETIC_URL)),
-                         ['Review needs an accessible public walkthrough URL'])
+                         [])
         self.assertEqual((REPO / 'LICENSE').read_bytes(),
                          (REPO / 'plugins/macrosheet/LICENSE').read_bytes())
         manifest = json.loads((self.plugin / 'plugin.json').read_text())
@@ -146,6 +147,32 @@ class ReleaseMetadataTests(unittest.TestCase):
         issues = PACKAGER.release_issues(list(files.items()))
         for fragment in ['shortDescription', '5 complete positive', '3 complete negative', 'credentials', 'review fields']:
             self.assertTrue(any(fragment in issue for issue in issues), fragment)
+
+    def test_png_branding_is_packaged_and_invalid_headers_or_dimensions_are_rejected(self):
+        self.complete_synthetic_metadata()
+        manifest = json.loads((self.plugin / 'plugin.json').read_text())
+        manifest['extensions']['com.openai']['interface']['logo'] = './assets/logo.png'
+        (self.plugin / 'plugin.json').write_bytes(PACKAGER.json_bytes(manifest))
+        PACKAGER.sync_metadata(self.repo)
+
+        def png(width, height):
+            def chunk(kind, body):
+                return len(body).to_bytes(4, 'big') + kind + body + zlib.crc32(kind + body).to_bytes(4, 'big')
+            header = width.to_bytes(4, 'big') + height.to_bytes(4, 'big') + bytes([8, 6, 0, 0, 0])
+            pixels = zlib.compress((b'\x00' + bytes(width * 4)) * height)
+            return b'\x89PNG\r\n\x1a\n' + chunk(b'IHDR', header) + chunk(b'IDAT', pixels) + chunk(b'IEND', b'')
+
+        path = self.plugin / 'assets/logo.png'
+        valid = png(48, 48)
+        path.write_bytes(valid)
+        self.assertEqual(PACKAGER.release_issues(self.payload(SYNTHETIC_URL)), [])
+        archive = PACKAGER.build_archive(self.repo, mcp_server_url=SYNTHETIC_URL, release=True)
+        with ZipFile(archive) as package:
+            self.assertEqual(package.read('macrosheet/assets/logo.png'), valid)
+        for invalid in [b'not PNG', valid[:-1], valid[:29] + bytes(4) + valid[33:],
+                        png(24, 24), png(48, 49), png(4097, 1)]:
+            path.write_bytes(invalid)
+            self.assertTrue(any('interface.logo' in issue for issue in PACKAGER.release_issues(self.payload(SYNTHETIC_URL))))
 
     def test_invalid_icons_and_path_escape_are_rejected(self):
         self.complete_synthetic_metadata()

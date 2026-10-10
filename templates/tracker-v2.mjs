@@ -1,15 +1,16 @@
 // Native Google Sheets requests. This module has no network or credential access.
-export const templateVersion = '2.0.0';
-export const publicTemplateUrl = 'https://docs.google.com/spreadsheets/d/1Ij8_fyhe8VbVlZiASrBMXDPjQ0qcsic12TiigYNIH-o/edit';
+export const templateVersion = '2.1.0';
+// Use bundled native requests until the current template has a published master.
+export const publicTemplateUrl = null;
 export const ids = { settings: 101, dashboard: 102, index: 103, summary: 104, blank: 105 };
 export const mealHeaders = ['entry_id','local_date','description','calories_kcal','protein_g','carbs_g','fat_g','estimated','notes'];
 export const summaryHeaders = ['local_date','meal_count','calories_kcal','protein_g','carbs_g','fat_g','protein_kcal','carbs_kcal','fat_kcal','status'];
 export const indexHeaders = ['month','meal_tab','summary_start_row','source_rows','source_columns','status','meal_count','formula_cells','invalid_rows','duplicate_ids'];
-export const settingsKeys = ['product','schema_version','timezone','calorie_target_kcal','protein_target_g','carbs_target_g','fat_target_g','person_name','created_local_date','week_starts_on','last_weekly_review_offer','template_version'];
+export const settingsKeys = ['product','schema_version','timezone','calorie_target_kcal','protein_target_g','carbs_target_g','fat_target_g','created_local_date','week_starts_on','last_weekly_review_offer','template_version'];
 export const literal = value => value === null || value === '' ? {} : {userEnteredValue:{[typeof value === 'number' ? 'numberValue' : typeof value === 'boolean' ? 'boolValue' : 'stringValue']:value}};
 export const formula = value => ({userEnteredValue:{formulaValue:value}});
 export const cells = (sheetId, rowIndex, rows, columnIndex=0) => ({updateCells:{start:{sheetId,rowIndex,columnIndex},rows:rows.map(values=>({values})),fields:'userEnteredValue'}});
-const set = key => `INDEX(Settings!$B$2:$B$13,MATCH("${key}",Settings!$A$2:$A$13,0))`;
+const set = key => `INDEX(Settings!$B$2:$B$12,MATCH("${key}",Settings!$A$2:$A$12,0))`;
 const range = (r, header) => `INDIRECT("'"&Month_Index!$B$${r}&"'!"&ADDRESS(2,MATCH("${header}",INDIRECT("'"&Month_Index!$B$${r}&"'!A1:"&ADDRESS(1,Month_Index!$E$${r},4)),0),4)&":"&ADDRESS(Month_Index!$D$${r},MATCH("${header}",INDIRECT("'"&Month_Index!$B$${r}&"'!A1:"&ADDRESS(1,Month_Index!$E$${r},4)),0),4))`;
 const source = r => `INDIRECT("'"&$B${r}&"'!A2:"&ADDRESS($D${r},$E${r},4))`;
 const headers = r => `INDIRECT("'"&$B${r}&"'!A1:"&ADDRESS(1,$E${r},4))`;

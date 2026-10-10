@@ -1,6 +1,6 @@
 {
   "name": "macrosheet",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "description": "Track meal calories and macronutrients in user-owned Google Sheets through existing host connectors.",
   "author": {
     "name": "PROSPR PTE. LTD."
@@ -27,8 +27,8 @@
       "Log this meal in my tracker and show Day So Far for the meal’s date.",
       "Show my weekly dashboard."
     ],
-    "logo": "./assets/logo.svg",
-    "composerIcon": "./assets/composer-icon.svg"
+    "logo": "./assets/macrosheet-logo.png",
+    "composerIcon": "./assets/macrosheet-logo.png"
   },
   "extensions": {
     "com.openai": {
@@ -52,7 +52,7 @@
               "description": "P3 — Guided creation of a disposable personal tracker through a separately authorized Google connection.",
               "prompt": "Help me create a disposable MacroSheet test tracker in the Google test account I have authorized. Guide me one step at a time. Use UTC and Monday week starts, skip nutrition targets, and ask before creating it. Do not modify another tracker.",
               "tools_triggered": "get_tracking_guide",
-              "expected_behavior": "Load current tracking/template guidance as needed and use the host's separately authorized native Google creation/copy and readback operations. After explicit creation approval, create or explicitly select the sole _MacroSheet tracker, verify its identity, metadata/settings and native cells/formulas, and keep the source template and other trackers unchanged. Targets remain unset. The MacroSheet MCP server itself neither authorizes Google nor creates a Sheet. Before creation check both exact names _MacroSheet and compatibility _Macrosheet; reuse one validated candidate without a capitalization confirmation, and ask for selection when multiple candidates exist."
+              "expected_behavior": "Load current tracking/template guidance as needed and use the host's separately authorized native Google creation/copy and readback operations. After explicit creation approval, create or explicitly select the sole _MacroSheet tracker, verify its identity, metadata/settings and native cells/formulas, and keep the source template and other trackers unchanged. Targets remain unset. The MacroSheet MCP server itself neither authorizes Google nor creates a Sheet. Before creation check the exact name _MacroSheet; reuse one validated schema 2 candidate, and ask for selection when multiple candidates exist."
             },
             {
               "description": "P4 — Preview, confirm, save, verify, correct and refresh a synthetic meal with automatic Day So Far.",
@@ -81,10 +81,11 @@
               "prompt": "Render this intentionally invalid MacroSheet dashboard input: {\"version\":2,\"sheetId\":\"synthetic-forbidden-field\"}. Do not access Google, invent missing values, claim a successful card or repeat the supplied forbidden field in a response."
             }
           ]
-        }
+        },
+        "demo_recording_url": "https://www.youtube.com/shorts/w-S2hW40x6o"
       },
       "publication": {
-        "release_notes": "MacroSheet 1.2.1: adds optional native Google Drive connection suggestions and setup, recovery, update and refresh help from the installed skill package only. Host controls own installation, authentication and package updates. Host-specific MCP endpoints and optional dashboard analytics remain available; collection stays disabled pending privacy publication and live opt-out verification. Google ownership, meal confirmation and stateless numeric rendering remain unchanged. MacroSheet is licensed under AGPL-3.0-only."
+        "release_notes": "MacroSheet 1.3.0: updated 10 October 2026; prepares one current tracker and dashboard contract for initial release, removes pre-release compatibility instructions and developer-only trial steps from the skill, and replaces per-tracker analytics controls with operator configuration. Usage collection remains disabled. Template 2.1.0 removes the unused person_name field. Google ownership, meal confirmation and stateless numeric rendering remain unchanged. Licensed under AGPL-3.0-only."
       }
     }
   }

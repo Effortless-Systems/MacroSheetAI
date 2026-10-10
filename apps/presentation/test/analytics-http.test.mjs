@@ -25,19 +25,18 @@ test('routes, final MCP outcomes and overlapping request IDs remain isolated', a
       const catalog = await (await post(route, { jsonrpc: '2.0', id: 1, method: 'tools/list' })).json();
       assert.deepEqual(catalog.result.tools.map(t => t.name).sort(), ['calculate_nutrition', 'get_tracking_guide', 'show_dashboard']);
       const tool = catalog.result.tools.find(t => t.name === 'show_dashboard');
-      assert.equal(tool.inputSchema.properties.usageAnalytics.type, 'boolean');
+      assert.equal(Object.hasOwn(tool.inputSchema.properties, 'usageAnalytics'), false);
       assert.ok(!tool.inputSchema.required.includes('usageAnalytics'));
-      for (const uri of ['ui://macrosheet/dashboard/v1.html', 'ui://macrosheet/dashboard/v2.html']) {
+      for (const uri of ['ui://macrosheet/dashboard/v2.html']) {
         const resource = await (await post(route, { jsonrpc: '2.0', id: 2, method: 'resources/read', params: { uri } })).json();
         assert.equal(resource.result.contents[0].text, html);
       }
       assert.equal((await fetch(base + route)).status, 405);
       assert.equal((await post(route, call(), { Origin: 'https://invalid.example' })).status, 403);
       assert.equal((await post(route, { payload: 'x'.repeat(40000) })).status, 413);
-      for (const flag of [undefined, false, 'true', 1, null]) await (await post(route, call({ usageAnalytics: flag }))).text();
     }
     assert.equal(events.length, 0);
-    const responses = await Promise.all(mcpRoutes.map((route, i) => post(route, call({ usageAnalytics: true }, `SYNTHETIC_${i}`))));
+    const responses = await Promise.all(mcpRoutes.map((route, i) => post(route, call({}, `SYNTHETIC_${i}`))));
     for (const response of responses) {
       assert.equal(response.status, 200);
       assert.equal(response.headers.get('Cache-Control'), 'no-store');
@@ -49,22 +48,22 @@ test('routes, final MCP outcomes and overlapping request IDs remain isolated', a
     assert.equal(events.length, 3);
     assert.deepEqual(events.map(e => e.blobs[2]).sort(), ['claude', 'legacy', 'openai']);
     assert.equal(new Set(events.map(e => e.indexes[0])).size, 3);
-    const invalid = await post('/mcp/openai', call({ usageAnalytics: true, days: [] }));
+    const invalid = await post('/mcp/openai', call({ days: [] }));
     assert.equal(invalid.status, 200);
     assert.equal((await invalid.json()).result.isError, true);
     assert.equal(events.at(-1).blobs[3], 'tool_error');
-    const rejected = await post('/mcp/openai', call({ usageAnalytics: true }), { Accept: 'application/json' });
+    const rejected = await post('/mcp/openai', call(), { Accept: 'application/json' });
     assert.equal(rejected.status, 406); await rejected.text();
     assert.equal(events.at(-1).blobs[3], 'protocol_error');
     const handle = StreamableHTTPServerTransport.prototype.handleRequest;
     try {
       StreamableHTTPServerTransport.prototype.handleRequest = async () => { throw Error('PRIVATE_TRANSPORT_ERROR'); };
-      const failed = await post('/mcp/openai', call({ usageAnalytics: true }));
+      const failed = await post('/mcp/openai', call());
       assert.equal(failed.status, 500); await failed.text();
       StreamableHTTPServerTransport.prototype.handleRequest = async (_req, res) => {
         res.writeHead(200); res.write('{'); throw Error('PRIVATE_PARTIAL_RESPONSE');
       };
-      const partial = await post('/mcp/openai', call({ usageAnalytics: true }));
+      const partial = await post('/mcp/openai', call());
       assert.equal(partial.status, 200); await partial.text();
     } finally { StreamableHTTPServerTransport.prototype.handleRequest = handle; }
     assert.equal(events.at(-1).blobs[3], 'transport_error');
@@ -81,7 +80,7 @@ test('missing analytics configuration and observer/writer failures leave renderi
     const listener = createHttpApp({ html, observeDashboard }).listen(0, '127.0.0.1');
     await new Promise(resolve => listener.once('listening', resolve));
     try {
-      const response = await fetch(`http://127.0.0.1:${listener.address().port}/mcp/openai`, { method: 'POST', headers, body: JSON.stringify(call({ usageAnalytics: true })) });
+      const response = await fetch(`http://127.0.0.1:${listener.address().port}/mcp/openai`, { method: 'POST', headers, body: JSON.stringify(call()) });
       assert.equal(response.status, 200);
       assert.equal((await response.json()).result.structuredContent.accepted, true);
     } finally { await new Promise(resolve => listener.close(resolve)); }

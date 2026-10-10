@@ -7,7 +7,7 @@ export const sharedMealScenario = () => ({
  breakfast:{kcal:400,protein:25,carbs:45,fat:13},
  total:{kcal:1000,protein:60,carbs:115,fat:33}
 });
-export const snapshot = () => ({ version:1,snapshotId:'12345678-1234-4123-8123-123456789012',tracker:'Test tracker',trackerRef:'tracker-a',timezone:'UTC',today:'2026-01-10',focusDate:'2026-01-10',periodStart:'2025-12-29',readAt:'2026-01-10T12:00:00Z',targets:{kcal:2000,protein:null,carbs:250,fat:70},days:Array.from({length:14},(_,i)=>({date:shiftDate('2025-12-29',i),mealCount:i===0||i===12?1:0,kcal:i===0?500:i===12?650:null,protein:i===0||i===12?30:null,carbs:i===0||i===12?50:null,fat:i===0||i===12?20:null})) });
+export const snapshot = () => ({ version:2,view:'weekly',weekStartsOn:1,snapshotId:'12345678-1234-4123-8123-123456789012',tracker:'Test tracker',trackerRef:'tracker-a',timezone:'UTC',today:'2026-01-10',focusDate:'2026-01-10',periodStart:'2025-12-29',readAt:'2026-01-10T12:00:00Z',targets:{kcal:2000,protein:null,carbs:250,fat:70},days:Array.from({length:14},(_,i)=>({date:shiftDate('2025-12-29',i),mealCount:i===0||i===12?1:0,kcal:i===0?500:i===12?650:null,protein:i===0||i===12?30:null,carbs:i===0||i===12?50:null,fat:i===0||i===12?20:null})) });
 
 export function todaySnapshot() {
  const s=snapshot();

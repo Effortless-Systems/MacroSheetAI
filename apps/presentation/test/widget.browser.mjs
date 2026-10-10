@@ -46,15 +46,6 @@ for(const order of ['input-first','result-first','result-only'])test(`canonical 
  expect(prompt).toContain(input.trackerRef);expect(prompt).toContain(input.snapshotId);expect(prompt).toContain(input.focusDate);
 });
 
-test('request-only analytics control does not conflict with the canonical widget result',async({page})=>{
- const input={...todaySnapshot(),usageAnalytics:true};
- const f=await mount(page,{input,delivery:'both'});
- await expect(f.locator('#day-kcal')).toHaveText('650 kcal');
- await expect(f.locator('body')).not.toContainText('usageAnalytics');
- await f.getByRole('button',{name:'Refresh from Sheet'}).click();
- expect(JSON.stringify(await page.evaluate(()=>window.messages))).not.toContain('usageAnalytics');
-});
-
 test('result-only empty day tolerates partial/delayed input and duplicate delivery',async({page})=>{
  const input=emptyTodayRequest();const result=toolResult(input);
  const f=await mount(page,{input,delivery:'result-only'});
@@ -223,7 +214,7 @@ test('unset, zero, exceeded targets and unlogged days remain distinct',async({pa
  await expect(f.locator('#nutrients button')).toHaveCount(4);await expect(f.locator('progress')).toHaveCount(0);
  await expect(f.locator('#day-kcal')).toHaveText('— kcal');await expect(f.locator('#day-note')).toContainText('intake is unknown');
 });
-test('legacy snapshot still renders Weekly without a second daily widget',async({page})=>{
+test('Weekly snapshot renders without a second daily widget',async({page})=>{
  const f=await mount(page,{input:snapshot()});await expect(f.locator('#week-total')).toHaveText('650 kcal logged');
  await expect(f.locator('#today-view')).toBeHidden();
 });

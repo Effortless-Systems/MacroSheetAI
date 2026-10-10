@@ -15,7 +15,7 @@ export function createAnalyticsObserver(bindings) {
           !['legacy', 'openai', 'claude'].includes(channel) ||
           !request || Array.isArray(request) || request.method !== 'tools/call' ||
           !['string', 'number'].includes(typeof request.id) ||
-          request.params?.name !== 'show_dashboard' || request.params?.arguments?.usageAnalytics !== true) return;
+          request.params?.name !== 'show_dashboard') return;
 
       const started = performance.now();
       const meta = channel === 'claude' ? undefined : request.params?._meta;

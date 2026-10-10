@@ -31,9 +31,9 @@ try {
   assert.match(resource.contents[0].text, /MacroSheet/);
   const digest = value => createHash('sha256').update(value).digest('hex');
   assert.equal(digest(resource.contents[0].text),digest(readFileSync(new URL('../dist/dashboard.html',import.meta.url))),'Live widget must match the built release');
-  const legacy = await client.readResource({uri:'ui://macrosheet/dashboard/v1.html'});
-  assert.equal(legacy.contents[0].text,resource.contents[0].text);
-  for (const item of [resource, legacy]) {
+  await assert.rejects(client.readResource({uri:'ui://macrosheet/dashboard/v1.html'}));
+  assert.equal(Object.hasOwn(tools.find(t=>t.name==='show_dashboard').inputSchema.properties,'usageAnalytics'),false);
+  for (const item of [resource]) {
     assert.equal(item.contents[0]._meta.ui.domain, widgetDomain);
     assert.equal(item.contents[0]._meta['openai/widgetDomain'], widgetDomain);
     assert.deepEqual(item.contents[0]._meta.ui.csp, {connectDomains:[],resourceDomains:[]});
@@ -87,5 +87,5 @@ try {
   assert.equal((await fetch(endpoint)).status,405);
   assert.equal((await fetch(endpoint,{method:'POST',headers:{Origin:'https://invalid.example'}})).status,403);
   assert.equal((await fetch(endpoint,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({payload:'x'.repeat(40000)})})).status,413);
-  console.log('PASS: MCP discovery, exact deployed widget hash, v1/v2 Today/Weekly, empty-day/midnight/derived-date regressions, legacy resource, acknowledgements, invalid input, service version, request limits and 10 bounded calls. Chat-client rendering remains a separate test.');
+  console.log('PASS: MCP discovery, exact deployed widget hash, v2 Today/Weekly, empty-day/midnight/derived-date regressions, retired resource rejection, acknowledgements, invalid input, service version, request limits and 10 bounded calls. Chat-client rendering remains a separate test.');
 } finally { await client.close(); }

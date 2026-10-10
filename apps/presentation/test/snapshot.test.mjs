@@ -36,9 +36,8 @@ test('all seven week starts align across year boundaries and reject a different 
  assert.equal(weekStart('2026-01-01',1),'2025-12-29');
  const s=weeklySnapshot(0);s.weekStartsOn=1;assert.equal(snapshotSchema.safeParse(s).success,false);
 });
-test('v1 callers retain strict legacy semantics',()=>{
- const s=snapshot();assert.equal(snapshotSchema.safeParse(s).success,true);
- for(const extra of [{view:'today'},{weekStartsOn:0}])assert.equal(snapshotSchema.safeParse({...s,...extra}).success,false);
+test('pre-release snapshot versions are rejected',()=>{
+ for(const version of [0,1,3])assert.equal(parseSnapshotRequest({...snapshot(),version}).success,false);
 });
 test('Today eliminates thirteen unnecessary render aggregates without echoing meal data',()=>{
  const today=JSON.stringify(todaySnapshot()),weekly=JSON.stringify(weeklySnapshot());
@@ -66,14 +65,12 @@ test('v2 request normalization repairs empty-day and midnight assembly errors wi
  const zero=todaySnapshot();for(const key of ['kcal','protein','carbs','fat'])zero.days[0][key]=0;
  assert.equal(parseSnapshotRequest(zero).data.days[0].kcal,0);
 });
-test('v2 derives omitted dates for Today and all week starts; v1 still requires them',()=>{
+test('v2 derives omitted dates for Today and all week starts',()=>{
  for(const input of [todaySnapshot(),...Array.from({length:7},(_,i)=>weeklySnapshot(i))]){
   const expected=input.periodStart;delete input.today;delete input.periodStart;
   const parsed=parseSnapshotRequest(input);assert.equal(parsed.success,true);
   assert.equal(parsed.data.periodStart,expected);assert.equal(parsed.data.today,'2026-01-10');
  }
- const legacy=snapshot();delete legacy.today;assert.equal(parseSnapshotRequest(legacy).success,false);
- const legacyZero=snapshot();legacyZero.days[1].kcal=0;assert.equal(parseSnapshotRequest(legacyZero).success,false);
 });
 test('normalization never discards positive nutrients, repairs coverage, or hides invalid input',()=>{
  for(const edit of [s=>s.days[0].kcal=1,s=>delete s.days[0].protein,s=>s.days[0].fat=-1,s=>s.timezone='invalid',s=>s.readAt='yesterday',s=>s.periodStart='invalid',s=>s.focusDate='2026-02-30',s=>s.weekStartsOn=7,s=>s.days[0].date='2026-01-09',s=>s.secret='private']){
@@ -104,16 +101,10 @@ test('numeric meal input rejects wrong coverage, unknowns, private fields, overf
  const missing=make();delete missing.meals;assert.equal(parseSnapshotRequest(missing).success,false);
 });
 
-test('analytics is an optional request control for both versions, never canonical display data',()=>{
- for(const input of [snapshot(),todaySnapshot(),weeklySnapshot()]) {
-  for(const flag of [true,false,undefined]) {
-   const request={...input,usageAnalytics:flag};
-   const result=parseSnapshotRequest(request);
-   assert.equal(result.success,true);
-   assert.equal(Object.hasOwn(result.data,'usageAnalytics'),false);
-   assert.deepEqual(result.data,input);
-  }
-  assert.equal(snapshotSchema.safeParse({...input,usageAnalytics:true}).success,false);
-  for(const flag of ['true',1,null,{}])assert.equal(parseSnapshotRequest({...input,usageAnalytics:flag}).success,false);
+test('dashboard arguments reject removed analytics controls',()=>{
+ for(const input of [todaySnapshot(),weeklySnapshot()]) {
+  assert.equal(parseSnapshotRequest(input).success,true);
+  for(const flag of [true,false,'true',1,null,{}])
+   assert.equal(parseSnapshotRequest({...input,usageAnalytics:flag}).success,false);
  }
 });

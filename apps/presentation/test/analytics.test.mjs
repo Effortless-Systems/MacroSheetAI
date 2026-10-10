@@ -5,7 +5,7 @@ import { createAnalyticsObserver } from '../src/analytics.mjs';
 
 const secret = 'synthetic-test-key-never-use-in-production';
 const request = () => ({ jsonrpc: '2.0', id: 1, method: 'tools/call', params: {
-  name: 'show_dashboard', arguments: { usageAnalytics: true, tracker: 'PRIVATE_TRACKER', meals: [{ kcal: 123 }] },
+  name: 'show_dashboard', arguments: { tracker: 'PRIVATE_TRACKER', meals: [{ kcal: 123 }] },
   _meta: { 'openai/subject': 'PRIVATE_SUBJECT', 'openai/session': 'PRIVATE_SESSION',
     'openai/userAgent': 'PRIVATE_AGENT', 'openai/userLocation': { country: 'sg', city: 'PRIVATE_CITY' } }
 } });
@@ -20,7 +20,7 @@ test('bounded allowlist, provider HMAC and one event per request without payload
   observe(request(), 'legacy')('tool_error');
   assert.equal(events.length, 2);
   assert.deepEqual(Object.keys(events[0]).sort(), ['blobs', 'doubles', 'indexes']);
-  assert.deepEqual(events[0].blobs, ['1', '0.8.0', 'openai', 'success', 'SG', 'openai_subject']);
+  assert.deepEqual(events[0].blobs, ['1', '0.9.0', 'openai', 'success', 'SG', 'openai_subject']);
   assert.equal(events[0].indexes[0], `openai:${createHmac('sha256', secret).update('openai\0PRIVATE_SUBJECT').digest('hex')}`);
   assert.deepEqual(events[0].indexes, events[1].indexes);
   assert.equal(events[0].doubles.length, 1);
@@ -46,17 +46,13 @@ test('missing or unsupported metadata stays unknown; metadata bounds cannot leak
   }
 });
 
-test('collection requires configuration and an explicit true control on a dashboard request', () => {
+test('collection requires operator configuration and a dashboard request', () => {
   const events = [], configured = bindings(events);
   for (const overrides of [{ USAGE_ANALYTICS_ENABLED: 'false' }, { USAGE_ANALYTICS_ENABLED: true },
     { USAGE_ANALYTICS: undefined }, { USAGE_ANALYTICS_HMAC_KEY: undefined }, { USAGE_ANALYTICS_HMAC_KEY: 'short' }]) {
     assert.equal(createAnalyticsObserver({ ...configured, ...overrides })(request(), 'openai'), undefined);
   }
   const observe = createAnalyticsObserver(configured);
-  for (const flag of [undefined, false, 'true', 1, null, {}]) {
-    const input = request(); input.params.arguments.usageAnalytics = flag;
-    assert.equal(observe(input, 'openai'), undefined);
-  }
   for (const edit of [r => delete r.id, r => r.params.name = 'calculate_nutrition', r => r.method = 'resources/read']) {
     const input = request(); edit(input); assert.equal(observe(input, 'openai'), undefined);
   }

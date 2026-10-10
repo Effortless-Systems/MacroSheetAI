@@ -29,8 +29,8 @@ export function createMcpServer(html, { widgetDomain } = {}) {
   const server = new McpServer({ name: 'macrosheet-presentation', version }, {
     instructions: `Public static guidance, deterministic calculations and presentation only. The tracking skill owns Google selection, authorization, writes and readback; this server cannot access Google or save records. Prefer get_tracking_guide for current hosted tracking guidance. ${guideCachePolicy} For meal tracking, prepare presentation guidance and discover show_dashboard before confirmation when possible, including plain yes follow-ups. A missing renderer does not block an authorized save. Complete accepted meals through bounded write, verified readback, complete affected-day snapshot, show_dashboard, then a compact receipt. Render once per affected consumed date; explicit text-only requests override it. Use supplied numeric snapshots for independent rendering; never invent source values. An accepted render needs no duplicate totals or display-unconfirmed warning. Text fallback is for an observed error, unsupported host or reported missing card. Acceptance does not prove display or a Sheet save. Never repeat a save because rendering failed. Detailed tracker, preview and recovery rules remain in the skill and retained guide.`
   });
-  for (const uri of [resourceUri, 'ui://macrosheet/dashboard/v1.html']) registerAppResource(server, uri === resourceUri ? 'dashboard' : 'dashboard-legacy', uri, {}, async () => ({ contents: [{
-    uri, mimeType: RESOURCE_MIME_TYPE, text: html,
+  registerAppResource(server, 'dashboard', resourceUri, {}, async () => ({ contents: [{
+    uri: resourceUri, mimeType: RESOURCE_MIME_TYPE, text: html,
     _meta: {
       ui: { ...(widgetDomain ? { domain: widgetDomain } : {}), prefersBorder: true, csp: { connectDomains: [], resourceDomains: [] } },
       ...(widgetDomain ? { 'openai/widgetDomain': widgetDomain } : {}),

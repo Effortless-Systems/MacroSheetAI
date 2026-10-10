@@ -10,6 +10,9 @@ test('published asset is reproducible, data-free and preserves literal types',()
  assert.deepEqual(literal(0),{userEnteredValue:{numberValue:0}});
  assert.deepEqual(literal(false),{userEnteredValue:{boolValue:false}});
  assert.deepEqual(literal(''),{});
+ assert.equal(asset.templateVersion,'2.1.0');
+ assert.equal(asset.publicTemplateUrl,null);
+ assert.doesNotMatch(JSON.stringify(asset),/person_name|usage_analytics_enabled/);
  const requests=baseRequests();
  const settings=requests.find(r=>r.updateCells?.start.sheetId===ids.settings && r.updateCells.start.rowIndex===1).updateCells.rows;
  const entered=settings.filter(r=>r.values[1].userEnteredValue).map(r=>r.values[0].userEnteredValue.stringValue);
