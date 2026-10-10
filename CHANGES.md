@@ -1,5 +1,13 @@
 # Changes
 
+## 11 October 2026 — service 0.15.0 / plugin 1.9.0
+
+- Move the complete approval/table/question contract early in tracking guidance.
+- Specify six-column Markdown and a Total row for logging-related single-food and
+  estimate-first proposals in the first part of server/catalog guidance.
+- Preserve supplied-value approval, native permissions, exact verification and
+  numeric ownership without changing widget or nutrition algorithms.
+
 ## 11 October 2026 — service 0.14.0 / plugin 1.8.0
 
 - Make current supplied-value logging requests explicitly approved, without an
