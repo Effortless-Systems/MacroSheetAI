@@ -1,15 +1,11 @@
 # MacroSheet presentation service
 
-Service 0.16.0 / guide 1.10.0 exposes `calculate_nutrition`, `show_dashboard` and
+Service 0.17.0 / guide 1.11.0 exposes `calculate_nutrition`, `show_dashboard` and
 `get_tracking_guide` on `/mcp/openai`, `/mcp/claude` and legacy `/mcp`.
 It has no Google credentials, tracking database or persistent nutrition payloads.
 The host/skill owns source research, authorization, Sheet writes and readback.
 A rendered snapshot is not proof of a saved record. Tracking is compact; the
 operations guide supplies detailed setup/correction/target/review rules on demand.
-Hosted instructions are returned once in content text; structuredContent holds
-version/topic/fetchedAt/expiresAt, with no second instruction copy. The host can use documented
-programmatic calling for bounded preparation and exact returned-cell checks;
-authorized native writes and widget invocation remain separate stages.
 
 ## Local Development
 

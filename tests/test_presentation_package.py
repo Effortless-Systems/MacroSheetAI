@@ -71,7 +71,7 @@ class PresentationPackageTests(unittest.TestCase):
 
     def test_tracking_skill_upload_is_complete_and_data_free(self):
         path = PACKAGER.build_archive(self.repo, skill_only=True)
-        self.assertEqual(path.name, "macrosheet-skill-1.10.0.zip")
+        self.assertEqual(path.name, "macrosheet-skill-1.11.0.zip")
         before = path.read_bytes()
         self.assertEqual(PACKAGER.build_archive(self.repo, skill_only=True).read_bytes(), before)
         with ZipFile(path) as archive:
@@ -122,7 +122,7 @@ class PresentationPackageTests(unittest.TestCase):
         for host in ['openai', 'claude']:
             endpoint = f'https://mcp.example.com/mcp/{host}'
             path = PACKAGER.build_archive(self.repo, host=host, mcp_server_url=endpoint)
-            self.assertEqual(path.name, f'macrosheet-{host}-1.10.0.zip')
+            self.assertEqual(path.name, f'macrosheet-{host}-1.11.0.zip')
             before = path.read_bytes()
             self.assertEqual(PACKAGER.build_archive(self.repo, host=host, mcp_server_url=endpoint).read_bytes(), before)
             with ZipFile(path) as archive:

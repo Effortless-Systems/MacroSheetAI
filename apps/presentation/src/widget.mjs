@@ -2,7 +2,7 @@ import { App } from '@modelcontextprotocol/ext-apps';
 import { macroCalories } from './nutrition.mjs';
 import { parseSnapshotRequest, snapshotSchema, shiftDate, weekStart, summarizeWeek, viewOf, firstDayOf } from './snapshot.mjs';
 
-const app = new App({ name: 'MacroSheet', version: '0.16.0' }, {}, { autoResize: true });
+const app = new App({ name: 'MacroSheet', version: '0.17.0' }, {}, { autoResize: true });
 const $ = id => document.getElementById(id);
 const number = value => value === null ? '—' : value.toLocaleString(undefined, { maximumFractionDigits: 1 });
 const label = (value, options = {day:'numeric',month:'short'}) => new Intl.DateTimeFormat(undefined,{...options,timeZone:'UTC'}).format(new Date(`${value}T12:00:00Z`));

@@ -1,5 +1,14 @@
 # Changes
 
+## 11 October 2026 — service 0.17.0 / plugin 1.11.0
+
+- Restore the compact tracking workflow and complete hosted guide text/structured
+  delivery while retaining seven focused topics and native ownership boundaries.
+- Retain exact displayed approved totals as immutable approved_payload; writes and
+  readback compare to those values, not hidden calculation precision.
+- Preserve supplied-value approval, itemized acceptance, IDs and automatic saved-day
+  dashboards. Numeric/widget algorithms and permissions remain unchanged.
+
 ## 11 October 2026 — service 0.16.0 / plugin 1.10.0
 
 - Prioritize the complete read/approve/append/verify/render/receipt routine and
