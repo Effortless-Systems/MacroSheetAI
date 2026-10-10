@@ -82,7 +82,10 @@ literal cells, write/readback recovery and historical meal snapshots.
 No meal, monthly-tab or invitation-marker write is authorized by a pending
 meal proposal. Confirmation applies only to the latest unambiguous proposal; a repeated
 “yes” must not duplicate a saved meal. Preserve stable IDs, write/readback checks,
-compact receipts and automatic Day So Far after verified saves. Keep these rules aligned with the bundled tracking skill and its references.
+compact receipts and automatic Day So Far. Normal single-meal logging prepares a
+pending-labelled dashboard before the authorized write and reports verified save
+status below it; corrections/removals and batches render after verification. Do
+not repeat a prepared dashboard or ask again for unchanged accepted values. Keep these rules aligned with the bundled tracking skill and its references.
 
 # Licensing For Derivative Work
 

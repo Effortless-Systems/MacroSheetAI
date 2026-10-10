@@ -241,7 +241,7 @@ alone do not establish complete date coverage.
    means no rows for the dates. This path validates indexed identities and selected
    records, not unrelated nutrition or manually misplaced historical records.
 4. Never reuse a data index after writes, sorting, account changes, refresh or
-   incomplete coverage. File identity can be reused independently. After a write,
+   incomplete coverage. File identity can be reused independently. For a fresh post-write review,
    reread affected date coverage or use complete native updated-grid evidence
    proving it. A changed-row receipt alone is not complete day coverage.
 
@@ -278,7 +278,10 @@ For verified v2 summaries prefer aggregate `days`: Google Sheets has already
 executed the arithmetic. For raw fallback prefer numeric `meals` (up to 200)
 and let shared JavaScript aggregate; above the limit use an actually executed
 calculation, never truncation or mental arithmetic. `calculate_nutrition` remains
-available for portion calculations. The MCP has no Google access. Always show
-Day So Far after verified save/correct/remove, once per affected consumed date,
+available for portion calculations. The MCP has no Google access. For normal single-meal logging, combine the saved baseline with `pendingMeal`
+in one `show_dashboard` call before the authorized write; use returned numeric
+facts and verify the write response or targeted readback. Final text supplies
+save status beneath the pending card; no routine second dashboard. Corrections,
+removals and batches show verified Day So Far once per affected consumed date,
 with equivalent verified text when rendering is blocked or the user requests
 text only. Incomplete source coverage gets a limitation instead of invented totals.

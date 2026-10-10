@@ -6,7 +6,7 @@ import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/
 import { registerAppTool, registerAppResource, RESOURCE_MIME_TYPE } from '@modelcontextprotocol/ext-apps/server';
 import { z } from 'zod';
 import { calculationSchema, calculationResultSchema, calculateNutrition } from './nutrition.mjs';
-import { snapshotRequestSchema, normalizeSnapshot } from './snapshot.mjs';
+import { snapshotRequestSchema, normalizeSnapshot, daySchema } from './snapshot.mjs';
 import { mcpRoutes } from './analytics.mjs';
 import packageInfo from '../package.json' with { type: 'json' };
 import guides from '../dist/tracking-guides.json' with { type: 'json' };
@@ -27,19 +27,19 @@ function validateWidgetDomain(domain) {
 export function createMcpServer(html, { widgetDomain } = {}) {
   validateWidgetDomain(widgetDomain);
   const server = new McpServer({ name: 'macrosheet-presentation', version }, {
-    instructions: `Public static guidance, deterministic calculations and presentation only. The tracking skill owns Google selection, authorization, writes and readback; this server cannot access Google or save records. Prefer get_tracking_guide for current hosted tracking guidance. ${guideCachePolicy} For meal tracking, prepare presentation guidance and discover show_dashboard before confirmation when possible, including plain yes follow-ups. A missing renderer does not block an authorized save. Complete accepted meals through bounded write, verified readback, complete affected-day snapshot, show_dashboard, then a compact receipt. Render once per affected consumed date; explicit text-only requests override it. Use supplied numeric snapshots for independent rendering; never invent source values. An accepted render needs no duplicate totals or display-unconfirmed warning. Text fallback is for an observed error, unsupported host, reported missing card or explicit text-only request. Acceptance does not prove display or a Sheet save. Never repeat a save because rendering failed. Detailed tracker, preview and recovery rules remain in the skill and retained guide.`
+    instructions: `Public static guidance, deterministic calculations and presentation only. The tracking skill owns Google selection, authorization, writes and readback; this server cannot access Google or save records. Prefer get_tracking_guide for current hosted tracking guidance. ${guideCachePolicy} For meal tracking, prepare presentation guidance and discover show_dashboard before confirmation when possible, including plain yes follow-ups. A missing renderer does not block an authorized save. For a new meal use complete saved baseline → show_dashboard with pendingMeal → authorized write with updated grid data → final verified receipt or actual failure. New proposed values require acceptance before writing; unchanged accepted values do not require another question. Verify the exact record/types from a sufficient write response or targeted readback. Reuse an unchanged prepared pending card; no routine second dashboard. Corrections/removals render after verification. Render once per affected consumed date; explicit text-only requests override it. Use supplied numeric snapshots for independent rendering; never invent source values. An accepted render needs no duplicate totals or display-unconfirmed warning. Text fallback is for an observed error, unsupported host, reported missing card or explicit text-only request. Acceptance does not prove display or a Sheet save. Never repeat a save because rendering failed. Detailed tracker, preview and recovery rules remain in the skill and retained guide.`
   });
   registerAppResource(server, 'dashboard', resourceUri, {}, async () => ({ contents: [{
     uri: resourceUri, mimeType: RESOURCE_MIME_TYPE, text: html,
     _meta: {
       ui: { ...(widgetDomain ? { domain: widgetDomain } : {}), prefersBorder: true, csp: { connectDomains: [], resourceDomains: [] } },
       ...(widgetDomain ? { 'openai/widgetDomain': widgetDomain } : {}),
-      'openai/widgetDescription': 'MacroSheet Day So Far or Weekly card shows the selected dates, logged calorie and macro totals, current targets and coverage. These daily/weekly totals are already in the card; accompanying text needs only a brief meal receipt, without another totals table or summary.'
+      'openai/widgetDescription': 'MacroSheet Day So Far or Weekly card shows the selected dates, calorie and macro totals, current targets and coverage. A pending-meal card says Includes pending meal · save status below; its totals do not prove persistence. These daily/weekly totals are already in the card; accompanying text needs only a brief meal receipt, without another totals table or summary.'
     }
   }] }));
   server.registerTool('get_tracking_guide', {
     title: 'Get MacroSheet tracking instructions',
-    description: 'Use for MacroSheet setup, meal logging/corrections/removals, recipes, targets and dashboard follow-ups when hosted tracking guidance is needed. Prefer tracking; reuse each topic for at most 24 hours, before expiresAt. Missing or expired guidance requires a fetch; a tracking-tool error invalidates it and permits one guide refresh, never an action retry. presentation covers renderer preparation, automatic Day So Far after verified meal changes and observed-failure recovery; target_help, recipes, connection_help and template supply their focused references. A plain yes continues the accepted proposal through readback and show_dashboard. This tool returns public instructions only; it does not access Google or authorize a write.',
+    description: 'Use for MacroSheet setup, meal logging/corrections/removals, recipes, targets and dashboard follow-ups when hosted tracking guidance is needed. Prefer tracking; reuse each topic for at most 24 hours, before expiresAt. Missing or expired guidance requires a fetch; a tracking-tool error invalidates it and permits one guide refresh, never an action retry. presentation covers renderer preparation, the pending Day So Far before a new meal write and verified views after corrections/removals and observed-failure recovery; target_help, recipes, connection_help and template supply their focused references. A plain yes continues the unchanged proposal through write verification, reusing its prepared pending dashboard. This tool returns public instructions only; it does not access Google or authorize a write.',
     inputSchema: z.object({ topic: guideTopicSchema.default('tracking') }).strict(),
     outputSchema: z.object({ version: z.string(), topic: guideTopicSchema, fetchedAt: z.iso.datetime(), expiresAt: z.iso.datetime(), instructions: z.string() }).strict(),
     annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false, idempotentHint: true },
@@ -51,7 +51,7 @@ export function createMcpServer(html, { widgetDomain } = {}) {
   });
   server.registerTool('calculate_nutrition', {
     title: 'Calculate nutrition values',
-    description: 'Use for nutrition sums, portion scaling or calories from protein/carbohydrate/fat before saving a meal or answering a numeric question. Shared JavaScript performs the arithmetic. Supply only numeric items; preserve known calories, use kcal=null only to estimate missing calories by 4/4/9, and label usedMacroEstimate as estimated. Does not read or write Google, set targets, or render a widget.',
+    description: 'Use for standalone nutrition sums, portion scaling or calories from protein/carbohydrate/fat. For a new meal dashboard, show_dashboard with pendingMeal combines this calculation and rendering in one call. Shared JavaScript performs the arithmetic. Supply only numeric items; preserve known calories, use kcal=null only to estimate missing calories by 4/4/9, and label usedMacroEstimate as estimated. Does not read or write Google, set targets, or render a widget.',
     inputSchema: calculationSchema,
     outputSchema: calculationResultSchema,
     annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false, idempotentHint: true },
@@ -66,16 +66,20 @@ export function createMcpServer(html, { widgetDomain } = {}) {
   });
   registerAppTool(server, 'show_dashboard', {
     title: 'Show MacroSheet dashboard',
-    description: 'Use to show MacroSheet Day So Far after a verified meal change, or a requested daily/Weekly dashboard, from complete supplied numeric values. Use v2 view=today for each affected consumed date, including backdated dates; weekly needs fourteen aligned days. Supply meals or days, never both; the schema describes limits, derived dates and empty days. No source connection is required. This tool validates and prepares a widget, not source truth or a saved record. After acceptance keep the meal receipt compact without repeating dashboard totals or reporting unobserved display failure. Explicit text-only requests override automatic rendering. Send no meal descriptions, record IDs, Sheet links or credentials; trackerRef is an opaque conversation-local reference.',
+    description: 'Use to calculate and show Day So Far with one pendingMeal before persistence, or show a requested daily/Weekly review or verified correction/removal from complete supplied numeric values. pendingMeal.items holds the addition; meals or days is the complete saved baseline excluding it. Returns validated pendingMeal and combined day facts directly in structuredContent; no widget callback is needed. A pending result is not a saved record or write authorization. Use v2 view=today for each affected consumed date, including backdated dates; weekly needs fourteen aligned days. Supply meals or days, never both; the schema describes limits, derived dates and empty days. No source connection is required. This tool validates and prepares a widget, not source truth or a saved record. After acceptance keep the meal receipt compact without repeating dashboard totals or reporting unobserved display failure. Explicit text-only requests override automatic rendering. Send no meal descriptions, record IDs, Sheet links or credentials; trackerRef is an opaque conversation-local reference.',
     inputSchema: snapshotRequestSchema,
-    outputSchema: z.object({ accepted: z.literal(true), snapshotId: z.string().uuid() }),
+    outputSchema: z.object({ accepted: z.literal(true), snapshotId: z.string().uuid(), pendingMeal: calculationResultSchema.optional(), day: daySchema.optional() }).strict(),
     annotations: { readOnlyHint: true, destructiveHint: false, openWorldHint: false, idempotentHint: true },
     _meta: { securitySchemes: [{ type: 'noauth' }], ui: { resourceUri, visibility: ['model'] }, 'openai/outputTemplate': resourceUri }
-  }, async (input) => ({
-    structuredContent: { accepted: true, snapshotId: input.snapshotId },
-    content: [{ type: 'text', text: 'Dashboard prepared.' }],
-    _meta: { 'macrosheet/snapshot': normalizeSnapshot(input) }
-  }));
+  }, async (input) => {
+    const snapshot = normalizeSnapshot(input);
+    return {
+      structuredContent: { accepted: true, snapshotId: input.snapshotId,
+        ...(snapshot.pendingMeal ? { pendingMeal: snapshot.pendingMeal, day: snapshot.days[0] } : {}) },
+      content: [{ type: 'text', text: snapshot.pendingMeal ? 'Includes pending meal · save status below.' : 'Dashboard prepared.' }],
+      _meta: { 'macrosheet/snapshot': snapshot }
+    };
+  });
   return server;
 }
 

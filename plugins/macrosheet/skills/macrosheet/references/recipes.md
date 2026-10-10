@@ -122,9 +122,10 @@ preview and the tracking skill's explicit not-logged-yet save question, even if
 the recipe was accepted previously or `estimated=false`. Saving a recipe does
 not authorize later consumption logs. Only current meal values explicitly supplied
 by the user or an unchanged already accepted meal preview use the direct-write
-exception. After accepted
-logging, copy numeric values into the normal monthly meal record; keep recipe ID,
-revision and consumed portion in literal notes. Verify the meal and show Day So Far.
+exception. Follow the ordinary meal workflow: prepare the pending Day So Far,
+then after acceptance copy numeric values into the normal monthly meal record;
+keep recipe ID, revision and consumed portion in literal notes. Verify the save
+and report its status below the prepared dashboard without rendering it again.
 Never link historical meal values to a live recipe formula.
 
 For an ingredient/preparation modification, first match the catalog, then read

@@ -1,5 +1,14 @@
 # Changes
 
+## 10 October 2026 — service 0.10.0 / plugin 1.4.0
+
+- Combine pending-meal calculation, validation and Day So Far in `show_dashboard`.
+- Return compact validated meal/day facts without waiting for widget execution.
+- Label pending intake explicitly; verify native write response cells or read back,
+  then report save status beneath the card without a routine second render.
+- Align packaged and hosted guidance, preserving confirmation, duplicate checks,
+  the stateless numeric boundary and disabled analytics.
+
 ## 10 October 2026 — service 0.9.2
 
 - Remove the obsolete version-1 support claim from the dashboard tool description.
