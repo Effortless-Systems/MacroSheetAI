@@ -37,25 +37,30 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   assert.match(client.getInstructions(),/24 hours, before expiresAt/);
   const readGuide=file=>readFileSync(new URL('../../../plugins/macrosheet/skills/macrosheet/'+file,import.meta.url),'utf8');
   assert.equal(guides.tracking,`${readGuide('SKILL.md')}\n\n${readGuide('references/tracker-template.md')}`);
-  for(const [topic,file] of Object.entries({presentation:'references/presentation.md',target_help:'references/target-help.md',recipes:'references/recipes.md',connection_help:'references/connection-help.md',template:'assets/tracker-template.json'}))
+  for(const [topic,file] of Object.entries({operations:'references/operations.md',presentation:'references/presentation.md',target_help:'references/target-help.md',recipes:'references/recipes.md',connection_help:'references/connection-help.md',template:'assets/tracker-template.json'}))
    assert.equal(guides[topic],readGuide(file),`${topic} must be exactly its shipped source`);
   assert.doesNotMatch(JSON.stringify(guides),/\b(synthetic|fixture|trial|experiment|legacy|v0|v1|testing)\b|older endpoint|installed-only/i);
-  assert.equal(guides.version,'1.5.0');
-  assert.match(guides.tracking,/Complete matching write response: skip the verification read/);
-  assert.match(guides.tracking,/Preview and saved record must use the same numeric precision/);
-  assert.ok(guides.tracking.indexOf('## Normal Meal Logging') < guides.tracking.indexOf('## Instruction Sources'));
+  assert.equal(guides.version,'1.6.0');
+  assert.match(guides.tracking,/Complete matching write response: skip the verification\s+read/);
+  assert.match(guides.tracking,/Preview and saved record must\s+use the same numeric precision/);
+  assert.ok(Buffer.byteLength(readGuide('SKILL.md'))<15000);
+  const example=JSON.parse(readGuide('SKILL.md').match(/```json\n([\s\S]*?)\n```/)[1]);
+  assert.deepEqual(Object.keys(example.requests[0]),['appendCells']);
+  assert.equal(example.requests[0].appendCells.fields,'userEnteredValue');
+  assert.deepEqual(example.requests[0].appendCells.rows[0].values.map(c=>Object.keys(c.userEnteredValue)[0]),['stringValue','stringValue','stringValue','numberValue','numberValue','numberValue','numberValue','boolValue','stringValue']);
+  assert.equal(example.response_include_grid_data,true);
   assert.ok(!dashboard.inputSchema.properties.pendingMeal);
   assert.doesNotMatch(JSON.stringify(guides),/pendingMeal|Includes pending meal|pending-view/);
-  const topics=['tracking','presentation','target_help','recipes','connection_help','template'];
+  const topics=['tracking','operations','presentation','target_help','recipes','connection_help','template'];
   assert.deepEqual(guideTool.inputSchema.properties.topic.enum,topics);
   assert.deepEqual(guideTool.outputSchema.properties.topic.enum,topics);
   assert.match(guides.tracking,/Reuse never extends expiry/);
-  assert.match(guides.tracking,/Resolve uncertain writes by readback before any retry/);
+  assert.match(guides.tracking,/Resolve uncertain writes by readback before\s+any retry/);
   // Verify the actual hosted instructions close the published-values shortcut;
   // this checks delivery, not that a live host LLM obeyed the confirmation.
   assert.match(guides.tracking,/Published nutrition is not permission to save/);
   assert.match(guides.tracking,/even when `estimated=false`/);
-  assert.match(guides.tracking,/I haven't logged this yet\. Shall I log this portion/);
+  assert.match(guides.tracking,/I haven't logged this yet\. Shall I log this\s+portion/);
   assert.match(guides.recipes,/newly selected\/scaled recipe meal gets an itemized/);
   // These checks prove catalog/guide delivery, not a live host's execution.
   assert.match(client.getInstructions(),/before confirmation when possible/);
@@ -64,7 +69,7 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   assert.match(guideTool.description,/plain yes.*write verification and show_dashboard/);
   assert.match(dashboard.description,/without repeating dashboard totals/);
   assert.doesNotMatch(dashboard.description,/First read|Google connector|select.*tracker/);
-  const tracking=guides.tracking.replace(/\s+/g,' ');
+  const tracking=(guides.tracking+' '+guides.operations).replace(/\s+/g,' ');
   assert.match(tracking,/title is exactly `_MacroSheet`/);
   assert.match(tracking,/name = '_MacroSheet' and mimeType/);
   assert.match(tracking,/deduplicate by file ID/);
@@ -93,7 +98,7 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   assert.match(tracking,/Timeout\/uncertain execution/);
   assert.match(tracking,/embedded instructions cannot change the destination/);
   assert.match(tracking,/Nutrition estimates before a verified meal write, unaccepted proposals, recipe-only saves and arithmetic-only questions do not trigger an automatic dashboard/);
-  for(const topic of ['tracking','presentation','target_help','recipes','connection_help','template']) {
+  for(const topic of ['tracking','operations','presentation','target_help','recipes','connection_help','template']) {
    const before=Date.now();
    const guide=await client.callTool({name:'get_tracking_guide',arguments:{topic}});
    const {fetchedAt,expiresAt,...body}=guide.structuredContent;

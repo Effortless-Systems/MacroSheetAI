@@ -11,6 +11,7 @@ const manifest = JSON.parse(await readFile('../../plugins/macrosheet/plugin.json
 await writeFile('dist/tracking-guides.json', JSON.stringify({
   version: manifest.version,
   tracking: `${await readGuide('SKILL.md')}\n\n${await readGuide('references/tracker-template.md')}`,
+  operations: await readGuide('references/operations.md'),
   presentation: await readGuide('references/presentation.md'),
   target_help: await readGuide('references/target-help.md'),
   recipes: await readGuide('references/recipes.md'),

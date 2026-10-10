@@ -1,5 +1,14 @@
 # Changes
 
+## 10 October 2026 — service 0.12.0 / plugin 1.6.0
+
+- Compact the primary tracking workflow and provide one explicit typed native
+  appendCells request for new meals; move detailed operations to a focused guide.
+- Preserve exact confirmation, source validation, returned-cell verification and
+  saved-day dashboards. Request complete bounded month evidence where practical.
+- Keep the service stateless and numeric-only; Google execution stays with the host.
+
+
 ## 10 October 2026 — service 0.11.0 / plugin 1.5.0
 
 - Restore automatic Day So Far after verified saves and remove the pending-meal

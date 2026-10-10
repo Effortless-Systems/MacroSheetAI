@@ -282,6 +282,7 @@ def prepare_payload(repo, presentation_probe=False, skill_only=False, mcp_server
             "skills/macrosheet/SKILL.md",
             "skills/macrosheet/agents/openai.yaml",
             "skills/macrosheet/references/tracker-template.md",
+            "skills/macrosheet/references/operations.md",
             "skills/macrosheet/references/presentation.md",
             "skills/macrosheet/references/target-help.md",
             "skills/macrosheet/references/recipes.md",
@@ -301,7 +302,7 @@ def prepare_payload(repo, presentation_probe=False, skill_only=False, mcp_server
         archive_name = f'{plugin.name}-{host}'
     if skill_only:
         plugin = plugin / "skills" / "macrosheet"
-        payload = ["SKILL.md", "agents/openai.yaml", "references/tracker-template.md", "references/presentation.md", "references/target-help.md", "references/recipes.md", "references/connection-help.md", "assets/tracker-template.json"]
+        payload = ["SKILL.md", "agents/openai.yaml", "references/tracker-template.md", "references/operations.md", "references/presentation.md", "references/target-help.md", "references/recipes.md", "references/connection-help.md", "assets/tracker-template.json"]
         archive_name = "macrosheet-skill"
         generated = {'agents/openai.yaml': openai_skill_metadata(manifest)}
     # Read the complete allowlisted payload before replacing an existing archive.

@@ -61,7 +61,7 @@ class PresentationPackageTests(unittest.TestCase):
         self.assertEqual(default.read_bytes(), before)
         with ZipFile(default) as archive:
             expected = ["plugin.json", ".codex-plugin/plugin.json", "README.md",
-                        "skills/macrosheet/SKILL.md", "skills/macrosheet/agents/openai.yaml", "skills/macrosheet/references/tracker-template.md",
+                        "skills/macrosheet/SKILL.md", "skills/macrosheet/agents/openai.yaml", "skills/macrosheet/references/tracker-template.md", "skills/macrosheet/references/operations.md",
                         "skills/macrosheet/references/presentation.md", "skills/macrosheet/references/target-help.md", "skills/macrosheet/references/recipes.md", "skills/macrosheet/references/connection-help.md", "skills/macrosheet/assets/tracker-template.json",
                         "LICENSE", "LICENSING.md", "assets/macrosheet-logo.png"]
             self.assertEqual(archive.namelist(), ["macrosheet/" + name for name in expected])
@@ -71,11 +71,11 @@ class PresentationPackageTests(unittest.TestCase):
 
     def test_tracking_skill_upload_is_complete_and_data_free(self):
         path = PACKAGER.build_archive(self.repo, skill_only=True)
-        self.assertEqual(path.name, "macrosheet-skill-1.5.0.zip")
+        self.assertEqual(path.name, "macrosheet-skill-1.6.0.zip")
         before = path.read_bytes()
         self.assertEqual(PACKAGER.build_archive(self.repo, skill_only=True).read_bytes(), before)
         with ZipFile(path) as archive:
-            self.assertEqual(archive.namelist(), ["macrosheet/SKILL.md", "macrosheet/agents/openai.yaml", "macrosheet/references/tracker-template.md", "macrosheet/references/presentation.md", "macrosheet/references/target-help.md", "macrosheet/references/recipes.md", "macrosheet/references/connection-help.md", "macrosheet/assets/tracker-template.json", "macrosheet/LICENSE", "macrosheet/LICENSING.md"])
+            self.assertEqual(archive.namelist(), ["macrosheet/SKILL.md", "macrosheet/agents/openai.yaml", "macrosheet/references/tracker-template.md", "macrosheet/references/operations.md", "macrosheet/references/presentation.md", "macrosheet/references/target-help.md", "macrosheet/references/recipes.md", "macrosheet/references/connection-help.md", "macrosheet/assets/tracker-template.json", "macrosheet/LICENSE", "macrosheet/LICENSING.md"])
             for name in archive.namelist():
                 base = name.removeprefix("macrosheet/")
                 source = self.repo / "plugins/macrosheet" / base if base in ["LICENSE", "LICENSING.md"] else self.repo / "plugins/macrosheet/skills" / name
@@ -114,7 +114,7 @@ class PresentationPackageTests(unittest.TestCase):
                          PACKAGER.openai_skill_metadata(portable))
 
     def test_host_packages_share_source_bytes_and_have_self_contained_allowlists(self):
-        shared = ['skills/macrosheet/SKILL.md', 'skills/macrosheet/references/tracker-template.md',
+        shared = ['skills/macrosheet/SKILL.md', 'skills/macrosheet/references/tracker-template.md', 'skills/macrosheet/references/operations.md',
                   'skills/macrosheet/references/presentation.md', 'skills/macrosheet/references/target-help.md', 'skills/macrosheet/references/recipes.md', 'skills/macrosheet/references/connection-help.md',
                   'skills/macrosheet/assets/tracker-template.json', 'README.md', 'LICENSE', 'LICENSING.md', 'assets/macrosheet-logo.png']
         archives = {}
@@ -122,7 +122,7 @@ class PresentationPackageTests(unittest.TestCase):
         for host in ['openai', 'claude']:
             endpoint = f'https://mcp.example.com/mcp/{host}'
             path = PACKAGER.build_archive(self.repo, host=host, mcp_server_url=endpoint)
-            self.assertEqual(path.name, f'macrosheet-{host}-1.5.0.zip')
+            self.assertEqual(path.name, f'macrosheet-{host}-1.6.0.zip')
             before = path.read_bytes()
             self.assertEqual(PACKAGER.build_archive(self.repo, host=host, mcp_server_url=endpoint).read_bytes(), before)
             with ZipFile(path) as archive:
