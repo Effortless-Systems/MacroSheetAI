@@ -31,7 +31,7 @@ still pending. Do not change the person's Sheet merely to finish target guidance
 
 ## Start with what is known
 
-Keep the intended person's tracker explicit. Reuse accepted targets and context
+Keep the verified personal tracker explicit. Reuse accepted targets and context
 from this conversation; do not restart a full questionnaire to fill missing carbs
 and fat. If personal recommendations are needed, establish adult suitability and
 whether there is a clinician-provided plan. Do not infer age or suitability from
@@ -68,7 +68,8 @@ to carbohydrates. This is one adjustable example, not the only healthy choice.
 - Carbohydrate grams = (calories − protein grams × 4 − fat grams × 9) / 4.
 - If fat or carbs is already accepted, preserve it and calculate only the other
   remainder. Do not overwrite any accepted value without a requested change.
-- Show approximate calorie arithmetic and sensible rounding. Check adult energy
+- Execute the arithmetic with a calculation tool or host runtime; do not use
+  mental arithmetic. Show approximate calorie arithmetic and sensible rounding. Check adult energy
   ranges: carbs 45–65%, protein 10–35%, fat 20–35%, using the
   [National Academies reference](https://www.ncbi.nlm.nih.gov/books/NBK221374/).
   These population ranges are a general reference, not individual clinical proof.

@@ -1,6 +1,8 @@
 # Tracker Template v2
 
-Trackers use schema 2 / template 2.1.0. Other versions are unsupported. Never migrate, replace or silently repair an existing tracker.
+Trackers use schema 2 / template 2.1.0. Other versions are unsupported. Do not
+migrate, replace or silently repair an existing tracker. Explicit repair may
+restore verified derived areas in the current format while preserving meal data.
 
 ## Copy And Initialize
 
@@ -18,7 +20,7 @@ copy, verify the new ID differs from the source, the
 exact title and owner, private sharing, required tabs/headers, and no copied meal
 records or personal settings. Resume an identified incomplete copy after timeout;
 never create another blindly. If unexpected data is present, stop instead of
-clearing an unknown workbook. No sample meals go into a real tracker.
+clearing an unknown workbook. New workbooks contain no meal records.
 
 If the public template URL is null or unavailable, create ONE new empty native spreadsheet,
 then apply the bundled `baseRequests` with native batchUpdate. These requests
@@ -60,15 +62,15 @@ use literal text or native numbers, never formulas.
 | template_version | 2.1.0 |
 
 Ask for intended timezone/week start; do not infer from a UTC clock or invent
-targets. Targets are optional finite nonnegative values; explicit zero is not
+targets. Targets are optional finite nonnegative values no greater than 1,000,000,000; explicit zero is not
 blank. Week markers are valid local week-start dates, never meal dates.
 Missing/duplicate required keys, invalid required settings or unknown versions stop the affected
 operation. Do not invent defaults for missing preferences.
 
 ## Monthly Meal Tabs
 
-Every consumed date belongs only in its matching `Meals_YYYY_MM` tab, e.g.
-`2026-09-19` in `Meals_2026_09`. Use consumption time, not logging time.
+Every consumed date belongs only in its matching `Meals_YYYY_MM` tab. Derive
+YYYY_MM from the consumed local date, not the logging time.
 The header row is:
 
 ```text
@@ -80,9 +82,12 @@ entry_id | local_date | description | calories_kcal | protein_g | carbs_g | fat_
 - `local_date`: literal ISO `YYYY-MM-DD` text in the tracker timezone.
 - `description`: nonempty literal meal/portion text.
 - All four nutrition fields: actual numeric cells, finite and nonnegative;
-  missing is not zero. Store recorded calories independently of macro calories.
-- `estimated`: native boolean, true if any value is estimated. False means
-  user/label-supplied, not laboratory accuracy. Notes explain assumptions.
+  at most 1,000,000,000 each; missing is not zero. Store recorded calories
+  independently of macro calories.
+- `estimated`: native boolean, true if any nutrition value or consumed portion is
+  estimated, or a reused source is marked estimated. False is appropriate for
+  known portions and user-supplied or verified published nutrition values; it is
+  not a claim of laboratory accuracy. Notes explain assumptions.
 - `notes`: optional literal text under a required header. Never insert user
   content as a formula.
 
@@ -104,14 +109,14 @@ The main skill owns accepted scope and failure recovery; this request shape does
 not bypass host approval or safety checks.
 
 Before the first write in a month, check current metadata for that tab. If absent,
-add it with a fresh unused native sheet ID, headers and requested row in one
-supported batch. Never create a tab merely to read. After an uncertain write,
+follow Month Maintenance below, including its registry and summary requirements.
+Never create a tab merely to read. After an uncertain write,
 reread metadata and look for the retained entry ID in that month before retrying.
 Never create another tab/record blindly. ID checks are scoped to known consumed
 month(s); UUIDs avoid normal collisions. This is not an all-history ID audit or
 an exactly-once guarantee across chats.
 
-## v2 Month Maintenance
+## Month Maintenance
 
 Use the bundled `monthRecipe` and its EXACT formula patterns; do not improvise
 formulas. For zero-based slot `s`, the registry row is `s+2` and the 31-row summary
@@ -123,7 +128,8 @@ the other 30 rows empty of user inputs. Calendar padding stays blank.
 `Month_Index` columns A:E are literal month, canonical tab name, summary start
 row, actual source rowCount and columnCount. F:J are the five formula patterns:
 status, meal count, formula-cell count, invalid-row count, duplicate-ID count.
-Header lookup is dynamic; extra columns and reordered unique headers are allowed.
+Meal-header lookup is dynamic; extra meal columns and reordered unique meal
+headers are allowed. The derived tabs retain their declared fixed layout.
 Only required meal columns are validated. Formula cells in required columns,
 partial rows, malformed dates/types, negative values and duplicates invalidate
 that month. An entirely blank row is a gap. Formula status is not an all-history
@@ -132,7 +138,8 @@ UUID audit or proof against simultaneous edits.
 Before first write in a missing month, get complete metadata, choose an unused
 native sheet ID and unused registry slot. Duplicate `_Month_Template` to the
 canonical name, unhide it, and include the meal, registry and 31-row summary block
-in ONE native batch. Retain the entry ID; after timeout inspect metadata and that
+in ONE native batch. The authorized setup batch creates the empty current month
+using the same structure without a meal row. Retain the entry ID for meal writes; after timeout inspect metadata and that
 ID before retrying. Create no tabs merely to review an empty/historical period.
 
 There are initially 12 month slots. Beyond that, in the SAME batch append enough
@@ -185,12 +192,18 @@ outside Sheets/chat or persist a second tracker.
    blocks. A midnight/stale TODAY mismatch must never relabel yesterday as today.
 4. Send `show_dashboard` **days**, never redundant raw meals: map local_date to
    date, meal_count to mealCount and stored kcal/P/C/F to kcal/protein/carbs/fat.
-   Empty days are count 0 with all nutrients null, not zero. Actual zero entries
+   Formula summaries represent empty nutrients as blank cells or empty strings.
+   Convert those to null only when the verified meal count is 0; a blank nutrient
+   with a positive count is invalid. Empty days are count 0 with all nutrients
+   null, not zero. Actual zero entries
    remain numeric zero with a positive meal count. Weekly covers exactly 14 dates;
    Today covers one. Future logged records are conflicts, not discarded. Use
    current targets only where the presentation contract permits them. Macro-calorie
    columns are 4/4/9 chart values, never replacements for stored calories.
-5. Missing/damaged/stale formulas or coverage disable the summary path. Fall back
+5. Only damaged/missing/stale derived formulas or coverage permit summary
+   fallback. Unsupported schema/template versions or invalid required Settings
+   block the operation; raw reads cannot bypass those checks. For derived damage,
+   fall back
    to complete bounded RAW reads below and executed aggregation. Do not silently
    repair formulas or invent totals. Invalid authoritative meal data still blocks
    definitive totals. If read results show a concurrent edit, retry a bounded
@@ -205,9 +218,9 @@ MCP render acknowledgement alone proves neither totals nor Google write success.
 
 ## Bounded Raw Reads
 
-The Google connector supports multiple bounded native CellData ranges per call.
-Row search is substring matching within a bounded scan, not a date-interval query;
-its matching-row limit does not establish complete coverage.
+Use multiple bounded native CellData ranges per call when the connector supports
+them. Inspect its row-search semantics; search matches or matching-row limits
+alone do not establish complete date coverage.
 
 1. Establish complete current metadata once: tab inventory and finite bounds.
    Select only months intersecting requested dates. Day So Far needs one month;
@@ -246,8 +259,9 @@ date correction crossing months moves the whole entry:
 1. Recheck source ID/values, destination headers/bounds and absence of that ID.
    Preserve extra columns by header; stop if their mapping cannot be preserved.
 2. Use ONE native Sheets `batchUpdate` to append the full corrected row to the
-   destination and delete the source row. Include destination tab creation and
-   headers when missing, using an unused known sheet ID. If the connector cannot
+   destination and delete the source row. Follow Month Maintenance for destination
+   creation, registration, summary capacity and both months' changed bounds in
+   this same batch. If the connector cannot
    express this batch, report the capability gap before writing. Do not split a
    move into independently successful calls.
 3. Verify the ID exactly once at destination and absent at source, with adjacent
@@ -266,4 +280,5 @@ and let shared JavaScript aggregate; above the limit use an actually executed
 calculation, never truncation or mental arithmetic. `calculate_nutrition` remains
 available for portion calculations. The MCP has no Google access. Always show
 Day So Far after verified save/correct/remove, once per affected consumed date,
-with equivalent text only when inline rendering is actually blocked.
+with equivalent verified text when rendering is blocked or the user requests
+text only. Incomplete source coverage gets a limitation instead of invented totals.

@@ -1,0 +1,186 @@
+[
+  {
+    "addSheet": {
+      "properties": {
+        "sheetId": 301,
+        "title": "Recipes",
+        "gridProperties": {
+          "rowCount": 201,
+          "columnCount": 13
+        }
+      }
+    }
+  },
+  {
+    "updateCells": {
+      "start": {
+        "sheetId": 301,
+        "rowIndex": 0,
+        "columnIndex": 0
+      },
+      "rows": [
+        {
+          "values": [
+            {
+              "userEnteredValue": {
+                "stringValue": "recipe_id"
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "revision"
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "name"
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "description"
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "servings"
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "cooked_weight_g"
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "calories_kcal"
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "protein_g"
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "carbs_g"
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "fat_g"
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "estimated"
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "full_recipe"
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "notes"
+              }
+            }
+          ]
+        },
+        {
+          "values": [
+            {
+              "userEnteredValue": {
+                "stringValue": "00000000-0000-4000-8000-000000000001"
+              }
+            },
+            {
+              "userEnteredValue": {
+                "numberValue": 1
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "Recipe A"
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "Synthetic breakfast fixture"
+              }
+            },
+            {
+              "userEnteredValue": {
+                "numberValue": 4
+              }
+            },
+            {
+              "userEnteredValue": {
+                "numberValue": 500
+              }
+            },
+            {
+              "userEnteredValue": {
+                "numberValue": 600
+              }
+            },
+            {
+              "userEnteredValue": {
+                "numberValue": 30
+              }
+            },
+            {
+              "userEnteredValue": {
+                "numberValue": 60
+              }
+            },
+            {
+              "userEnteredValue": {
+                "numberValue": 15
+              }
+            },
+            {
+              "userEnteredValue": {
+                "boolValue": false
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "Synthetic known values only. Ingredient A: 100 g, 200 kcal, 10 g protein, 20 g carbs, 5 g fat. Ingredient B: 200 g, 400 kcal, 20 g protein, 40 g carbs, 10 g fat. Combine; finished batch 500 g, four servings. These fixture values are not nutrition advice."
+              }
+            },
+            {
+              "userEnteredValue": {
+                "stringValue": "Synthetic label/user-supplied fixture."
+              }
+            }
+          ]
+        }
+      ],
+      "fields": "userEnteredValue"
+    }
+  },
+  {
+    "appendCells": {
+      "sheetId": 101,
+      "rows": [
+        {
+          "values": [
+            {
+              "userEnteredValue": {
+                "stringValue": "recipe_schema_version"
+              }
+            },
+            {
+              "userEnteredValue": {
+                "numberValue": 1
+              }
+            }
+          ]
+        }
+      ],
+      "fields": "userEnteredValue"
+    }
+  }
+]

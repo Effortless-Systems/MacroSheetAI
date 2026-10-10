@@ -1,13 +1,13 @@
 # Personal Recipes
 
 Use the same verified personal tracker/account as meal tracking. Recipes live in
-one optional `Recipes` tab in the user's Sheet, not in the MCP service or chat
-memory. Workbook schema 2, monthly meal columns and template 2.1.0 stay unchanged.
+one optional `Recipes` tab in the user's Sheet. Conversation context may hold
+pending proposals and verified reads; the MCP service stores no recipes. Workbook schema 2, monthly meal columns and template 2.1.0 stay unchanged.
 Use the host's authorized Google connector; inspect its native request schemas.
 
 ## Format And Source Meaning
 
-Recipe feature version 1 uses Settings key `recipe_schema_version=1`. The tab's
+The recipe format requires Settings key `recipe_schema_version=1`. The tab's
 canonical header row is:
 
 ```text
@@ -46,7 +46,7 @@ For list, matching and ordinary logging, read only these columns: recipe ID,
 revision, name, description, servings, finished weight, four batch nutrients and
 estimated. With canonical headers these are A:K; **do not read L:M or full rows**.
 For reordered columns, request only the corresponding column ranges in a bounded
-  native multi-range read. Read the header row once to map columns; a header read
+native multi-range read. Read the header row once to map columns; a header read
 does not justify downloading its data columns. Keep ranges within actual grid
 bounds and page the ID/catalog columns to establish complete coverage. No match
 in a truncated catalog is not proof that the recipe is absent.
@@ -103,8 +103,9 @@ or change the number of consumed servings.
    `boolValue`. Never use formula strings or value coercion. Read back **all saved
    fields**, including full_recipe, by ID before saying saved.
 
-Saving a recipe does not create a meal/month or invitation marker and does not
-show Day So Far. A combined save-recipe-and-log request must preview/authorize both
+The recipe save itself writes only the recipe and any required feature setup; it
+does not create a meal/month or show Day So Far. Quiet review invitations, if due,
+follow the main skill after the save is resolved. A combined save-recipe-and-log request must preview/authorize both
 scopes; verify the recipe first, then use the ordinary meal workflow. If only one
 operation succeeds, report that outcome and resume without repeating it.
 
@@ -143,7 +144,8 @@ For an authorized update, recheck the old ID/revision/payload immediately before
 targeted patch, retain the ID and increment revision once. Change full_recipe and
 affected catalog values together in one batch; preserve unknown columns. Read
 back every changed field. Rename/description-only patches need no body download.
-Explicit removal deletes only the resolved recipe row and verifies absence;
+Explicit removal rechecks the resolved ID at its current row immediately before
+deletion, then verifies absence and that adjacent records are preserved;
 never remove the tab or historical meals. Old meal snapshots remain unchanged.
 
 After any uncertain recipe write, read by retained ID before retrying. Exact new
@@ -154,27 +156,15 @@ before any new save; never mint a replacement ID to retry an uncertain creation.
 Preflight/readback is not an atomic cross-chat uniqueness or compare-and-swap
 guarantee. Keep only current recipes, not a version-history interface.
 
-## Native First-Save Example
+## Native Write Rules
 
-This is a **synthetic accepted fixture**, not a request to run it on a real tracker.
-At runtime replace sheet IDs with verified native IDs, use the actual accepted
-recipe ID/payload, and append the marker only when complete Settings reads prove
-it absent. Here Settings sheet ID 101 already exists with capacity; new ID 301 is
-verified unused. The native tool's `requests` argument receives this array.
+Use the current metadata's Settings ID and an unused Recipes ID for first-save
+creation. Build headers in the declared order; map all accepted record fields to
+those columns. In one batch, add the tab, write the header and accepted recipe,
+and add the feature marker only after a complete Settings read proves it absent.
+Keep the fixed Settings key/value columns and ensure sufficient grid capacity.
 
-```json
-[
-  {"addSheet":{"properties":{"sheetId":301,"title":"Recipes","gridProperties":{"rowCount":201,"columnCount":13}}}},
-  {"updateCells":{"start":{"sheetId":301,"rowIndex":0,"columnIndex":0},"rows":[
-    {"values":[{"userEnteredValue":{"stringValue":"recipe_id"}},{"userEnteredValue":{"stringValue":"revision"}},{"userEnteredValue":{"stringValue":"name"}},{"userEnteredValue":{"stringValue":"description"}},{"userEnteredValue":{"stringValue":"servings"}},{"userEnteredValue":{"stringValue":"cooked_weight_g"}},{"userEnteredValue":{"stringValue":"calories_kcal"}},{"userEnteredValue":{"stringValue":"protein_g"}},{"userEnteredValue":{"stringValue":"carbs_g"}},{"userEnteredValue":{"stringValue":"fat_g"}},{"userEnteredValue":{"stringValue":"estimated"}},{"userEnteredValue":{"stringValue":"full_recipe"}},{"userEnteredValue":{"stringValue":"notes"}}]},
-    {"values":[{"userEnteredValue":{"stringValue":"00000000-0000-4000-8000-000000000001"}},{"userEnteredValue":{"numberValue":1}},{"userEnteredValue":{"stringValue":"Recipe A"}},{"userEnteredValue":{"stringValue":"Synthetic breakfast fixture"}},{"userEnteredValue":{"numberValue":4}},{"userEnteredValue":{"numberValue":500}},{"userEnteredValue":{"numberValue":600}},{"userEnteredValue":{"numberValue":30}},{"userEnteredValue":{"numberValue":60}},{"userEnteredValue":{"numberValue":15}},{"userEnteredValue":{"boolValue":false}},{"userEnteredValue":{"stringValue":"Synthetic known values only. Ingredient A: 100 g, 200 kcal, 10 g protein, 20 g carbs, 5 g fat. Ingredient B: 200 g, 400 kcal, 20 g protein, 40 g carbs, 10 g fat. Combine; finished batch 500 g, four servings. These fixture values are not nutrition advice."}},{"userEnteredValue":{"stringValue":"Synthetic label/user-supplied fixture."}}]}
-  ],"fields":"userEnteredValue"}},
-  {"appendCells":{"sheetId":101,"rows":[{"values":[{"userEnteredValue":{"stringValue":"recipe_schema_version"}},{"userEnteredValue":{"numberValue":1}}]}],"fields":"userEnteredValue"}}
-]
-```
-
-With canonical headers, matching reads only `Recipes!A2:K201` (within verified
-bounds), while a modification to verified recipe row 2 reads `Recipes!L2:M2`.
-Updates use current indices resolved from IDs; these example row numbers are not
-write authority after sorting. Native `updateCells.fields` belongs on the request,
-not inside each cell. Formula-like recipe text remains literal.
+Use native `stringValue`, `numberValue` and `boolValue` inputs. Put
+`fields: "userEnteredValue"` on each appendCells/updateCells request, not inside
+cells. Resolve row indices from IDs immediately before updates; never reuse a row
+number after sorting. Formula-like user text must remain literal.

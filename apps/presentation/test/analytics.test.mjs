@@ -20,7 +20,7 @@ test('bounded allowlist, provider HMAC and one event per request without payload
   observe(request(), 'legacy')('tool_error');
   assert.equal(events.length, 2);
   assert.deepEqual(Object.keys(events[0]).sort(), ['blobs', 'doubles', 'indexes']);
-  assert.deepEqual(events[0].blobs, ['1', '0.9.0', 'openai', 'success', 'SG', 'openai_subject']);
+  assert.deepEqual(events[0].blobs, ['1', '0.9.1', 'openai', 'success', 'SG', 'openai_subject']);
   assert.equal(events[0].indexes[0], `openai:${createHmac('sha256', secret).update('openai\0PRIVATE_SUBJECT').digest('hex')}`);
   assert.deepEqual(events[0].indexes, events[1].indexes);
   assert.equal(events[0].doubles.length, 1);

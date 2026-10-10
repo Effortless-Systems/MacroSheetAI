@@ -5,8 +5,9 @@ connect its supplied HTTPS URL separately when using a skill-only upload.
 Uploading this skill does not connect the MCP service or authorize Google.
 Discover/load `show_dashboard` and this guide during meal preparation when needed;
 retain them for a plain “yes” follow-up without an app mention. Missing renderer
-access must not block an otherwise authorized save. Use the version 2 tool contract below. If the connected tool does not support
-it, explain the connection needs updating and use verified text fallback.
+access must not block an otherwise authorized save. Use the version 2 tool
+contract below. If it is unavailable, explain the connection blocker and use
+verified text fallback.
 
 ## Source and identity
 
@@ -14,12 +15,13 @@ Resolve the intended tracker once using the main skill. Retain a conversation-lo
 mapping from an opaque reference such as `tracker-a` to the verified Sheet/account.
 This is not a Sheet ID. Never reuse the reference for another tracker. Widget
 follow-ups include trackerRef and snapshotId; resolve their originating call, not
-whichever tracker is currently active. If context is lost, ask for a selection.
+whichever tracker is currently active. If that mapping is lost, request the original tracker link/access; never select
+a replacement for the card.
 Do not create a tracker because review failed.
 
 Use “Your tracker” for the sole personal workbook, canonically `_MacroSheet`.
 Reuse the main skill's verified binding. An explicitly linked personal tracker
-must still validate against the schema 2 monthly workbook format. No family-name routing is used.
+must still validate against schema 2 / template 2.1.0. No family-name routing is used.
 After a verified log/correction/removal, use the affected consumed date, including
 a backdated day; render once per affected date for a batch. For a standalone
 Day So Far request without a date use the current local date in the tracker's
@@ -58,8 +60,10 @@ require an actually executed calculation, never mental arithmetic.
 
 - `version`: 2; `view`: `today` or `weekly`.
 - `weekStartsOn`: saved integer 0 through 6.
-- `snapshotId`: new UUID for each fresh read. Reusing a still-current read keeps
-  its source identity and timestamp; retain its tracker mapping.
+- `snapshotId`: UUID for one assembled display snapshot. A refresh, changed view,
+  focus date, coverage or source data gets a new UUID. Retry the identical snapshot
+  with its existing UUID. Reusing source reads preserves their actual readAt;
+  creating a new display snapshot never invents a fresh read time.
 - `tracker`: friendly display label, 1–100 characters, no account details. If a
   name is too long for the renderer, agree a shorter display label or use text;
   do not silently truncate or rename the Sheet.
@@ -136,7 +140,7 @@ generated substitute widget or repeated save because rendering failed.
 
 Loaded-week navigation is local. Unloaded weeks request chat; reuse current complete
 coverage or read missing data, then show Weekly. View Day So Far/weekly switches are
-explicit requests for separate views. An earlier card remains a snapshot, with its
+explicit requests for separate views with new snapshot IDs. An earlier card remains a snapshot, with its
 read time. A new view can be a new card; never claim an old card was refreshed.
 
 Refresh always rereads the resolved tracker, current settings and requested period,

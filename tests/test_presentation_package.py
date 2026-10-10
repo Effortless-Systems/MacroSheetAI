@@ -71,7 +71,7 @@ class PresentationPackageTests(unittest.TestCase):
 
     def test_tracking_skill_upload_is_complete_and_data_free(self):
         path = PACKAGER.build_archive(self.repo, skill_only=True)
-        self.assertEqual(path.name, "macrosheet-skill-1.3.0.zip")
+        self.assertEqual(path.name, "macrosheet-skill-1.3.1.zip")
         before = path.read_bytes()
         self.assertEqual(PACKAGER.build_archive(self.repo, skill_only=True).read_bytes(), before)
         with ZipFile(path) as archive:
@@ -86,6 +86,10 @@ class PresentationPackageTests(unittest.TestCase):
                     if re.match(r"[a-z]+:",ref):continue
                     self.assertIn(posixpath.normpath(str(Path(name).parent / ref)),names)
             self.assertNotIn("assets/dashboard.html", " ".join(archive.namelist()))
+            for name in archive.namelist():
+                if name.endswith('.md') and not name.endswith('LICENSING.md'):
+                    self.assertNotRegex(archive.read(name).decode().lower(),
+                                        r'\b(synthetic|fixture|trial|experiment|legacy|v0|v1|testing)\b|older endpoint|installed-only')
             tracking = ' '.join(archive.read('macrosheet/SKILL.md').decode().split())
             self.assertIn('title is exactly `_MacroSheet`', tracking)
             self.assertIn("name = '_MacroSheet' and mimeType", tracking)
@@ -118,7 +122,7 @@ class PresentationPackageTests(unittest.TestCase):
         for host in ['openai', 'claude']:
             endpoint = f'https://mcp.example.com/mcp/{host}'
             path = PACKAGER.build_archive(self.repo, host=host, mcp_server_url=endpoint)
-            self.assertEqual(path.name, f'macrosheet-{host}-1.3.0.zip')
+            self.assertEqual(path.name, f'macrosheet-{host}-1.3.1.zip')
             before = path.read_bytes()
             self.assertEqual(PACKAGER.build_archive(self.repo, host=host, mcp_server_url=endpoint).read_bytes(), before)
             with ZipFile(path) as archive:
@@ -173,9 +177,9 @@ class PresentationPackageTests(unittest.TestCase):
         self.assertEqual((root/'.codex-plugin/plugin.json').read_bytes(), PACKAGER.json_bytes(PACKAGER.host_manifest(manifest, 'openai')))
         self.assertEqual((root/'skills/macrosheet/agents/openai.yaml').read_bytes(), PACKAGER.openai_skill_metadata(manifest))
 
-    def test_recipe_reference_native_batch_is_literal_and_self_consistent(self):
+    def test_recipe_native_fixture_matches_runtime_format_and_literal_rules(self):
         text = (REPO/'plugins/macrosheet/skills/macrosheet/references/recipes.md').read_text()
-        requests = json.loads(re.search(r'```json\n(.*?)\n```', text, re.S)[1])
+        requests = json.loads((REPO/'tests/fixtures/recipe-first-save.json').read_text())
         self.assertTrue(all(len(request) == 1 for request in requests))
         properties = requests[0]['addSheet']['properties']
         self.assertEqual(properties['title'], 'Recipes')
@@ -186,6 +190,7 @@ class PresentationPackageTests(unittest.TestCase):
         names = [cell['userEnteredValue']['stringValue'] for cell in headers]
         self.assertEqual(len(names), len(set(names)))
         self.assertEqual(len(record), properties['gridProperties']['columnCount'])
+        self.assertIn(' | '.join(names), text)
         self.assertEqual(names[11], 'full_recipe')
         self.assertEqual(names[12], 'notes')
         for cell in headers + record:

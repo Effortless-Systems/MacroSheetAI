@@ -1,5 +1,15 @@
 # Changes
 
+## 10 October 2026 — service 0.9.1 / plugin 1.3.1
+
+- Remove the recipe request fixture and development/old-endpoint commentary from
+  runtime instructions and the packaged README.
+- Align month creation, setup naming, current-format validation, empty-summary
+  conversion, estimate flags, confirmation deferral and snapshot identity rules.
+- Serve connection help from the same installed reference and check exact source
+  parity for all six hosted topics. Preserve bounded recovery and independent
+  numeric tools. Analytics and observability remain disabled.
+
 ## 10 October 2026 — service 0.9.0 / plugin 1.3.0
 
 - Keep one current tracker and dashboard contract for the initial public release.

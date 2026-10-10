@@ -14,5 +14,6 @@ await writeFile('dist/tracking-guides.json', JSON.stringify({
   presentation: await readGuide('references/presentation.md'),
   target_help: await readGuide('references/target-help.md'),
   recipes: await readGuide('references/recipes.md'),
+  connection_help: await readGuide('references/connection-help.md'),
   template: await readGuide('assets/tracker-template.json')
 }));

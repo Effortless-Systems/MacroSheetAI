@@ -98,7 +98,7 @@ function renderWeek() {
 async function send(action, {view=viewOf(data),date=data.focusDate,requestedStart=start}={}) {
   if(pending || !data) return;
   const period=view==='weekly'?`Requested week ${requestedStart} through ${shiftDate(requestedStart,6)}; weekStartsOn ${firstDayOf(data)}.`:`Requested day ${date}.`;
-  const prompt=`MacroSheet tracker reference ${data.trackerRef}, snapshot ${data.snapshotId}. Resolve this reference from the originating conversation; if unavailable or ambiguous, ask me to select the tracker. Never substitute another tracker. Requested view ${view}. ${period} ${action}`;
+  const prompt=`MacroSheet tracker reference ${data.trackerRef}, snapshot ${data.snapshotId}. Resolve this reference from the originating conversation; if unavailable or ambiguous, ask for the original tracker link/access. Never substitute another tracker. Requested view ${view}. ${period} ${action}`;
   pending=true; $('followup').hidden=false; $('fallback').hidden=true;
   const buttons=[...document.querySelectorAll('button')].map(button=>[button,button.disabled]);
   for(const [button] of buttons) button.disabled=true;

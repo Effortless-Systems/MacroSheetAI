@@ -1,6 +1,6 @@
 {
   "name": "macrosheet",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Track meal calories and macronutrients in user-owned Google Sheets through existing host connectors.",
   "author": {
     "name": "PROSPR PTE. LTD."
@@ -85,7 +85,7 @@
         "demo_recording_url": "https://www.youtube.com/shorts/w-S2hW40x6o"
       },
       "publication": {
-        "release_notes": "MacroSheet 1.3.0: updated 10 October 2026; prepares one current tracker and dashboard contract for initial release, removes pre-release compatibility instructions and developer-only trial steps from the skill, and replaces per-tracker analytics controls with operator configuration. Usage collection remains disabled. Template 2.1.0 removes the unused person_name field. Google ownership, meal confirmation and stateless numeric rendering remain unchanged. Licensed under AGPL-3.0-only."
+        "release_notes": "MacroSheet 1.3.1: updated 10 October 2026; clarifies tracker setup, month maintenance, confirmation, snapshot identity and recovery. Runtime instructions contain no recipe fixtures or old-endpoint guidance. Hosted guides now include the same connection-help reference as the installed skill. Analytics remains disabled. Licensed under AGPL-3.0-only."
       }
     }
   }

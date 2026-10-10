@@ -1,9 +1,10 @@
 # Connection, Update And Refresh Help
 
-Use this reference only from an accessible installed MacroSheet skill package,
-for setup, user-requested help or an observed relevant failure. Follow explicit
-user choices and host authorization. Do not run background update checks or load
-this reference through `get_tracking_guide`; it has no hosted topic.
+Use this reference for setup, user-requested help or an observed relevant failure.
+It is available in the installed skill and as get_tracking_guide topic=connection_help.
+Follow explicit user choices and host authorization. Do not run background update
+checks. Inspect actual host capabilities instead of assuming a management tool
+is installed.
 
 ## Google Setup
 
@@ -66,8 +67,8 @@ ask only if it remains ambiguous. Keep product explanations short:
 
 | Request | Supported route and evidence |
 | --- | --- |
-| Update the installed MacroSheet package/skill | Guide the host's supported update/install controls. Current Plugin Management tools expose no package updater; do not automate an update or invent its status. Verify the installed version only from available host/package evidence. Updating server code or fetching a guide does not update an installed package. |
-| Refresh MCP tools/connection | Guide the host's exposed connection controls when tools or their definitions are stale. Current Plugin Management tools expose no MCP refresh operation. Connection refresh does not install this skill, authorize Google or prove a newer service is deployed. |
+| Update the installed MacroSheet package/skill | Guide the host's supported update/install controls. Use a management action only if its advertised schema supports this update and the user requested it; otherwise guide the host UI. Never invent update status. Verify the installed version only from available host/package evidence. Updating server code or fetching a guide does not update an installed package. |
+| Refresh MCP tools/connection | Guide the host's exposed connection controls when tools or their definitions are stale. Use an advertised refresh action when available and requested; otherwise guide the host UI. Connection refresh does not install this skill, authorize Google or prove a newer service is deployed. |
 | Refresh hosted tracking instructions | Follow [Hosted Guide Freshness](../SKILL.md#hosted-guide-freshness), retaining expiry and one-fetch recovery limits. A successful fetch refreshes instructions only. |
 | Refresh Day So Far/Weekly data | Follow [presentation.md](presentation.md): read fresh bounded data for the originating account/tracker and selected dates, then supply the verified numeric snapshot to the renderer. Reuse no stale totals and write no meal. |
 

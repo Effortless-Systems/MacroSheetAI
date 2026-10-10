@@ -26,8 +26,7 @@ test('synthetic shared lunch scales both dishes once and later breakfast preserv
  assert.notEqual(total.kcal,total.macroKcal);
 });
 test('saved recipe fixture scales batch yield and finished weight without replacing accepted calories',()=>{
- const text=readFileSync(new URL('../../../plugins/macrosheet/skills/macrosheet/references/recipes.md',import.meta.url),'utf8');
- const requests=JSON.parse(text.match(/```json\n([\s\S]*?)\n```/)[1]);
+ const requests=JSON.parse(readFileSync(new URL('../../../tests/fixtures/recipe-first-save.json',import.meta.url),'utf8'));
  const [headers,record]=requests[1].updateCells.rows.map(row=>row.values.map(cell=>Object.values(cell.userEnteredValue)[0]));
  const saved=Object.fromEntries(headers.map((key,index)=>[key,record[index]]));
  const batch=calculate({items:[{kcal:200,protein:10,carbs:20,fat:5},{kcal:400,protein:20,carbs:40,fat:10}]});

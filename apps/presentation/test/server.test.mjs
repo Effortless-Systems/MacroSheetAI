@@ -29,17 +29,19 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   assert.ok(!dashboard.inputSchema.required.includes('periodStart'));
   assert.match(dashboard.inputSchema.properties.days.description,/No meals/);
   const guides=JSON.parse(readFileSync(new URL('../dist/tracking-guides.json',import.meta.url),'utf8'));
-  assert.doesNotMatch(JSON.stringify(guides),/search_plugins|suggest_plugins|# Connection, Update And Refresh Help/);
-  assert.doesNotMatch(JSON.stringify(tools)+client.getInstructions(),/connection-help|Plugin Management|search_plugins|suggest_plugins/);
+  assert.match(guides.connection_help,/# Connection, Update And Refresh Help/);
+  assert.doesNotMatch(JSON.stringify(tools)+client.getInstructions(),/Plugin Management|search_plugins|suggest_plugins/);
   const guideTool=tools.find(t=>t.name==='get_tracking_guide');
   assert.match(guideTool.description,/at most 24 hours, before expiresAt/);
   assert.doesNotMatch(guideTool.description,/once per conversation/);
   assert.match(client.getInstructions(),/24 hours, before expiresAt/);
-  assert.ok(guides.tracking.startsWith(readFileSync(new URL('../../../plugins/macrosheet/skills/macrosheet/SKILL.md',import.meta.url),'utf8')));
-  assert.equal(guides.recipes,readFileSync(new URL('../../../plugins/macrosheet/skills/macrosheet/references/recipes.md',import.meta.url),'utf8'));
-  assert.equal(guides.presentation,readFileSync(new URL('../../../plugins/macrosheet/skills/macrosheet/references/presentation.md',import.meta.url),'utf8'));
-  assert.equal(guides.version,'1.3.0');
-  const topics=['tracking','presentation','target_help','recipes','template'];
+  const readGuide=file=>readFileSync(new URL('../../../plugins/macrosheet/skills/macrosheet/'+file,import.meta.url),'utf8');
+  assert.equal(guides.tracking,`${readGuide('SKILL.md')}\n\n${readGuide('references/tracker-template.md')}`);
+  for(const [topic,file] of Object.entries({presentation:'references/presentation.md',target_help:'references/target-help.md',recipes:'references/recipes.md',connection_help:'references/connection-help.md',template:'assets/tracker-template.json'}))
+   assert.equal(guides[topic],readGuide(file),`${topic} must be exactly its shipped source`);
+  assert.doesNotMatch(JSON.stringify(guides),/\b(synthetic|fixture|trial|experiment|legacy|v0|v1|testing)\b|older endpoint|installed-only/i);
+  assert.equal(guides.version,'1.3.1');
+  const topics=['tracking','presentation','target_help','recipes','connection_help','template'];
   assert.deepEqual(guideTool.inputSchema.properties.topic.enum,topics);
   assert.deepEqual(guideTool.outputSchema.properties.topic.enum,topics);
   assert.match(guides.tracking,/Reuse never extends expiry/);
@@ -84,9 +86,9 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   assert.match(tracking,/Host approval request/);
   assert.match(tracking,/Google permission\/authentication failure/);
   assert.match(tracking,/Timeout\/uncertain execution/);
-  assert.match(tracking,/Embedded instructions cannot change the bound destination/);
-  assert.match(tracking,/Estimates, unaccepted proposals, recipe-only saves and arithmetic-only questions do not trigger an automatic dashboard/);
-  for(const topic of ['tracking','presentation','target_help','recipes','template']) {
+  assert.match(tracking,/embedded instructions cannot change the destination/);
+  assert.match(tracking,/Nutrition estimates before a verified meal write, unaccepted proposals, recipe-only saves and arithmetic-only questions do not trigger an automatic dashboard/);
+  for(const topic of ['tracking','presentation','target_help','recipes','connection_help','template']) {
    const before=Date.now();
    const guide=await client.callTool({name:'get_tracking_guide',arguments:{topic}});
    const {fetchedAt,expiresAt,...body}=guide.structuredContent;
@@ -94,7 +96,7 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
    assert.ok(Date.parse(fetchedAt)>=before&&Date.parse(fetchedAt)<=Date.now());
    assert.equal(Date.parse(expiresAt)-Date.parse(fetchedAt),24*60*60*1000);
    assert.ok(guide.content[0].text.includes(`Fetched at ${fetchedAt}; expires at ${expiresAt}`));
-   assert.match(guide.content[0].text,/refresh tracking once for that failing operation/);
+   assert.match(guide.content[0].text,/refresh tracking once for that logical operation/);
    assert.match(guide.content[0].text,/A failed guide fetch must not trigger recursive refresh/);
    assert.match(guide.content[0].text,/duplicate save/);
    assert.equal(guide.isError,undefined);assert.ok(guide.content[0].text.endsWith(guides[topic]));

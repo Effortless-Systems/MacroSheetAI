@@ -39,7 +39,7 @@ try {
     assert.deepEqual(item.contents[0]._meta.ui.csp, {connectDomains:[],resourceDomains:[]});
   }
   const guides=JSON.parse(readFileSync(new URL('../dist/tracking-guides.json',import.meta.url),'utf8'));
-  for(const topic of ['tracking','presentation','target_help','recipes','template']) {
+  for(const topic of ['tracking','presentation','target_help','recipes','connection_help','template']) {
     const guide=await client.callTool({name:'get_tracking_guide',arguments:{topic}});
     const {fetchedAt,expiresAt,...body}=guide.structuredContent;
     assert.deepEqual(body, {version:guides.version,topic,instructions:guides[topic]});
