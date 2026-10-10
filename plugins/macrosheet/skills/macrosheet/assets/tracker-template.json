@@ -2,7 +2,7 @@
   "product": "macrosheet",
   "schemaVersion": 2,
   "templateVersion": "2.0.0",
-  "publicTemplateUrl": "https://docs.google.com/spreadsheets/d/1FU0QHGFBaQdBdt0a81OkBqW68z7L-r8XH4s2etZqpp8/edit",
+  "publicTemplateUrl": "https://docs.google.com/spreadsheets/d/1Ij8_fyhe8VbVlZiASrBMXDPjQ0qcsic12TiigYNIH-o/edit",
   "description": "Data-free native Google Sheets template. Prefer whole-workbook copy; use requests only on a new empty workbook. Initialize timezone/settings and register the current month after copying.",
   "sheetIds": {
     "settings": 101,

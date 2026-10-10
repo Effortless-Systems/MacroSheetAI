@@ -1,6 +1,6 @@
 // Native Google Sheets requests. This module has no network or credential access.
 export const templateVersion = '2.0.0';
-export const publicTemplateUrl = 'https://docs.google.com/spreadsheets/d/1FU0QHGFBaQdBdt0a81OkBqW68z7L-r8XH4s2etZqpp8/edit';
+export const publicTemplateUrl = 'https://docs.google.com/spreadsheets/d/1Ij8_fyhe8VbVlZiASrBMXDPjQ0qcsic12TiigYNIH-o/edit';
 export const ids = { settings: 101, dashboard: 102, index: 103, summary: 104, blank: 105 };
 export const mealHeaders = ['entry_id','local_date','description','calories_kcal','protein_g','carbs_g','fat_g','estimated','notes'];
 export const summaryHeaders = ['local_date','meal_count','calories_kcal','protein_g','carbs_g','fat_g','protein_kcal','carbs_kcal','fat_kcal','status'];
