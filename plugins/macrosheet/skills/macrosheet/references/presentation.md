@@ -46,6 +46,12 @@ explicitly requested; keep the save receipt concise.
 
 ## Save verification and source reuse
 
+Use executed host checks for returned native cells and selected-day aggregation
+when a documented runtime is available. Return compact exact record/coverage
+facts, with `readAt` captured immediately after the source response completes.
+Reuse that timestamp only with unchanged source facts. A native dashboard call
+stays separate from preparation and writing so its widget remains a host artifact.
+
 The main skill's normal logging checklist owns write verification. Complete exact
 literal cells in the native write response replace a separate verification read.
 Use complete returned date coverage for the dashboard when available. A response

@@ -47,7 +47,7 @@ export function createMcpServer(html, { widgetDomain } = {}) {
   }, async ({ topic }) => {
     const fetchedAt = new Date();
     const expiresAt = new Date(fetchedAt.getTime() + 24 * 60 * 60 * 1000).toISOString();
-    return { structuredContent: { version: guides.version, topic, fetchedAt: fetchedAt.toISOString(), expiresAt, instructions: guides[topic] }, content: [{ type: 'text', text: `MacroSheet skill ${guides.version}; ${topic}. Fetched at ${fetchedAt.toISOString()}; expires at ${expiresAt}. ${guideCachePolicy} tracking includes SKILL.md and tracker-template.md. References operations.md, presentation.md, target-help.md, recipes.md and connection-help.md are topics operations, presentation, target_help, recipes and connection_help; tracker-template.json is topic=template. Use the included workflow directly; do not refetch a still-valid topic to follow its own instructions.\n\n${guides[topic]}` }] };
+    return { structuredContent: { version: guides.version, topic, fetchedAt: fetchedAt.toISOString(), expiresAt, instructions: guides[topic] }, content: [{ type: 'text', text: `MacroSheet skill ${guides.version}; ${topic}. Fetched at ${fetchedAt.toISOString()}; expires at ${expiresAt}. ${guideCachePolicy} Full instructions are in structuredContent.instructions. Use them directly; do not refetch a still-valid topic to follow its own instructions.` }] };
   });
   server.registerTool('calculate_nutrition', {
     title: 'Calculate nutrition values',

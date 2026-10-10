@@ -1,5 +1,14 @@
 # Changes
 
+## 11 October 2026 — service 0.13.0 / plugin 1.7.0
+
+- Specify bounded host calculation/verification stages, compact typed facts and
+  actual source completion timestamps; preserve native authorization and widgets.
+- Give single-food and multi-food previews one explicit itemized table layout.
+- Return hosted guide instructions once through structuredContent, retaining
+  complete schemas, all topics, readable retrieval metadata and cache/error policy.
+- Keep the service stateless and numeric-only; no Google access or new permissions.
+
 ## 10 October 2026 — service 0.12.0 / plugin 1.6.0
 
 - Compact the primary tracking workflow and provide one explicit typed native

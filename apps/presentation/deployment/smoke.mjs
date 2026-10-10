@@ -39,14 +39,15 @@ try {
     assert.deepEqual(item.contents[0]._meta.ui.csp, {connectDomains:[],resourceDomains:[]});
   }
   const guides=JSON.parse(readFileSync(new URL('../dist/tracking-guides.json',import.meta.url),'utf8'));
-  for(const topic of ['tracking','presentation','target_help','recipes','connection_help','template']) {
+  for(const topic of ['tracking','operations','presentation','target_help','recipes','connection_help','template']) {
     const guide=await client.callTool({name:'get_tracking_guide',arguments:{topic}});
     const {fetchedAt,expiresAt,...body}=guide.structuredContent;
     assert.deepEqual(body, {version:guides.version,topic,instructions:guides[topic]});
     assert.ok(Number.isFinite(Date.parse(fetchedAt)), 'Guide fetch time must be valid');
     assert.equal(Date.parse(expiresAt)-Date.parse(fetchedAt),24*60*60*1000);
     assert.ok(guide.content[0].text.includes(`Fetched at ${fetchedAt}; expires at ${expiresAt}`));
-    assert.ok(guide.content[0].text.endsWith(guides[topic]), 'Live guidance must match the built release');
+    assert.match(guide.content[0].text,/Full instructions are in structuredContent.instructions/);
+    assert.ok(!guide.content[0].text.includes(guides[topic]), 'Instructions must not be duplicated');
   }
   const calculated=await client.callTool({name:'calculate_nutrition',arguments:{items:[{kcal:null,protein:10,carbs:20,fat:5}]}});
   assert.equal(calculated.structuredContent.kcal,165);

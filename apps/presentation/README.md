@@ -1,11 +1,15 @@
 # MacroSheet presentation service
 
-Service 0.12.0 / guide 1.6.0 exposes `calculate_nutrition`, `show_dashboard` and
+Service 0.13.0 / guide 1.7.0 exposes `calculate_nutrition`, `show_dashboard` and
 `get_tracking_guide` on `/mcp/openai`, `/mcp/claude` and legacy `/mcp`.
 It has no Google credentials, tracking database or persistent nutrition payloads.
 The host/skill owns source research, authorization, Sheet writes and readback.
 A rendered snapshot is not proof of a saved record. Tracking is compact; the
 operations guide supplies detailed setup/correction/target/review rules on demand.
+Hosted instructions are returned once in structuredContent.instructions; text
+contains retrieval metadata and cache/error policy. The host can use documented
+programmatic calling for bounded preparation and exact returned-cell checks;
+authorized native writes and widget invocation remain separate stages.
 
 ## Local Development
 
@@ -34,8 +38,8 @@ requests to eight. Only snapshot version 2 and resource v2 are supported.
 Day So Far uses one day; Weekly uses fourteen aligned days for local navigation.
 Numeric output acceptance does not establish host display or source verification.
 
-`npm run build` embeds scripts/styles into `dist/dashboard.html` and builds six
-static guide topics from the distributable skill: tracking, presentation,
+`npm run build` embeds scripts/styles into `dist/dashboard.html` and builds seven
+static guide topics from the distributable skill: tracking, operations, presentation,
 target_help, recipes, connection_help and template. tracking includes the complete
 tracker-template reference; every topic is built from the exact shipped file.
 Regenerate the native template from the repository root with
