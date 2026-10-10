@@ -40,11 +40,9 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   for(const [topic,file] of Object.entries({operations:'references/operations.md',presentation:'references/presentation.md',target_help:'references/target-help.md',recipes:'references/recipes.md',connection_help:'references/connection-help.md',template:'assets/tracker-template.json'}))
    assert.equal(guides[topic],readGuide(file),`${topic} must be exactly its shipped source`);
   assert.doesNotMatch(JSON.stringify(guides),/\b(synthetic|fixture|trial|experiment|legacy|v0|v1|testing)\b|older endpoint|installed-only/i);
-  assert.equal(guides.version,'1.11.0');
+  assert.equal(guides.version,'1.6.0');
   assert.match(guides.tracking,/Complete matching write response: skip the verification\s+read/);
   assert.match(guides.tracking,/Preview and saved record must\s+use the same numeric precision/);
-  assert.match(guides.tracking,/immutable `approved_payload`/);
-  assert.match(guides.tracking,/against `approved_payload`, not only against the submitted request/);
   assert.ok(Buffer.byteLength(readGuide('SKILL.md'))<15000);
   const example=JSON.parse(readGuide('SKILL.md').match(/```json\n([\s\S]*?)\n```/)[1]);
   assert.deepEqual(Object.keys(example.requests[0]),['appendCells']);

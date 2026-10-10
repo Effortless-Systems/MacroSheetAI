@@ -82,8 +82,7 @@ Unknown macros are not zero. `kcal=null` computes a 4/4/9 estimate and must be l
 estimated. Stored values are finite/nonnegative, at most 1,000,000,000 each.
 
 Current meal values explicitly supplied by the user and unchanged accepted previews
-already approve the requested save; do not ask again, even when estimated=true.
-For any newly researched, photo/label-extracted, historical,
+can be saved directly. For any newly researched, photo/label-extracted, historical,
 recipe-selected/scaled or estimated values, show a complete itemized Markdown table:
 **Item | Portion | Calories (kcal) | Protein (g) | Carbs (g) | Fat (g)**, with one
 row per item and a **Total** row, even for one food. Every item, including historical
@@ -93,11 +92,6 @@ Published nutrition is not permission to save, even when `estimated=false`.
 The displayed values define the accepted payload. Preview and saved record must
 use the same numeric precision: display full precision or round before preview
 and save those exact rounded numbers. Never add undisclosed decimal places later.
-Retain the literal displayed meal-total numbers as immutable `approved_payload`.
-After acceptance, use those exact numbers for native cells; do not recompute, scale
-or substitute higher-precision calculation results. Verify saved numeric values
-against `approved_payload`, not only against the submitted request. A hidden decimal
-difference is a mismatch, not a verified save.
 State meal, consumed date, intended tracker, sources and estimate assumptions;
 omit projected daily totals. End with **“I haven't logged this yet. Shall I log this
 portion with these values? Reply yes, or tell me what to change.”** Wait before any

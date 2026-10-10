@@ -1,5 +1,11 @@
 # Changes
 
+## 11 October 2026 — active service 0.12.0 / plugin 1.6.0 restored
+
+- Restore the complete compact tracking workflow, guide delivery and presentation
+  behavior associated with this release. Preserve subsequent modification notices.
+- Runtime algorithms, permissions and resource identity match the restored revision.
+
 ## 11 October 2026 — service 0.17.0 / plugin 1.11.0
 
 - Restore the compact tracking workflow and complete hosted guide text/structured
