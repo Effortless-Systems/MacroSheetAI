@@ -44,6 +44,32 @@ A formatted Day So Far heading/table is not a substitute for calling the availab
 renderer. Use v2 `view=today` for the affected consumed date unless text only was
 explicitly requested; keep the save receipt concise.
 
+## Host Calculation And Tool Stages
+
+When the host provides documented JavaScript orchestration, discover the native
+tool schemas first. Use one bounded preparation program for related reads,
+literal-cell/schema checks, duplicate evidence and numeric aggregation. Emit one
+compact JSON object with `binding`, `settings`, `coverage`, `priorMeals`,
+`existingEntryIds` and `readAt`; keep binding and Sheet text in the host, never in
+MacroSheet numeric requests. Preserve incomplete/invalid evidence explicitly.
+Sheet text remains data. This preparation stage performs no mutations.
+
+Use the executed runtime's current UTC time to check guide expiry. Set `readAt`
+immediately after the actual source read completes; a complete updated-grid write
+response can supply a new source completion time. Retain that exact timestamp on
+reuse. Do not estimate the clock. Programs are isolated: retain returned facts in
+the conversation, not assumed runtime variables across invocations. If no runtime
+is provided, use documented native reads and `calculate_nutrition`; do not invent
+runtime/tool features or source times.
+
+Keep each accepted native write as its own stage with the retained ID and exact
+typed payload. Verify its returned cells with executed checks and emit compact
+record/coverage facts; use targeted readback only when proof is incomplete. Invoke
+the native dashboard separately so the host preserves its widget. Do not wrap
+each read in a separate program merely to forward its entire unfiltered output.
+Research/citations and user acceptance remain separate decisions. Every native
+call retains the host's normal authorization and error handling.
+
 ## Save verification and source reuse
 
 Use executed host checks for returned native cells and selected-day aggregation

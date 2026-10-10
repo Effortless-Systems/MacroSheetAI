@@ -40,7 +40,7 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   for(const [topic,file] of Object.entries({operations:'references/operations.md',presentation:'references/presentation.md',target_help:'references/target-help.md',recipes:'references/recipes.md',connection_help:'references/connection-help.md',template:'assets/tracker-template.json'}))
    assert.equal(guides[topic],readGuide(file),`${topic} must be exactly its shipped source`);
   assert.doesNotMatch(JSON.stringify(guides),/\b(synthetic|fixture|trial|experiment|legacy|v0|v1|testing)\b|older endpoint|installed-only/i);
-  assert.equal(guides.version,'1.9.0');
+  assert.equal(guides.version,'1.10.0');
   assert.match(guides.tracking,/Complete matching write response: skip the verification\s+read/);
   assert.match(guides.tracking,/Preview and saved record must\s+use the same numeric precision/);
   assert.ok(Buffer.byteLength(readGuide('SKILL.md'))<15000);
@@ -67,6 +67,7 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   assert.match(client.getInstructions().slice(0,512),/explicitly supplied already approves/);
   assert.match(client.getInstructions().slice(0,512),/Markdown table: Item \| Portion \| Calories \| Protein \| Carbs \| Fat/);
   assert.match(client.getInstructions().slice(0,512),/Shall I log these values/);
+  assert.match(client.getInstructions().slice(0,512),/show_dashboard after EVERY verified save/);
   assert.ok(readGuide('SKILL.md').indexOf('## Logging Approval')<readGuide('SKILL.md').indexOf('## Instructions And Freshness'));
   assert.match(guides.tracking,/save without another preview or\s+confirmation question/);
   assert.match(client.getInstructions(),/A missing renderer does not block an authorized save/);

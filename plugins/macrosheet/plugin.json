@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "macrosheet",
-  "version": "1.9.0",
+  "version": "1.10.0",
   "license": "AGPL-3.0-only",
   "description": "Track meal calories and macronutrients in user-owned Google Sheets through existing host connectors.",
   "author": {
@@ -85,7 +85,7 @@
         "demo_recording_url": "https://www.youtube.com/shorts/w-S2hW40x6o"
       },
       "publication": {
-        "release_notes": "MacroSheet 1.9.0: 11 October 2026. Move the complete logging approval contract and itemized table/question rule early in the skill and server guidance, including single-food and estimate-first proposals. Preserve approved supplied-value logging, native authorization, exact verification, host runtime stages and automatic saved-day dashboards. Analytics remains disabled. AGPL-3.0-only."
+        "release_notes": "MacroSheet 1.10.0: 11 October 2026. Prioritize the complete read, approval, append, exact verification, automatic dashboard and receipt routine in early guidance. Keep generic host runtime teaching in the presentation reference. Preserve native permissions, supplied-value approval, changed-estimate acceptance, literal cells and numeric-only service ownership. Analytics remains disabled. AGPL-3.0-only."
       }
     }
   }

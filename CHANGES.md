@@ -1,5 +1,13 @@
 # Changes
 
+## 11 October 2026 — service 0.16.0 / plugin 1.10.0
+
+- Prioritize the complete read/approve/append/verify/render/receipt routine and
+  require show_dashboard after every verified meal save.
+- Keep approval/table/render requirements together in early server/catalog guidance.
+- Move generic host runtime teaching to the presentation reference while preserving
+  provenance, exact checks and native permissions. No widget/nutrition algorithm change.
+
 ## 11 October 2026 — service 0.15.0 / plugin 1.9.0
 
 - Move the complete approval/table/question contract early in tracking guidance.
