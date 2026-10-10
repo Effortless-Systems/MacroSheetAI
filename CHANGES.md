@@ -1,5 +1,10 @@
 # Changes
 
+## 10 October 2026 — service 0.9.2
+
+- Remove the obsolete version-1 support claim from the dashboard tool description.
+  Add a catalog regression check; the current version-2 contract is unchanged.
+
 ## 10 October 2026 — service 0.9.1 / plugin 1.3.1
 
 - Remove the recipe request fixture and development/old-endpoint commentary from

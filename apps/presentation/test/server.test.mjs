@@ -30,7 +30,7 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   assert.match(dashboard.inputSchema.properties.days.description,/No meals/);
   const guides=JSON.parse(readFileSync(new URL('../dist/tracking-guides.json',import.meta.url),'utf8'));
   assert.match(guides.connection_help,/# Connection, Update And Refresh Help/);
-  assert.doesNotMatch(JSON.stringify(tools)+client.getInstructions(),/Plugin Management|search_plugins|suggest_plugins/);
+  assert.doesNotMatch(JSON.stringify(tools)+client.getInstructions(),/Plugin Management|search_plugins|suggest_plugins|Version 1 remains supported/i);
   const guideTool=tools.find(t=>t.name==='get_tracking_guide');
   assert.match(guideTool.description,/at most 24 hours, before expiresAt/);
   assert.doesNotMatch(guideTool.description,/once per conversation/);
