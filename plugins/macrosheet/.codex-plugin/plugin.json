@@ -1,6 +1,6 @@
 {
   "name": "macrosheet",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "Track meal calories and macronutrients in user-owned Google Sheets through existing host connectors.",
   "author": {
     "name": "PROSPR PTE. LTD."
@@ -85,7 +85,7 @@
         "demo_recording_url": "https://www.youtube.com/shorts/w-S2hW40x6o"
       },
       "publication": {
-        "release_notes": "MacroSheet 1.7.0: 11 October 2026. Concrete itemized preview layout, bounded host calculation and verification stages with compact facts, and one structured copy of hosted guide instructions. Exact confirmation, native writes, automatic verified-save dashboards and numeric-only service ownership are preserved. Analytics remains disabled. AGPL-3.0-only."
+        "release_notes": "MacroSheet 1.8.0: 11 October 2026. Explicitly supplied current-meal values are already approved by the log request and need no extra conversational confirmation. Full hosted instructions appear once in text with structured retrieval metadata. Agent-derived previews, native authorization, exact returned-cell verification and automatic saved-day dashboards are preserved. Analytics remains disabled. AGPL-3.0-only."
       }
     }
   }

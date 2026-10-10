@@ -1,5 +1,14 @@
 # Changes
 
+## 11 October 2026 — service 0.14.0 / plugin 1.8.0
+
+- Make current supplied-value logging requests explicitly approved, without an
+  extra conversational question; retain acceptance for agent-derived proposals.
+- Prioritize that distinction in server guidance and tracking-tool metadata.
+- Return complete hosted instructions once as text, with structured retrieval
+  metadata and an aligned four-field output schema. Preserve native approval,
+  exact verification, numeric ownership and saved-day widgets.
+
 ## 11 October 2026 — service 0.13.0 / plugin 1.7.0
 
 - Specify bounded host calculation/verification stages, compact typed facts and

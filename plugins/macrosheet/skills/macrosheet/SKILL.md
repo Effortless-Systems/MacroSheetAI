@@ -107,8 +107,10 @@ or an actually executed host calculation for sums/scaling; never mental arithmet
 Unknown macros are not zero. `kcal=null` computes a 4/4/9 estimate and must be labelled
 estimated. Stored values are finite/nonnegative, at most 1,000,000,000 each.
 
-Current meal values explicitly supplied by the user and unchanged accepted previews
-can be saved directly. For any newly researched, photo/label-extracted, historical,
+When the user supplies all four current-meal values and asks to log them, that
+request already approves those exact values: save without another preview or
+confirmation question, including `estimated=true`. An unchanged accepted preview
+also needs no second approval. For any newly researched, photo/label-extracted, historical,
 recipe-selected/scaled or estimated values, show a complete itemized Markdown table:
 **Item | Portion | Calories (kcal) | Protein (g) | Carbs (g) | Fat (g)**, with one
 row per item and a **Total** row, even for one food. Fill this same layout for one

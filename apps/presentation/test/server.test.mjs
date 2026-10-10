@@ -40,7 +40,7 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   for(const [topic,file] of Object.entries({operations:'references/operations.md',presentation:'references/presentation.md',target_help:'references/target-help.md',recipes:'references/recipes.md',connection_help:'references/connection-help.md',template:'assets/tracker-template.json'}))
    assert.equal(guides[topic],readGuide(file),`${topic} must be exactly its shipped source`);
   assert.doesNotMatch(JSON.stringify(guides),/\b(synthetic|fixture|trial|experiment|legacy|v0|v1|testing)\b|older endpoint|installed-only/i);
-  assert.equal(guides.version,'1.7.0');
+  assert.equal(guides.version,'1.8.0');
   assert.match(guides.tracking,/Complete matching write response: skip the verification\s+read/);
   assert.match(guides.tracking,/Preview and saved record must\s+use the same numeric precision/);
   assert.ok(Buffer.byteLength(readGuide('SKILL.md'))<15000);
@@ -64,6 +64,8 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   assert.match(guides.recipes,/newly selected\/scaled recipe meal gets an itemized/);
   // These checks prove catalog/guide delivery, not a live host's execution.
   assert.match(client.getInstructions(),/before confirmation when possible/);
+  assert.match(client.getInstructions().slice(0,512),/explicitly supplied already approves/);
+  assert.match(guides.tracking,/save without another preview or\s+confirmation question/);
   assert.match(client.getInstructions(),/A missing renderer does not block an authorized save/);
   assert.match(client.getInstructions(),/Never repeat a save because rendering failed/);
   assert.match(guideTool.description,/plain yes.*write verification and show_dashboard/);
@@ -102,7 +104,7 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
    const before=Date.now();
    const guide=await client.callTool({name:'get_tracking_guide',arguments:{topic}});
    const {fetchedAt,expiresAt,...body}=guide.structuredContent;
-   assert.deepEqual(body,{version:guides.version,topic,instructions:guides[topic]});
+   assert.deepEqual(body,{version:guides.version,topic});
    assert.ok(Date.parse(fetchedAt)>=before&&Date.parse(fetchedAt)<=Date.now());
    assert.equal(Date.parse(expiresAt)-Date.parse(fetchedAt),24*60*60*1000);
    assert.ok(guide.content[0].text.includes(`Fetched at ${fetchedAt}; expires at ${expiresAt}`));
@@ -110,9 +112,9 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
    assert.match(guide.content[0].text,/A failed guide fetch must not trigger recursive refresh/);
    assert.match(guide.content[0].text,/duplicate save/);
    assert.equal(guide.isError,undefined);
-   assert.match(guide.content[0].text,/Full instructions are in structuredContent.instructions/);
-   assert.ok(guide.content[0].text.length<1500);
-   assert.ok(!guide.content[0].text.includes(guides[topic]));
+   assert.ok(guide.content[0].text.endsWith(guides[topic]));
+   assert.equal(guide.content[0].text.split(guides[topic]).length,2);
+   assert.equal(guide.structuredContent.instructions,undefined);
   }
   assert.equal((await client.callTool({name:'get_tracking_guide',arguments:{}})).structuredContent.topic,'tracking');
   assert.equal((await client.callTool({name:'get_tracking_guide',arguments:{topic:'private'}})).isError,true);
