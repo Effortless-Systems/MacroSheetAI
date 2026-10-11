@@ -1,5 +1,13 @@
 # Changes
 
+## 11 October 2026 — Directory review guidance for service 0.12.0 / plugin 1.6.0
+
+- Clarify the Healthcare listing as a personal nutrition diary and use the
+  owner-selected unlisted review recording.
+- Make the installed tracking skill and bundled references authoritative while
+  retaining the hosted guide for plugin-only users. Align MCP discovery wording
+  with that boundary; Google access and numeric rendering remain unchanged.
+
 ## 11 October 2026 — active service 0.12.0 / plugin 1.6.0 restored
 
 - Restore the complete compact tracking workflow, guide delivery and presentation

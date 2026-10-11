@@ -1,7 +1,6 @@
 # Connection, Update And Refresh Help
 
 Use this reference for setup, user-requested help or an observed relevant failure.
-It is available in the installed skill and as get_tracking_guide topic=connection_help.
 Follow explicit user choices and host authorization. Do not run background update
 checks. Inspect actual host capabilities instead of assuming a management tool
 is installed.
@@ -16,27 +15,18 @@ is installed.
    “Connect Google Drive so I can create and save your tracker.” Installation,
    authentication and native Sheets capabilities are separate checks.
    If the host already identifies an installed connection needing sign-in or
-   missing Sheet operations, go directly to the recovery guidance in step 5.
-3. If the host exposes Plugin Management discovery, inspect its actual schemas
-   and use `search_plugins` with the concise query “Google Drive”. Select the
-   matching eligible Google Drive plugin by its exact returned identifier; do
-   not hardcode an account-specific ID or select an unrelated search result.
-4. Use `suggest_plugins` only for an eligible uninstalled plugin, at most once
-   per turn. Do not suggest installed or already-pending plugins, or repeat a
-   suggestion made within seven days unless the user explicitly requests
-   installation. A native suggestion offers setup; it does not install,
-   authenticate or grant access by itself.
-5. For an installed plugin with missing/expired authentication, guide the user
+   missing Sheet operations, go directly to the recovery guidance in step 3.
+3. For an installed connection with missing/expired authentication, guide the user
    to reconnect the intended account through the host's Plugins/Apps settings.
    Missing native Sheets operations are a capability blocker, not proof that
    reinstalling or signing in again will fix them. Explain workspace/admin
    restrictions without trying to bypass them.
-6. If discovery/suggestions are absent, fail, or return no eligible match, use
-   the host's Plugins/Apps settings or supported plugin directory as the manual
-   route. Do not claim that the whole service is unavailable from a failed search.
+4. If no suitable connection is installed, point the user to the host's
+   Plugins/Apps settings or supported directory. Do not claim that the whole
+   service is unavailable from a missing connection.
    Continue independent help or numeric calculations; never invent connection
    success, a credential prompt, browser workaround or alternate Google backend.
-7. Let the user finish the native installation/sign-in flow. Recheck the intended
+5. Let the user finish the native installation/sign-in flow. Recheck the intended
    account and required Google operations only after the connection changes.
    Catalog `installed`/enabled state alone does not prove authentication or Sheet
    access. Continue the existing tracker-selection/setup rules once verified;
@@ -67,9 +57,8 @@ ask only if it remains ambiguous. Keep product explanations short:
 
 | Request | Supported route and evidence |
 | --- | --- |
-| Update the installed MacroSheet package/skill | Guide the host's supported update/install controls. Use a management action only if its advertised schema supports this update and the user requested it; otherwise guide the host UI. Never invent update status. Verify the installed version only from available host/package evidence. Updating server code or fetching a guide does not update an installed package. |
+| Update the installed MacroSheet package/skill | Guide the host's supported update/install controls when the user requests an update; otherwise guide the host UI. Never invent update status. Verify the installed version only from available host/package evidence. Updating server code does not update an installed package. |
 | Refresh MCP tools/connection | Guide the host's exposed connection controls when tools or their definitions are stale. Use an advertised refresh action when available and requested; otherwise guide the host UI. Connection refresh does not install this skill, authorize Google or prove a newer service is deployed. |
-| Refresh hosted tracking instructions | Follow [Hosted Guide Freshness](../SKILL.md#hosted-guide-freshness), retaining expiry and one-fetch recovery limits. A successful fetch refreshes instructions only. |
 | Refresh Day So Far/Weekly data | Follow [presentation.md](presentation.md): read fresh bounded data for the originating account/tracker and selected dates, then supply the verified numeric snapshot to the renderer. Reuse no stale totals and write no meal. |
 
 Claim updated, connected, saved or refreshed only for the specific result verified.

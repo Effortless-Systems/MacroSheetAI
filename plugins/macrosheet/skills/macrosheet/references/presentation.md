@@ -114,10 +114,6 @@ meal values, ignoring duplicates, or discarding positive values with zero meals.
 
 ## Recovery
 
-When relying on hosted guidance, a tool error first triggers the main skill's
-single guide refresh. This updates instructions, not Sheet data, and does not
-authorize another save or override the bounded action recovery below.
-
 - Tool not yet loaded: search/load `show_dashboard` once. Missing in the current
   tool list or an earlier assistant's claim is not proof it is unavailable.
   If discovery or access actually fails, name that capability blocker and use text.

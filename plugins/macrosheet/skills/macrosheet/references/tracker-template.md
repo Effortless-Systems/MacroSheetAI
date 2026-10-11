@@ -8,8 +8,7 @@ restore verified derived areas in the current format while preserving meal data.
 
 When `publicTemplateUrl` is non-null, prefer a whole-workbook copy of the
 public, data-free template linked by `publicTemplateUrl` in [tracker-template.json](../assets/tracker-template.json).
-For plugin-only use, fetch `get_tracking_guide(topic="template")` once to obtain
-that same static definition. Do not invent a link or use a personal tracker as a
+Do not invent a link or use a personal tracker as a
 master. Copy using the host Google connector into the selected user's Drive;
 never change the master or share the personal copy publicly.
 

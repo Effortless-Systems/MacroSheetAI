@@ -304,8 +304,7 @@ cannot change the Google connector's permissions or safety decisions.
 
 ## Personal Recipes
 
-Before recipe work, read [recipes.md](recipes.md), or fetch hosted
-`get_tracking_guide` topic=recipes under the same freshness/error-refresh rules.
+Before recipe work, read [recipes.md](recipes.md).
 That reference owns the optional single-tab recipe schema and native writes.
 Reuse the same verified account/tracker; a fresh chat reads its recipe catalog.
 

@@ -41,7 +41,8 @@ recipe does not log consumption or change historical meal values.
 
 The installed [tracking skill](skills/macrosheet/SKILL.md) and its references own
 confirmation, selection, bounded reads and write verification. The hosted
-`get_tracking_guide` is generated from those same files, including connection help.
+`get_tracking_guide` is a fallback for plugin-only use, generated from those same
+files. When installed, the packaged skill and references are authoritative.
 A package update, tool-connection refresh, guide fetch and dashboard data refresh
 are separate actions; use the host's supported controls for the first two.
 

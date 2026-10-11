@@ -1,6 +1,6 @@
 interface:
   display_name: "MacroSheet"
-  short_description: "Your personal meal diary"
+  short_description: "Your personal nutrition diary"
   default_prompt: "Use $macrosheet to help me create my MacroSheet tracker. Guide me one step at a time and help me choose nutrition targets if I need them."
 policy:
   allow_implicit_invocation: true

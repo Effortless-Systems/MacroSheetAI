@@ -35,6 +35,8 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   assert.match(guideTool.description,/at most 24 hours, before expiresAt/);
   assert.doesNotMatch(guideTool.description,/once per conversation/);
   assert.match(client.getInstructions(),/24 hours, before expiresAt/);
+  assert.match(client.getInstructions(),/installed MacroSheet skill is available, follow its packaged instructions/);
+  assert.match(client.getInstructions(),/plugin-only use without the installed skill/);
   const readGuide=file=>readFileSync(new URL('../../../plugins/macrosheet/skills/macrosheet/'+file,import.meta.url),'utf8');
   assert.equal(guides.tracking,`${readGuide('SKILL.md')}\n\n${readGuide('references/tracker-template.md')}`);
   for(const [topic,file] of Object.entries({operations:'references/operations.md',presentation:'references/presentation.md',target_help:'references/target-help.md',recipes:'references/recipes.md',connection_help:'references/connection-help.md',template:'assets/tracker-template.json'}))
@@ -54,7 +56,8 @@ test('real HTTP MCP lifecycle, UI resource, stateless calls, invalid inputs and 
   const topics=['tracking','operations','presentation','target_help','recipes','connection_help','template'];
   assert.deepEqual(guideTool.inputSchema.properties.topic.enum,topics);
   assert.deepEqual(guideTool.outputSchema.properties.topic.enum,topics);
-  assert.match(guides.tracking,/Reuse never extends expiry/);
+  assert.doesNotMatch(readGuide('SKILL.md'),/get_tracking_guide|hosted guidance/);
+  assert.match(readGuide('SKILL.md'),/bundled references are the authoritative tracking/);
   assert.match(guides.tracking,/Resolve uncertain writes by readback before\s+any retry/);
   // Verify the actual hosted instructions close the published-values shortcut;
   // this checks delivery, not that a live host LLM obeyed the confirmation.

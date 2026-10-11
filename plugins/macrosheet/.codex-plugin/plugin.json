@@ -1,7 +1,7 @@
 {
   "name": "macrosheet",
   "version": "1.6.0",
-  "description": "Track meal calories and macronutrients in user-owned Google Sheets through existing host connectors.",
+  "description": "Keep a personal food and nutrition diary in your own Google Sheet.",
   "author": {
     "name": "PROSPR PTE. LTD."
   },
@@ -10,10 +10,10 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "MacroSheet",
-    "shortDescription": "Your personal meal diary",
-    "longDescription": "Log meals from photos, labels or descriptions, save personal recipes and reuse them by name, choose optional nutrition targets, and review Day So Far or your week. Your diary and recipes stay in your own Google Sheet named _MacroSheet. Connect Google to save records; inline views use the MacroSheet presentation connection.",
+    "shortDescription": "Your personal nutrition diary",
+    "longDescription": "MacroSheet is a personal food and nutrition diary. Log meals from photos, labels or descriptions, save and reuse recipes, choose optional nutrition targets, and review daily or weekly calorie and macro totals. Your records stay in your own Google Sheet named _MacroSheet. Connect Google separately to save; calculations and dashboard views can also use numbers you supply.",
     "developerName": "PROSPR PTE. LTD.",
-    "category": "Productivity",
+    "category": "Healthcare",
     "capabilities": [
       "Read",
       "Write"
@@ -82,7 +82,7 @@
             }
           ]
         },
-        "demo_recording_url": "https://www.youtube.com/shorts/w-S2hW40x6o"
+        "demo_recording_url": "https://youtu.be/fOQi_rmmYd8"
       },
       "publication": {
         "release_notes": "MacroSheet 1.6.0: 10 October 2026. Compact primary tracking workflow with an explicit literal appendCells request for new meals, focused operations guidance, exact write-response verification and automatic saved-day dashboard. Confirmation, consumed dates, duplicate prevention and numeric-only service ownership are preserved. Analytics remains disabled. AGPL-3.0-only."
