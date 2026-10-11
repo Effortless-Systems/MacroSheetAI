@@ -7,6 +7,8 @@
 - Make the installed tracking skill and bundled references authoritative while
   retaining the hosted guide for plugin-only users. Align MCP discovery wording
   with that boundary; Google access and numeric rendering remain unchanged.
+- Retain guarded Plugin Management discovery and suggestions in connection help;
+  an isolated Directory scan found no skill warnings with these steps restored.
 
 ## 11 October 2026 — active service 0.12.0 / plugin 1.6.0 restored
 
